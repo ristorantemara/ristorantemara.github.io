@@ -1028,3 +1028,8 @@ select.campo__input {
 }
 .menu-sezioni__elenco { display: contents; }
 .nota-striscia { margin-top: 10px; color: var(--pomodoro); }
+@media (min-width: 1024px) {
+  /* meno di 3 specialità in evidenza: le colonne restano larghe uguali e si centrano */
+  .specialita__griglia[data-quanti="2"] { grid-template-columns: repeat(2, minmax(0, 416px)); justify-content: center; }
+  .specialita__griglia[data-quanti="1"] { grid-template-columns: minmax(0, 416px); justify-content: center; }
+}

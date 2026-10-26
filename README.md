@@ -52,6 +52,7 @@ Il ristorante aggiorna il sito dal Foglio delle prenotazioni (anche dall'app Fog
 - **Chiusure** — Dal, Al, Motivo: avviso in cima al sito da 30 giorni prima, giorni barrati nel calendario, prenotazioni rifiutate.
 - **Orari** — per ogni giorno Aperto, Dalle, Alle, Ultima prenotazione: stato "Aperti ora", tabelle orari, footer, orari prenotabili.
 - **Menù** — Sezione, Gruppo, Piatto, Dettaglio, Prezzo, Allergeni, Visibile.
+- **In evidenza** — le specialità della home (max 3): il prezzo arriva dal piatto del menù collegato.
 
 Il sito legge i dati con `GET …/exec?dati=sito` (`js/dati.js`, salvati nel browser e aggiornati ogni pochi minuti).
 Se lo script non risponde restano gli orari standard e il menù scritto nella pagina (`_sorgenti/menu.json`).

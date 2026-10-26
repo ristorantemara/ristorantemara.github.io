@@ -120,6 +120,41 @@
 
   if (O && window.maraDati) window.maraDati(disegnaOrari);
 
+  /* ---------- Specialità della home (scheda «In evidenza» del Foglio) ---------- */
+  var griglia = document.querySelector('[data-evidenza]');
+  if (griglia && window.maraDati) {
+    // ogni specialità tiene la sua foto (per titolo); un titolo nuovo prende una foto rimasta libera
+    var fotoPerTitolo = {}, fotoLibere = [];
+    griglia.querySelectorAll('.specialita__piatto').forEach(function (a) {
+      var f = a.querySelector('.foto'), t = a.querySelector('.h3');
+      if (f && t) fotoPerTitolo[t.textContent.trim().toLowerCase()] = f.outerHTML;
+    });
+    var firmaEvidenza = '';
+    window.maraDati(function (dati) {
+      if (!Array.isArray(dati.evidenza) || !dati.evidenza.length) return;
+      var firma = JSON.stringify(dati.evidenza);
+      if (firma === firmaEvidenza) return;
+      firmaEvidenza = firma;
+      griglia.innerHTML = '';
+      griglia.setAttribute('data-quanti', dati.evidenza.length);
+      var usate = {};
+      dati.evidenza.forEach(function (p) { if (fotoPerTitolo[p.titolo.toLowerCase()]) usate[p.titolo.toLowerCase()] = true; });
+      fotoLibere = Object.keys(fotoPerTitolo).filter(function (t) { return !usate[t]; }).map(function (t) { return fotoPerTitolo[t]; });
+      dati.evidenza.forEach(function (p) {
+        var a = document.createElement('article');
+        a.className = 'specialita__piatto';
+        var html = fotoPerTitolo[p.titolo.toLowerCase()] || fotoLibere.shift() || '';
+        a.innerHTML = html +
+          '<div class="specialita__titolo"><h3 class="h3"></h3><p class="prezzo"></p></div><p class="testo-m"></p>';
+        a.querySelector('.h3').textContent = p.titolo;
+        a.querySelector('.prezzo').textContent = p.prezzo || '';
+        a.querySelector('.testo-m').textContent = p.descrizione || '';
+        if (!p.descrizione) a.querySelector('.testo-m').remove();
+        griglia.appendChild(a);
+      });
+    });
+  }
+
   /* ---------- Navigazione mobile ---------- */
   var pannello = document.getElementById('pannello-menu');
   var apri = document.querySelector('[data-apri-menu]');
