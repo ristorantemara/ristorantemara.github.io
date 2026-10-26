@@ -154,17 +154,20 @@
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(dati)
     })
-      .then(function (r) { return r.json(); })
-      .then(function (r) {
-        if (!r.ok) throw new Error(r.errore || 'Qualcosa è andato storto, riprova.');
+      .then(function (r) { return r.text(); }, function () {
+        throw { messaggio: 'Connessione non riuscita, controlla la rete e riprova.' };
+      })
+      .then(function (testo) {
+        var r;
+        try { r = JSON.parse(testo); } catch (e) { throw { messaggio: 'Qualcosa è andato storto, riprova tra poco.' }; }
+        if (!r.ok) throw { messaggio: r.errore || 'Qualcosa è andato storto, riprova.' };
         document.getElementById('esito-email').textContent = dati.email;
         form.hidden = true;
         document.getElementById('esito').hidden = false;
       })
       .catch(function (err) {
-        errore.textContent = err.message === 'Failed to fetch'
-          ? 'Connessione non riuscita, riprova.'
-          : err.message;
+        // Mostriamo solo messaggi nostri, in italiano, mai quelli del browser
+        errore.textContent = (err && err.messaggio) || 'Qualcosa è andato storto, riprova.';
         bottone.disabled = false;
         bottone.textContent = 'Invia richiesta';
       });

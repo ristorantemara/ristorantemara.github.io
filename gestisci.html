@@ -72,7 +72,30 @@
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(dati)
-    }).then(function (r) { return r.json(); });
+    }).then(function (r) { return r.text(); })
+      .then(function (testo) {
+        try { return JSON.parse(testo); }
+        catch (e) { var err = new Error('risposta'); err.tecnico = true; throw err; }
+      }, function () {
+        var err = new Error('rete'); err.tecnico = true; throw err;
+      });
+  }
+
+  // Messaggi del server (già in italiano) oppure un testo generico, mai quelli del browser
+  function testoErrore(e, generico) {
+    return e && !e.tecnico && e.message ? e.message : generico;
+  }
+
+  function mostraEsito(stato, giaGestita) {
+    azioni.hidden = true;
+    msg.className = 'msg';
+    if (giaGestita) {
+      titolo.textContent = 'Prenotazione già ' + String(stato).toLowerCase();
+      msg.textContent = "Era già stata gestita: non è stata inviata un'altra mail.";
+    } else {
+      titolo.textContent = stato === 'Confermata' ? 'Prenotazione confermata ✓' : 'Prenotazione rifiutata';
+      msg.textContent = 'Fatto: il cliente ha ricevuto una mail.';
+    }
   }
 
   function errore(testo) {
@@ -99,20 +122,28 @@
     msg.className = 'msg'; msg.textContent = 'Invio in corso…';
     chiama({ tipo: 'decidi', id: id, token: token, azione: azione })
       .then(function (r) {
-        azioni.hidden = true;
-        if (r.ok) {
-          titolo.textContent = r.stato === 'Confermata' ? 'Prenotazione confermata ✓' : 'Prenotazione rifiutata';
-          msg.textContent = 'Fatto: il cliente ha ricevuto una mail.';
-        } else if (r.giaGestita) {
-          titolo.textContent = 'Prenotazione già ' + String(r.stato).toLowerCase();
-          msg.textContent = "Era già stata gestita: non è stata inviata un'altra mail.";
-        } else {
-          throw new Error(r.errore);
-        }
+        if (r.ok) return mostraEsito(r.stato, false);
+        if (r.giaGestita) return mostraEsito(r.stato, true);
+        throw new Error(r.errore);
       })
       .catch(function (e) {
-        principale.disabled = false; alternativa.disabled = false;
-        errore(e.message && e.message !== 'Failed to fetch' ? e.message : 'Connessione non riuscita, riprova.');
+        if (!e.tecnico) {
+          principale.disabled = false; alternativa.disabled = false;
+          return errore(testoErrore(e, 'Qualcosa è andato storto, riprova.'));
+        }
+        // Risposta illeggibile: ricontrolliamo lo stato prima di dire che non ha funzionato
+        msg.textContent = 'Verifico…';
+        return chiama({ tipo: 'leggi', id: id, token: token })
+          .then(function (r) {
+            if (r.ok && r.prenotazione.stato !== 'In attesa') {
+              return mostraEsito(r.prenotazione.stato, false);
+            }
+            throw new Error('non aggiornata');
+          })
+          .catch(function () {
+            principale.disabled = false; alternativa.disabled = false;
+            errore('Non sono riuscito a completare l\'operazione. Controlla la connessione e riprova.');
+          });
       });
   }
 
@@ -148,7 +179,7 @@
       })
       .catch(function (e) {
         titolo.textContent = 'Non riesco ad aprire la prenotazione';
-        errore(e.message && e.message !== 'Failed to fetch' ? e.message : 'Connessione non riuscita, ricarica la pagina.');
+        errore(testoErrore(e, 'Connessione non riuscita, ricarica la pagina.'));
       });
   }
 </script>
