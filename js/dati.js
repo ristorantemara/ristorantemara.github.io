@@ -5,7 +5,7 @@
   'use strict';
 
   var CHIAVE = 'mara-dati';
-  var VECCHI_DOPO = 3 * 60 * 1000; // dopo 3 minuti si richiedono i dati
+  var VECCHI_DOPO = 20 * 1000; // a ogni pagina (al massimo ogni 20 secondi) si chiedono i dati aggiornati
   var GIORNI = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
   var MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
   var ORDINE = [1, 2, 3, 4, 5, 6, 0];
