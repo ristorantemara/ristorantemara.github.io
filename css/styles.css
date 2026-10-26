@@ -1033,3 +1033,7 @@ select.campo__input {
   .specialita__griglia[data-quanti="2"] { grid-template-columns: repeat(2, minmax(0, 416px)); justify-content: center; }
   .specialita__griglia[data-quanti="1"] { grid-template-columns: minmax(0, 416px); justify-content: center; }
 }
+
+/* Caroselli con scroll-snap: lo snap ignora il padding del contenitore,
+   quindi senza scroll-padding la prima card si allinea al bordo e il gutter iniziale sparisce. */
+.specialita__griglia, .archi, .striscia-giorni { scroll-padding-inline: var(--gutter); }
