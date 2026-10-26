@@ -18,8 +18,12 @@
       ok = v >= window.maraOggi();
     } else if (v && input.hasAttribute('data-contatto')) {
       ok = EMAIL.test(v) || TELEFONO.test(v);
-    } else if (v && input.hasAttribute('data-nome-telefono')) {
-      ok = TELEFONO.test(v) && /[a-zà-ú]{2,}/i.test(v);
+    } else if (v && input.hasAttribute('data-nome-cognome')) {
+      ok = /[a-zà-ú'’]{2,}\s+[a-zà-ú'’]{2,}/i.test(v); // almeno due parole
+    } else if (v && input.hasAttribute('data-telefono')) {
+      ok = v.replace(/\D/g, '').length >= 8 && /^[+\d\s./()-]+$/.test(v);
+    } else if (v && input.hasAttribute('data-email')) {
+      ok = EMAIL.test(v);
     }
     campo.classList.toggle('is-errore', !ok);
     input.setAttribute('aria-invalid', ok ? 'false' : 'true');

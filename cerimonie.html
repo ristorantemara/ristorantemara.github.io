@@ -120,7 +120,7 @@
 
       <form class="form-scheda" data-form-richiesta="cerimonia" data-successo="cerimonie-grazie.html" novalidate>
         <h3 class="h3">Richiedi una proposta</h3>
-        <p class="testo-s">Vi ricontattiamo per telefono o email.</p>
+        <p class="testo-s">Vi mandiamo subito una mail di conferma e poi vi richiamiamo noi.</p>
         <div class="riga-campi">
           <div class="campo">
             <label class="campo__etichetta" for="c-data">Data della festa</label>
@@ -143,9 +143,21 @@
           <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegliete l’occasione.</span></p>
         </div>
         <div class="campo">
-          <label class="campo__etichetta" for="c-nome">Nome e telefono</label>
-          <input class="campo__input" id="c-nome" name="contatto" required maxlength="120" placeholder="es. Giulia Rossi · 333 123 4567" data-nome-telefono>
-          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scrivete nome e numero di telefono.</span></p>
+          <label class="campo__etichetta" for="c-nome">Nome e cognome</label>
+          <input class="campo__input" id="c-nome" name="nome" required maxlength="120" autocomplete="name" placeholder="es. Giulia Rossi" data-nome-cognome>
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scrivete nome e cognome.</span></p>
+        </div>
+        <div class="riga-campi">
+          <div class="campo">
+            <label class="campo__etichetta" for="c-telefono">Telefono</label>
+            <input class="campo__input" id="c-telefono" name="telefono" type="tel" required maxlength="30" autocomplete="tel" inputmode="tel" placeholder="es. 333 123 4567" data-telefono>
+            <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Controllate il numero di telefono.</span></p>
+          </div>
+          <div class="campo">
+            <label class="campo__etichetta" for="c-email">Email</label>
+            <input class="campo__input" id="c-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="es. giulia.rossi@email.it" data-email>
+            <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Controllate l’indirizzo email.</span></p>
+          </div>
         </div>
         <div class="trappola" aria-hidden="true"><label>Lascia vuoto<input name="sito" tabindex="-1" autocomplete="off"></label></div>
         <div class="form-errore" data-form-errore hidden role="alert"></div>
