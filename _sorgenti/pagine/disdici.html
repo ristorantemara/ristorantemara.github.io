@@ -1,0 +1,37 @@
+---
+titolo: Disdici prenotazione · Ristorante Mara
+descrizione: Disdici la tua prenotazione al Ristorante Mara.
+layout: flusso
+classe_body: pagina-flusso pagina-gestisci
+robots: noindex
+script: js/config.js, js/disdici.js
+---
+<header class="barra-flusso">
+  <div class="barra-flusso__interno">
+    <a class="logo barra-flusso__logo" href="index.html" aria-label="Ristorante Mara, home">
+      {{nodo}}
+      <span><span class="logo__nome">Mara</span><span class="logo__sotto">Ristorante · dal 1967</span></span>
+    </a>
+    <div class="barra-flusso__titolo-mobile"><p class="label">La tua prenotazione</p><p class="testo-s">Ristorante Mara</p></div>
+    <p class="occhiello solo-desktop barra-flusso__etichetta">La tua prenotazione</p>
+  </div>
+</header>
+
+<main id="contenuto" class="flusso">
+  <div class="gestisci">
+    <h1 class="titolo-flusso" id="titolo" tabindex="-1">Carico la prenotazione…</h1>
+    <p class="testo-m" id="sottotitolo"></p>
+    <dl class="tabella-riepilogo" id="dettagli" hidden></dl>
+    <div class="form-errore" id="errore" hidden role="alert"></div>
+    <p class="esito-gestisci" id="esito" hidden role="status"><span class="esito__icona" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#check"/></svg></span><span id="esito-testo"></span></p>
+    <div class="gestisci__azioni" id="azioni" hidden>
+      <button class="btn btn--rifiuta" type="button" id="disdici">Disdici la prenotazione<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></button>
+      <a class="btn btn--secondario" href="index.html">La tengo, ci vediamo</a>
+    </div>
+    <div class="gestisci__azioni" id="dopo" hidden>
+      <a class="btn btn--primario" href="prenota.html">Prenota un’altra data<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+      <a class="btn btn--secondario" href="index.html">Torna al sito</a>
+    </div>
+    <p class="gestisci__telefono"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg><span id="telefono-testo">Vuoi cambiare giorno, orario o numero di persone? Chiamaci al <a href="tel:+390454857283">045 485 7283</a>.</span></p>
+  </div>
+</main>

@@ -46,10 +46,10 @@
     azioni.hidden = true;
     errore.hidden = true;
     esito.hidden = false;
-    esito.classList.toggle('is-rifiutata', stato === 'Rifiutata');
+    esito.classList.toggle('is-rifiutata', stato === 'Rifiutata' || stato === 'Disdetta');
     if (giaGestita) {
       titolo.innerHTML = 'Prenotazione <span class="accento">già ' + String(stato).toLowerCase() + '</span>';
-      esitoTesto.textContent = 'Era già stata gestita: non è stata inviata un’altra mail.';
+      esitoTesto.textContent = stato === 'Disdetta' ? 'Il cliente l’ha disdetta dal link nella sua mail.' : 'Era già stata gestita: non è stata inviata un’altra mail.';
     } else {
       titolo.innerHTML = stato === 'Confermata' ? 'Prenotazione <span class="accento">confermata</span>' : 'Prenotazione <span class="accento">rifiutata</span>';
       esitoTesto.textContent = 'Fatto: il cliente ha ricevuto una mail.';
@@ -111,7 +111,7 @@
       dettagli.hidden = false;
       if (p.stato !== 'In attesa') {
         mostraEsito(p.stato, true);
-        esitoTesto.textContent = 'Non serve fare altro.';
+        esitoTesto.textContent = p.stato === 'Disdetta' ? 'Il cliente l’ha disdetta dal link nella sua mail. Non serve fare altro.' : 'Non serve fare altro.';
       } else {
         preparaPulsanti();
         azioni.hidden = false;

@@ -15,6 +15,7 @@ Sito statico pubblicato con GitHub Pages su **https://ristorantemara.github.io**
 | `dove-siamo.html` | Dove siamo e contatti |
 | `prenota.html` | Prenotazione in 3 passi (Quando → I tuoi dati → Conferma → Richiesta inviata) |
 | `gestisci.html` | Area ristorante: conferma o rifiuta una prenotazione (si apre dalla mail) |
+| `disdici.html` | Area cliente: disdetta della prenotazione (si apre dal pulsante nella mail di conferma) |
 | `privacy.html` | Privacy e cookie (testo provvisorio) |
 | `404.html` | Pagina non trovata |
 
@@ -39,6 +40,9 @@ prenotazioni e richieste è in `js/config.js`.
 
 1. Il cliente prenota da `prenota.html` → lo script salva la richiesta nel Foglio e manda una mail al ristorante.
 2. Nella mail, **Conferma** / **Rifiuta** aprono `gestisci.html` → un tocco e il cliente riceve la mail.
-3. I form Gruppi e Cerimonie arrivano allo stesso script (foglio "Richieste") e al ristorante via mail.
+3. Nella mail di conferma il cliente trova **Disdici la prenotazione** → apre `disdici.html`, disdice con un tocco;
+   il ristorante riceve una mail di disdetta. Il link del cliente ha una chiave sua: non permette di confermare.
+   Le mail al cliente non invitano a rispondere: per modifiche c'è il telefono.
+4. I form Gruppi e Cerimonie arrivano allo stesso script (foglio "Richieste") e al ristorante via mail.
 
 Foto: per ora segnaposto (sfumatura) con didascalia; vanno sostituite con foto vere in WebP.

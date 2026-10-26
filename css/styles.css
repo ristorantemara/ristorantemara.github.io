@@ -982,6 +982,9 @@ select.campo__input {
 .esito-gestisci .esito__icona .icona { width: 22px; height: 22px; }
 .esito-gestisci.is-rifiutata { background: var(--sfoglia); color: var(--inchiostro); }
 .esito-gestisci.is-rifiutata .esito__icona { background: var(--terra); }
+.gestisci__telefono { display: flex; align-items: flex-start; gap: 10px; margin-top: 8px; padding-top: 20px; border-top: 1px solid var(--bordo); font: 400 15px/1.5 var(--testo); color: var(--terra); }
+.gestisci__telefono .icona { width: 20px; height: 20px; flex: none; margin-top: 1px; color: var(--pomodoro); }
+.gestisci__telefono a { color: var(--inchiostro); font-weight: 600; }
 @media (max-width: 1023px) {
   .pagina-gestisci .barra-flusso__interno { justify-content: center; }
   .gestisci { padding: 28px var(--gutter) 48px; gap: 18px; }
