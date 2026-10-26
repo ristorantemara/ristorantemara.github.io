@@ -22,7 +22,7 @@ script: js/menu.js
 
   <!-- Barra sticky: filtro allergeni (desktop) / sezioni + filtro (mobile) -->
   <div class="menu-barra" data-menu-barra>
-    <nav class="menu-pillole contenitore solo-mobile" aria-label="Sezioni del menù">{{menu_pillole}}</nav>
+    <nav class="menu-pillole contenitore solo-mobile" aria-label="Sezioni del menù" data-menu-pillole>{{menu_pillole}}</nav>
     <div class="menu-filtro contenitore">
       <div class="menu-filtro__testa">
         <p class="menu-filtro__titolo"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#filter"/></svg><span class="solo-desktop">Nascondi i piatti che contengono</span><span class="solo-mobile" data-filtro-etichetta-mobile>Filtra allergeni</span></p>
@@ -37,14 +37,15 @@ script: js/menu.js
   <div class="contenitore menu-corpo">
     <nav class="menu-indice solo-desktop" aria-label="Sezioni del menù">
       <p class="occhiello">Sezioni</p>
-      <ul>{{menu_indice}}</ul>
+      <ul data-menu-indice>{{menu_indice}}</ul>
     </nav>
     <div class="menu-sezioni">
-      {{menu_sezioni}}
+      <div class="menu-sezioni__elenco" data-menu-sezioni>{{menu_sezioni}}</div>
+      {{menu_meta}}
       <aside class="menu-cta su-scuro">
         <div>
           <h2 class="h2">Ti è venuta fame?</h2>
-          <p class="testo-m">Aperti tutti i giorni dalle 12:00 alle 14:00, il martedì siamo chiusi.</p>
+          <p class="testo-m" data-orari-testo="frase">Aperti tutti i giorni dalle 12:00 alle 14:00, il martedì siamo chiusi.</p>
         </div>
         <a class="btn btn--su-scuro" href="prenota.html">Prenota un tavolo<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></a>
       </aside>

@@ -1,15 +1,21 @@
-/* Menù: filtro allergeni, sezioni attive, pannello mobile */
+/* Menù: filtro allergeni, sezioni attive, pannello mobile.
+   Il menù scritto nella pagina è quello di partenza; se nel Foglio del ristorante
+   il menù è diverso, viene ridisegnato con i dati del Foglio. */
 (function () {
   'use strict';
 
   var esclusi = [];
   var chip = document.querySelectorAll('[data-allergene]');
-  var piatti = document.querySelectorAll('.piatto[data-allergeni]');
-  var sezioni = document.querySelectorAll('[data-sezione]');
   var stato = document.querySelector('[data-filtro-stato]');
   var attiviMobile = document.querySelector('[data-filtro-attivi]');
   var etichettaMobile = document.querySelector('[data-filtro-etichetta-mobile]');
   var bottoneScegli = document.querySelector('[data-apri-allergeni]');
+  var boxSezioni = document.querySelector('[data-menu-sezioni]');
+  var boxIndice = document.querySelector('[data-menu-indice]');
+  var boxPillole = document.querySelector('[data-menu-pillole]');
+
+  var META = {};
+  try { META = JSON.parse(document.getElementById('menu-meta').textContent); } catch (e) { META = {}; }
 
   var NOMI = {};
   chip.forEach(function (c) { NOMI[c.dataset.allergene] = c.childNodes[0].textContent.trim(); });
@@ -19,7 +25,66 @@
     freddi: 'Nessun piatto freddo', 'contorni-dolci': 'Nessun contorno o dolce',
     bevande: 'Nessuna bevanda', vini: 'Nessun vino'
   };
+  var ARTICOLI = {
+    antipasti: 'gli antipasti', primi: 'i primi', secondi: 'i secondi', freddi: 'i piatti freddi',
+    'contorni-dolci': 'contorni e dolci', bevande: 'le bevande', vini: 'i vini'
+  };
+  var VUOTO = 'Avvisaci quando prenoti: la cucina può proporti un’alternativa.';
+  var ROMANI = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi', 'xii', 'xiii', 'xiv', 'xv'];
 
+  function sezioni() { return document.querySelectorAll('[data-sezione]'); }
+
+  /* ---------- Disegno dal Foglio ---------- */
+  function slug(t) { return String(t).toLowerCase().replace(/à/g, 'a').replace(/[^a-z]+/g, '-').replace(/^-+|-+$/g, ''); }
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  function rigaPiatto(p, vino) {
+    var allergeni = vino ? ['Solfiti'] : (p.allergeni || []);
+    var testo = p.testo_allergeni || allergeni.join(' · ');
+    return '<li class="piatto" data-allergeni="' + esc(allergeni.map(slug).join(',')) + '">' +
+      '<div class="piatto__testa"><h3 class="piatto-nome">' + esc(p.nome) + '</h3>' +
+      '<span class="piatto__puntini" aria-hidden="true"></span><p class="prezzo">' + esc(p.prezzo || '') + '</p></div>' +
+      (p.sotto ? '<p class="piatto__sotto">' + esc(p.sotto) + '</p>' : '') +
+      (testo && !vino ? '<p class="piatto__allergeni"><span class="visually-hidden">Allergeni: </span>' + esc(testo) + '</p>' : '') +
+      '</li>';
+  }
+
+  function disegnaMenu(menu) {
+    var usati = {};
+    var indice = [], pillole = [], corpo = [];
+    menu.sezioni.forEach(function (s, i) {
+      var m = META[s.titolo] || {};
+      var id = m.id || slug(s.titolo) || 'sezione';
+      while (usati[id]) id += '-2';
+      usati[id] = true;
+      var vino = m.vini || /vin/i.test(s.titolo);
+      var totale = s.gruppi.reduce(function (n, g) { return n + g.piatti.length; }, 0);
+      var numero = (ROMANI[i] || String(i + 1)) + '.';
+      indice.push('<li><a href="#' + id + '" data-indice="' + id + '"><span>' + esc(s.titolo) + '</span>' +
+        '<span class="menu-indice__conta" data-conta="' + id + '">' + totale + '</span></a></li>');
+      pillole.push('<a class="pillola" href="#' + id + '" data-indice="' + id + '">' + esc(m.breve || s.titolo) + '</a>');
+      var html = '<section class="menu-sezione" id="' + id + '" data-sezione="' + id + '"' + (vino ? ' data-vini' : '') + ' aria-labelledby="t-' + id + '">' +
+        '<h2 class="menu-sezione__titolo h2" id="t-' + id + '"><span class="accento">' + numero + '</span> ' + esc(s.titolo) + '</h2>';
+      if (s.nota) html += '<p class="testo-s menu-sezione__nota">' + esc(s.nota) + '</p>';
+      html += '<div class="avviso menu-sezione__vuoto" data-vuoto hidden><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg>' +
+        '<div><p class="label" data-vuoto-titolo></p><p class="testo-s">' + esc(m.vuoto || VUOTO) + '</p>' +
+        '<button class="btn btn--testo" type="button" data-mostra-comunque>Mostra comunque<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button></div></div>';
+      var conGruppi = s.gruppi.some(function (g) { return g.titolo; });
+      s.gruppi.forEach(function (g) {
+        if (conGruppi) html += '<div class="menu-gruppo" data-gruppo>' + (g.titolo ? '<p class="occhiello">' + esc(g.titolo) + '</p>' : '');
+        html += '<ul class="menu-colonne">' + g.piatti.map(function (p) { return rigaPiatto(p, vino); }).join('') + '</ul>';
+        if (conGruppi) html += '</div>';
+      });
+      corpo.push(html + '</section>');
+    });
+    boxSezioni.innerHTML = corpo.join('');
+    if (boxIndice) boxIndice.innerHTML = indice.join('');
+    if (boxPillole) boxPillole.innerHTML = pillole.join('');
+    osserva();
+    applica();
+  }
+
+  /* ---------- Filtro allergeni ---------- */
   function elenco(nomi) {
     nomi = nomi.map(function (n) { return n.toLowerCase(); });
     if (nomi.length < 2) return nomi.join('');
@@ -34,7 +99,7 @@
     });
 
     var visibiliCibo = 0, totaliCibo = 0;
-    piatti.forEach(function (p) {
+    document.querySelectorAll('.piatto[data-allergeni]').forEach(function (p) {
       var lista = p.dataset.allergeni ? p.dataset.allergeni.split(',') : [];
       var nascosto = esclusi.some(function (a) { return lista.indexOf(a) !== -1; });
       p.classList.toggle('is-escluso', nascosto);
@@ -44,11 +109,10 @@
       }
     });
 
-    sezioni.forEach(function (s) {
+    sezioni().forEach(function (s) {
       var tutti = s.querySelectorAll('.piatto');
       var visibili = s.querySelectorAll('.piatto:not(.is-escluso)').length;
-      var conta = document.querySelectorAll('[data-conta="' + s.dataset.sezione + '"]');
-      conta.forEach(function (c) { c.textContent = visibili; });
+      document.querySelectorAll('[data-conta="' + s.dataset.sezione + '"]').forEach(function (c) { c.textContent = visibili; });
       document.querySelectorAll('[data-indice="' + s.dataset.sezione + '"]').forEach(function (a) {
         a.classList.toggle('is-vuota', visibili === 0);
       });
@@ -58,13 +122,14 @@
       var vuoto = s.querySelector('[data-vuoto]');
       var mostraVuoto = esclusi.length > 0 && visibili === 0 && tutti.length > 0;
       if (!mostraVuoto) s.classList.remove('mostra-tutto');
+      if (!vuoto) return;
       vuoto.hidden = !mostraVuoto;
       if (mostraVuoto) {
         vuoto.querySelector('[data-vuoto-titolo]').textContent =
           (SINGOLARE[s.dataset.sezione] || 'Nessun piatto') + ' della carta è senza ' + elenco(nomiEsclusi);
-        var titoloSez = s.querySelector('.menu-sezione__titolo').textContent.replace(/^[ivx]+\.\s*/, '').toLowerCase();
+        var cosa = s.hasAttribute('data-vini') ? 'i vini' : (ARTICOLI[s.dataset.sezione] || '');
         vuoto.querySelector('[data-mostra-comunque]').firstChild.textContent =
-          s.classList.contains('mostra-tutto') ? 'Nascondi di nuovo ' : 'Mostra comunque ' + (s.dataset.sezione === 'vini' ? 'i vini' : 'i ' + titoloSez) + ' ';
+          s.classList.contains('mostra-tutto') ? 'Nascondi di nuovo ' : 'Mostra comunque ' + (cosa ? cosa + ' ' : '');
       }
     });
 
@@ -112,11 +177,12 @@
     c.addEventListener('click', function () { attiva(c.dataset.allergene); });
   });
 
-  document.querySelectorAll('[data-mostra-comunque]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      b.closest('[data-sezione]').classList.toggle('mostra-tutto');
-      applica();
-    });
+  // "Mostra comunque": le sezioni possono essere ridisegnate, quindi un solo ascoltatore sul contenitore
+  boxSezioni.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-mostra-comunque]');
+    if (!b) return;
+    b.closest('[data-sezione]').classList.toggle('mostra-tutto');
+    applica();
   });
 
   document.querySelectorAll('[data-azzera]').forEach(function (b) {
@@ -143,15 +209,18 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') chiudiFoglio(); });
 
   /* Sezione attiva nell'indice e nelle pillole */
-  var link = document.querySelectorAll('[data-indice]');
-  if ('IntersectionObserver' in window) {
-    var visibili = {};
-    var oss = new IntersectionObserver(function (voci) {
+  var osservatore = null;
+  var visibili = {};
+  function osserva() {
+    if (!('IntersectionObserver' in window)) return;
+    if (osservatore) osservatore.disconnect();
+    visibili = {};
+    osservatore = new IntersectionObserver(function (voci) {
       voci.forEach(function (v) { visibili[v.target.id] = v.isIntersecting; });
       var attiva = null;
-      sezioni.forEach(function (s) { if (!attiva && visibili[s.id]) attiva = s.id; });
+      sezioni().forEach(function (s) { if (!attiva && visibili[s.id]) attiva = s.id; });
       if (!attiva) return;
-      link.forEach(function (a) {
+      document.querySelectorAll('[data-indice]').forEach(function (a) {
         var on = a.dataset.indice === attiva;
         a.classList.toggle('is-attiva', on);
         if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
@@ -160,8 +229,23 @@
         }
       });
     }, { rootMargin: '-35% 0px -55% 0px' });
-    sezioni.forEach(function (s) { oss.observe(s); });
+    sezioni().forEach(function (s) { osservatore.observe(s); });
   }
 
+  osserva();
   applica();
+
+  // Menù dal Foglio: si ridisegna solo se ci sono dati (altrimenti resta quello della pagina)
+  if (window.maraDati) {
+    var ultimo = '';
+    window.maraDati(function (dati) {
+      if (!dati.menu || !dati.menu.sezioni || !dati.menu.sezioni.length) return;
+      var firma = JSON.stringify(dati.menu);
+      if (firma === ultimo) return;
+      ultimo = firma;
+      disegnaMenu(dati.menu);
+      // se si è arrivati con un'ancora (#primi), riportiamo la sezione in vista
+      try { var ancora = location.hash && document.querySelector(location.hash); if (ancora) ancora.scrollIntoView(); } catch (e) { /* ancora non valida */ }
+    });
+  }
 })();

@@ -20,7 +20,11 @@
   function piuGiorni(iso, n) { var d = daISO(iso); d.setUTCDate(d.getUTCDate() + n); return aISO(d); }
   var ultimo = piuGiorni(oggi, GIORNI_MAX);
   function giornoSettimana(iso) { return daISO(iso).getUTCDay(); }
-  function aperto(iso) { return iso >= oggi && iso <= ultimo && giornoSettimana(iso) !== 2 && orariLiberi(iso).length > 0; }
+  /* Orari e chiusure arrivano dal Foglio del ristorante (vedi dati.js) */
+  var O = window.maraOrari;
+  var dati = null;
+  function giornoDi(iso) { return O.giorno(dati, iso); }
+  function aperto(iso) { return iso >= oggi && iso <= ultimo && giornoDi(iso).aperto && orariLiberi(iso).length > 0; }
   function maiuscola(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
   function giornoLungo(iso, conAnno) {
     var d = daISO(iso);
@@ -34,9 +38,15 @@
       return t;
     } catch (e) { var d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
   }
-  var bottoniOra = form.querySelectorAll('[data-ora]');
+  var listaOrari = form.querySelector('[data-orari-arrivo]');
+  /** Tutti gli orari del giorno (o del primo giorno aperto, se non ne è scelto uno) */
+  function orariDelGiorno(iso) {
+    if (!iso) iso = O.prossimaApertura(dati, oggi) || oggi;
+    return O.prenotabili(giornoDi(iso));
+  }
+  /** Orari ancora prenotabili: oggi solo quelli non passati */
   function orariLiberi(iso) {
-    var tutti = Array.prototype.map.call(bottoniOra, function (b) { return b.dataset.ora; });
+    var tutti = O.prenotabili(giornoDi(iso));
     if (iso !== oggi) return tutti;
     var adesso = oraAdesso();
     return tutti.filter(function (o) { return o > adesso; });
@@ -62,12 +72,14 @@
       b.className = 'giorno';
       b.textContent = g;
       b.dataset.data = iso;
-      var chiuso = giornoSettimana(iso) === 2;
+      var info = giornoDi(iso);
+      var chiuso = !info.aperto;
       if (chiuso) b.classList.add('is-chiuso');
       if (iso === oggi) b.classList.add('is-oggi');
       if (!aperto(iso)) { b.disabled = true; }
       if (iso === stato.data) { b.classList.add('is-scelto'); b.setAttribute('aria-pressed', 'true'); } else b.setAttribute('aria-pressed', 'false');
-      b.setAttribute('aria-label', giornoLungo(iso) + (chiuso ? ', chiuso' : (b.disabled ? ', non disponibile' : '')));
+      if (chiuso && info.chiusura && info.chiusura.motivo) b.title = info.chiusura.motivo;
+      b.setAttribute('aria-label', giornoLungo(iso) + (chiuso ? ', chiuso' + (info.chiusura && info.chiusura.motivo ? ' (' + info.chiusura.motivo + ')' : '') : (b.disabled ? ', non disponibile' : '')));
       griglia.appendChild(b);
     }
     form.querySelector('[data-mese="-1"]').disabled = meseVisto <= oggi.slice(0, 7);
@@ -173,13 +185,14 @@
     impostaPersone(t === 'min' ? 1 : t === 'max' ? MAX_PERSONE : stato.persone + t);
     valorePersone.select();
   });
-  bottoniOra.forEach(function (b) {
-    b.addEventListener('click', function () {
-      if (b.disabled) return;
-      stato.ora = b.dataset.ora;
-      nascondiErrore('ora');
-      aggiorna();
-    });
+  listaOrari.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ora]');
+    if (!b || b.disabled) return;
+    stato.ora = b.dataset.ora;
+    nascondiErrore('ora');
+    aggiorna();
+    var nuovo = listaOrari.querySelector('[data-ora="' + stato.ora + '"]');
+    if (nuovo) nuovo.focus();
   });
 
   /* ---------- Errori ---------- */
@@ -220,11 +233,7 @@
     form.querySelector('[data-persone="-1"]').disabled = stato.persone <= 1;
     form.querySelector('[data-persone="1"]').disabled = stato.persone >= MAX_PERSONE;
 
-    var liberi = stato.data ? orariLiberi(stato.data) : orariLiberi('x');
-    bottoniOra.forEach(function (b) {
-      b.disabled = liberi.indexOf(b.dataset.ora) === -1;
-      b.setAttribute('aria-checked', b.dataset.ora === stato.ora ? 'true' : 'false');
-    });
+    disegnaOrariArrivo();
 
     var personeTesto = stato.persone + (stato.persone === 1 ? ' persona' : ' persone');
     scrivi('giorno', stato.data ? giornoLungo(stato.data) : 'Scegli il giorno');
@@ -238,9 +247,43 @@
     } else mobile.textContent = 'Continua';
   }
 
+  function disegnaOrariArrivo() {
+    var tutti = orariDelGiorno(stato.data);
+    var liberi = stato.data ? orariLiberi(stato.data) : tutti;
+    listaOrari.innerHTML = '';
+    tutti.forEach(function (o) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'orario';
+      b.setAttribute('role', 'radio');
+      b.dataset.ora = o;
+      b.textContent = o;
+      b.disabled = liberi.indexOf(o) === -1;
+      b.setAttribute('aria-checked', o === stato.ora ? 'true' : 'false');
+      listaOrari.appendChild(b);
+    });
+    var g = giornoDi(stato.data || O.prossimaApertura(dati, oggi) || oggi);
+    scrivi('nota-orari', g.aperto
+      ? (stato.data ? 'Quel giorno siamo aperti' : 'Siamo aperti') + ' dalle ' + g.dalle + ' alle ' + g.alle + ': l’ultimo tavolo si prenota alle ' + g.ultima + '.'
+      : '');
+  }
+
+  /** "Nei giorni barrati siamo chiusi: di martedì e dal 10 al 24 agosto (ferie estive)." */
+  function notaChiusure() {
+    var parti = [];
+    var r = O.riassunto(dati);
+    if (r.elencoChiusi) parti.push('di ' + r.elencoChiusi);
+    dati.chiusure.forEach(function (c) {
+      if (c.al >= oggi && c.dal <= ultimo) parti.push(O.periodo(c, oggi) + (c.motivo ? ' (' + c.motivo.toLowerCase() + ')' : ''));
+    });
+    if (!parti.length) return 'Scegli il giorno: prenoti fino a due mesi prima.';
+    var elenco = parti.length < 2 ? parti[0] : parti.slice(0, -1).join(', ') + ' e ' + parti[parti.length - 1];
+    return 'Nei giorni barrati siamo chiusi: ' + elenco + '.';
+  }
+
   /* ---------- Navigazione tra i passi ---------- */
   var NOTE = {
-    1: 'Il martedì siamo chiusi: quei giorni non sono selezionabili.',
+    1: '',
     2: 'La conferma arriva via email. Il telefono ci serve solo in caso di imprevisti.',
     3: 'È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.'
   };
@@ -257,7 +300,7 @@
     document.querySelectorAll('.passi-prenotazione__linea').forEach(function (l, i) { l.classList.toggle('is-fatto', i + 1 < passo); });
     document.querySelectorAll('[data-avanzamento] span').forEach(function (s, i) { s.classList.toggle('is-fatto', i < passo); });
     document.querySelector('[data-passo-mobile]').textContent = 'Passo ' + passo + ' di 3';
-    document.querySelector('[data-nota-passo]').textContent = NOTE[passo];
+    document.querySelector('[data-nota-passo]').textContent = passo === 1 ? notaChiusure() : NOTE[passo];
     if (passo === 3) riempiRiepilogo();
     if (!daStoria) history.pushState({ passo: passo }, '', passo === 1 ? location.pathname : '#passo-' + passo);
     if (iniziale) return;
@@ -382,6 +425,22 @@
 
   /* ---------- Avvio ---------- */
   history.replaceState({ passo: 1 }, '', location.pathname);
-  aggiorna();
-  vaiA(1, true, true);
+  var avviato = false;
+  window.maraDati(function (d) {
+    dati = d;
+    // se con i dati nuovi il giorno o l'orario scelto non sono più disponibili, li togliamo
+    if (stato.data && !aperto(stato.data)) { stato.data = ''; stato.ora = ''; }
+    if (stato.ora && (stato.data ? orariLiberi(stato.data) : orariDelGiorno('')).indexOf(stato.ora) === -1) stato.ora = '';
+    scrivi('nota-calendario', notaChiusure());
+    // su mobile la striscia salta i giorni di chiusura: diciamo perché
+    var vicine = dati.chiusure.filter(function (c) { return c.al >= oggi && c.dal <= piuGiorni(oggi, 21); });
+    var notaStriscia = form.querySelector('[data-nota-striscia]');
+    notaStriscia.textContent = vicine.map(function (c) {
+      return O.maiuscola(O.periodo(c, oggi)) + ' siamo chiusi' + (c.motivo ? ' (' + c.motivo.toLowerCase() + ')' : '') + '.';
+    }).join(' ');
+    notaStriscia.hidden = !vicine.length;
+    if (stato.passo === 1) document.querySelector('[data-nota-passo]').textContent = notaChiusure();
+    aggiorna();
+    if (!avviato) { avviato = true; vaiA(1, true, true); }
+  });
 })();

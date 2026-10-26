@@ -11,12 +11,17 @@
   <link rel="preload" href="assets/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/instrument-sans-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/config.js" defer></script>
+  <script src="js/dati.js" defer></script>
   <script src="js/site.js" defer></script>
   
 </head>
 <body class="con-barra">
 <a class="salta" href="#contenuto">Vai al contenuto</a>
 <header class="header">
+  <div class="avviso-chiusura" data-avviso-chiusura role="status" hidden>
+    <div class="contenitore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg><p><strong data-avviso-titolo></strong><span data-avviso-testo></span></p></div>
+  </div>
   <div class="barra-servizio">
     <div class="contenitore">
       <p class="barra-servizio__voce" data-stato-apertura="lungo"><span class="pallino" aria-hidden="true"></span><span data-stato-testo>Aperti 12:00–14:00 · martedì chiuso</span></p>
@@ -89,7 +94,7 @@
           <a class="info" href="mailto:info@ristorantemara.com"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#mail"/></svg></span><span><span class="info__titolo">info@ristorantemara.com</span><span class="info__testo">Gruppi e cerimonie</span></span></a>
           <div class="riquadro-orari">
             <p class="riquadro-orari__titolo"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#clock"/></svg>Orari</p>
-            <dl class="orari" data-orari>
+            <dl class="orari" data-orari="giorni">
               <div class="orari__riga" data-giorni="1"><dt class="orari__giorno">Lunedì</dt><dd class="orari__ora">12:00 – 14:00</dd></div>
               <div class="orari__riga" data-giorni="2"><dt class="orari__giorno">Martedì</dt><dd class="orari__ora orari__ora--chiuso">Chiuso</dd></div>
               <div class="orari__riga" data-giorni="3"><dt class="orari__giorno">Mercoledì</dt><dd class="orari__ora">12:00 – 14:00</dd></div>
@@ -122,8 +127,10 @@
       </div>
       <div class="footer__colonna">
         <p class="occhiello">Orari</p>
-        <p>Lunedì e da mercoledì a domenica, 12:00–14:00</p>
-        <p>Martedì chiuso</p>
+        <div class="footer__orari" data-orari-footer>
+          <p>Lunedì e da mercoledì a domenica, 12:00–14:00</p>
+          <p>Martedì chiuso</p>
+        </div>
       </div>
       <div class="footer__colonna">
         <p class="occhiello">Contatti</p>

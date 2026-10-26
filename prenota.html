@@ -11,8 +11,10 @@
   <link rel="preload" href="assets/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/instrument-sans-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/config.js" defer></script>
+  <script src="js/dati.js" defer></script>
   <script src="js/site.js" defer></script>
-  <script src="js/config.js" defer></script><script src="js/prenota.js" defer></script>
+  <script src="js/prenota.js" defer></script>
 </head>
 <body class="pagina-flusso">
 <a class="salta" href="#contenuto">Vai al contenuto</a>
@@ -50,6 +52,7 @@
         <fieldset class="quando__giorno">
           <legend class="campo__etichetta legenda-giorno">Giorno</legend>
           <div class="striscia-giorni solo-mobile" data-striscia role="radiogroup" aria-label="Prossimi giorni"></div>
+          <p class="testo-s solo-mobile nota-striscia" data-nota-striscia hidden></p>
           <button class="btn btn--testo solo-mobile apri-calendario" type="button" data-apri-calendario aria-expanded="false">Altri giorni › apri il calendario</button>
           <div class="calendario" data-calendario>
             <div class="calendario__testa">
@@ -59,7 +62,7 @@
             </div>
             <div class="calendario__settimana" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span></div>
             <div class="calendario__griglia" data-griglia role="grid"></div>
-            <p class="testo-s">I martedì sono barrati: siamo chiusi.</p>
+            <p class="testo-s" data-r="nota-calendario">I martedì sono barrati: siamo chiusi.</p>
           </div>
           <p class="campo__errore flusso__errore" data-errore="data"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegli il giorno.</span></p>
         </fieldset>
@@ -84,7 +87,7 @@
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:00">13:00</button>
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:30">13:30</button>
         </div>
-        <p class="testo-s">Siamo aperti dalle 12:00 alle 14:00: l’ultimo tavolo si prenota alle 13:30.</p>
+        <p class="testo-s" data-r="nota-orari">Siamo aperti dalle 12:00 alle 14:00: l’ultimo tavolo si prenota alle 13:30.</p>
         <p class="campo__errore flusso__errore" data-errore="ora"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegli l’orario di arrivo.</span></p>
       </fieldset>
 

@@ -93,8 +93,13 @@ def blocchi_menu():
     chip = "".join(f'<button class="chip" type="button" aria-pressed="false" data-allergene="{slug(a)}">{esc(a)}'
                    f'<svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></button>'
                    for a in dati["allergeni"])
+    # Dati delle sezioni note, usati da menu.js quando il menù arriva dal Foglio
+    meta = {s["titolo"]: {"id": s["id"], "breve": s["breve"], "vini": bool(s.get("vini")),
+                          "vuoto": s.get("vuoto", "")} for s in dati["sezioni"]}
+    meta_json = json.dumps(meta, ensure_ascii=False).replace("</", "<\\/")
     return {"menu_indice": "".join(indice), "menu_pillole": "".join(pillole),
-            "menu_sezioni": "".join(sezioni), "menu_chip": chip}
+            "menu_sezioni": "".join(sezioni), "menu_chip": chip,
+            "menu_meta": f'<script type="application/json" id="menu-meta">{meta_json}</script>'}
 
 
 MENU = blocchi_menu()

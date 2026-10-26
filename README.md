@@ -45,4 +45,16 @@ prenotazioni e richieste è in `js/config.js`.
    Le mail al cliente non invitano a rispondere: per modifiche c'è il telefono.
 4. I form Gruppi e Cerimonie arrivano allo stesso script (foglio "Richieste") e al ristorante via mail.
 
+## Orari, chiusure e menù dal Foglio Google
+
+Il ristorante aggiorna il sito dal Foglio delle prenotazioni (anche dall'app Fogli), schede:
+
+- **Chiusure** — Dal, Al, Motivo: avviso in cima al sito da 30 giorni prima, giorni barrati nel calendario, prenotazioni rifiutate.
+- **Orari** — per ogni giorno Aperto, Dalle, Alle, Ultima prenotazione: stato "Aperti ora", tabelle orari, footer, orari prenotabili.
+- **Menù** — Sezione, Gruppo, Piatto, Dettaglio, Prezzo, Allergeni, Visibile.
+
+Il sito legge i dati con `GET …/exec?dati=sito` (`js/dati.js`, salvati nel browser e aggiornati ogni pochi minuti).
+Se lo script non risponde restano gli orari standard e il menù scritto nella pagina (`_sorgenti/menu.json`).
+Istruzioni per il ristorante nella scheda **Leggimi** del Foglio.
+
 Foto: per ora segnaposto (sfumatura) con didascalia; vanno sostituite con foto vere in WebP.

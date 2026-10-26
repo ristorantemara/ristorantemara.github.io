@@ -1015,3 +1015,16 @@ select.campo__input {
     border-radius: 50% 50% 6px 6px / calc(var(--ar) * 50%) calc(var(--ar) * 50%) 6px 6px;
   }
 }
+
+/* Orari dal Foglio: footer e avviso di chiusura (ferie, giorni straordinari) */
+.footer__orari { display: flex; flex-direction: column; gap: 12px; }
+.avviso-chiusura { background: var(--zucca); color: var(--inchiostro); }
+.avviso-chiusura .contenitore { display: flex; align-items: center; justify-content: center; gap: 10px; padding-top: 10px; padding-bottom: 10px; font: 400 15px/1.4 var(--testo); text-align: center; }
+.avviso-chiusura .icona { width: 20px; height: 20px; flex: none; }
+.avviso-chiusura strong { font-weight: 600; }
+@media (max-width: 767px) {
+  .avviso-chiusura .contenitore { justify-content: flex-start; text-align: left; font-size: 14px; align-items: flex-start; }
+  .avviso-chiusura .icona { margin-top: 1px; }
+}
+.menu-sezioni__elenco { display: contents; }
+.nota-striscia { margin-top: 10px; color: var(--pomodoro); }
