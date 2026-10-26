@@ -133,11 +133,45 @@
 
   /* ---------- Persone e orario ---------- */
   var valorePersone = form.querySelector('[data-persone-valore]');
+  function impostaPersone(n) {
+    stato.persone = Math.min(MAX_PERSONE, Math.max(1, n));
+    valorePersone.value = stato.persone;
+    valorePersone.setAttribute('aria-invalid', 'false');
+    aggiorna();
+  }
   form.querySelectorAll('[data-persone]').forEach(function (b) {
     b.addEventListener('click', function () {
-      stato.persone = Math.min(MAX_PERSONE, Math.max(1, stato.persone + Number(b.dataset.persone)));
-      aggiorna();
+      nascondiErrore('persone');
+      impostaPersone(stato.persone + Number(b.dataset.persone));
     });
+  });
+  // Il numero si può anche scrivere: solo cifre, da 1 a 12
+  valorePersone.addEventListener('input', function () {
+    var cifre = valorePersone.value.replace(/\D/g, '').slice(0, 2);
+    if (cifre !== valorePersone.value) valorePersone.value = cifre;
+    var n = Number(cifre);
+    if (n > MAX_PERSONE) { valorePersone.setAttribute('aria-invalid', 'true'); return mostraErrore('persone'); }
+    valorePersone.setAttribute('aria-invalid', 'false');
+    nascondiErrore('persone');
+    if (n >= 1) { stato.persone = n; aggiorna(); }
+  });
+  function confermaPersone() {
+    var n = Number(valorePersone.value);
+    if (!valorePersone.value || n < 1) n = stato.persone; // campo vuoto o 0: torna al valore di prima
+    impostaPersone(n);
+  }
+  valorePersone.addEventListener('change', confermaPersone);
+  valorePersone.addEventListener('blur', confermaPersone);
+  valorePersone.addEventListener('focus', function () { valorePersone.select(); });
+  valorePersone.addEventListener('keydown', function (e) {
+    var tasti = { ArrowUp: 1, ArrowDown: -1, Home: 'min', End: 'max' };
+    if (e.key === 'Enter') { e.preventDefault(); confermaPersone(); return; }
+    if (!(e.key in tasti)) return;
+    e.preventDefault();
+    nascondiErrore('persone');
+    var t = tasti[e.key];
+    impostaPersone(t === 'min' ? 1 : t === 'max' ? MAX_PERSONE : stato.persone + t);
+    valorePersone.select();
   });
   bottoniOra.forEach(function (b) {
     b.addEventListener('click', function () {
@@ -180,7 +214,9 @@
   function aggiorna() {
     disegnaCalendario();
     disegnaStriscia();
-    valorePersone.textContent = stato.persone;
+    if (document.activeElement !== valorePersone) valorePersone.value = stato.persone;
+    valorePersone.setAttribute('aria-valuenow', stato.persone);
+    valorePersone.setAttribute('aria-valuetext', stato.persone + (stato.persone === 1 ? ' persona' : ' persone'));
     form.querySelector('[data-persone="-1"]').disabled = stato.persone <= 1;
     form.querySelector('[data-persone="1"]').disabled = stato.persone >= MAX_PERSONE;
 

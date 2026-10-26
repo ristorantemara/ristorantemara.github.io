@@ -854,7 +854,10 @@ select.campo__input {
 .contatore__bottone { width: 52px; height: 52px; display: grid; place-items: center; border: 0; background: none; border-radius: 50%; cursor: pointer; color: var(--inchiostro); }
 .contatore__bottone:hover:not(:disabled) { background: var(--sfoglia); }
 .contatore__bottone:disabled { color: var(--bordo); cursor: default; }
-.contatore__valore { width: 80px; text-align: center; font: 500 30px/1.25 var(--display); letter-spacing: -0.01em; }
+.contatore__valore { width: 80px; height: 52px; padding: 0; border: 0; border-radius: 8px; background: none; color: var(--inchiostro); text-align: center; font: 500 30px/1.25 var(--display); letter-spacing: -0.01em; caret-color: var(--pomodoro); -moz-appearance: textfield; }
+.contatore__valore:hover { background: var(--sfoglia); }
+.contatore__valore:focus-visible, .contatore__valore:focus { outline: none; background: var(--sfoglia); box-shadow: inset 0 0 0 2px var(--inchiostro); }
+.contatore:has(.contatore__valore[aria-invalid="true"]) { border-color: var(--errore); }
 
 .orari-arrivo { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
 .orari-arrivo__lista { display: flex; flex-wrap: wrap; gap: 10px; }

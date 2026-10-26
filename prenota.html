@@ -65,12 +65,13 @@
         </fieldset>
 
         <div class="quando__persone">
-          <p class="campo__etichetta" id="et-persone">Quante persone?</p>
+          <label class="campo__etichetta" id="et-persone" for="persone-numero">Quante persone?</label>
           <div class="contatore" role="group" aria-labelledby="et-persone">
             <button type="button" class="contatore__bottone" data-persone="-1" aria-label="Una persona in meno"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#minus"/></svg></button>
-            <output class="contatore__valore" data-persone-valore aria-live="polite">2</output>
+            <input class="contatore__valore" id="persone-numero" data-persone-valore type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" value="2" role="spinbutton" aria-valuemin="1" aria-valuemax="12" aria-valuenow="2" aria-describedby="persone-errore">
             <button type="button" class="contatore__bottone" data-persone="1" aria-label="Una persona in più"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#plus"/></svg></button>
           </div>
+          <p class="campo__errore flusso__errore" data-errore="persone" id="persone-errore" role="alert"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Si prenota online fino a 12 persone.</span></p>
           <a class="testo-s link-gruppi" href="gruppi.html#preventivo">Più di 12 persone? Richiedi un preventivo per gruppi.</a>
         </div>
       </div>
