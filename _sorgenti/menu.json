@@ -1,0 +1,113 @@
+{
+  "_nota": "Menù alla carta. 'allergeni' = elenco usato dal filtro; 'testo_allergeni' sostituisce l'elenco mostrato quando serve una frase. 'sotto' = riga in corsivo (produttore, traduzione).",
+  "sezioni": [
+    {
+      "id": "antipasti", "numero": "i.", "titolo": "Antipasti", "breve": "Antipasti",
+      "piatti": [
+        {"nome": "Salumi misti con verdure sott’olio", "prezzo": "7,00 €", "allergeni": ["Solfiti"]},
+        {"nome": "Salumi misti per due", "prezzo": "12,00 €", "allergeni": ["Solfiti"]}
+      ]
+    },
+    {
+      "id": "primi", "numero": "ii.", "titolo": "Primi", "breve": "Primi",
+      "vuoto": "La nostra pasta è all’uovo e di grano. Avvisaci quando prenoti: la cucina può proporti un’alternativa.",
+      "piatti": [
+        {"nome": "Tortellini al burro e salvia", "prezzo": "11,00 €", "allergeni": ["Glutine", "Uova", "Latte"]},
+        {"nome": "Tortellini in brodo", "prezzo": "11,00 €", "allergeni": ["Glutine", "Uova", "Latte", "Sedano"]},
+        {"nome": "Tortelli di zucca", "prezzo": "11,00 €", "allergeni": ["Glutine", "Uova", "Latte", "Frutta a guscio", "Senape"]},
+        {"nome": "Fettuccine al coniglio e funghi", "prezzo": "11,00 €", "allergeni": ["Glutine", "Uova", "Sedano", "Solfiti"]},
+        {"nome": "Fettuccine al ragù o al pomodoro", "prezzo": "9,00 €", "allergeni": ["Glutine", "Uova", "Sedano"]},
+        {"nome": "Maccheroncini radicchio e speck", "prezzo": "10,00 €", "allergeni": ["Glutine", "Uova", "Latte"]},
+        {"nome": "Lasagne al forno", "prezzo": "10,00 €", "allergeni": ["Glutine", "Uova", "Latte", "Sedano"]},
+        {"nome": "Tris di primi", "prezzo": "16,00 €", "allergeni": ["Glutine", "Uova"], "testo_allergeni": "Secondo i primi scelti"},
+        {"nome": "Bis di primi", "prezzo": "13,00 €", "allergeni": ["Glutine", "Uova"], "testo_allergeni": "Secondo i primi scelti"}
+      ]
+    },
+    {
+      "id": "secondi", "numero": "iii.", "titolo": "Secondi", "breve": "Secondi",
+      "nota": "Le carni alla griglia non contengono allergeni principali: chiedi per salse e contorni.",
+      "piatti": [
+        {"nome": "Bistecca di cavallo o di manzo", "prezzo": "10,00 €", "allergeni": []},
+        {"nome": "Tagliata con rucola e grana", "prezzo": "16,00 €", "allergeni": ["Latte"]},
+        {"nome": "Costata di manzo alla griglia", "prezzo": "4,50 €/hg", "allergeni": []},
+        {"nome": "Costolette di agnello", "prezzo": "18,00 €", "allergeni": []},
+        {"nome": "Pollo alla griglia", "prezzo": "10,00 €", "allergeni": []},
+        {"nome": "Braciola di maiale", "prezzo": "9,00 €", "allergeni": []},
+        {"nome": "Arrosto di vitello", "prezzo": "10,00 €", "allergeni": ["Sedano", "Solfiti"]},
+        {"nome": "Cotoletta di maiale", "prezzo": "9,00 €", "allergeni": ["Glutine", "Uova"]}
+      ]
+    },
+    {
+      "id": "freddi", "numero": "iv.", "titolo": "Piatti freddi", "breve": "Freddi",
+      "piatti": [
+        {"nome": "Vitello tonnato", "prezzo": "9,00 €", "allergeni": ["Pesce", "Uova", "Senape"]},
+        {"nome": "Prosciutto e melone", "prezzo": "8,00 €", "allergeni": []},
+        {"nome": "Carne salada cruda", "prezzo": "8,00 €", "allergeni": []},
+        {"nome": "Bresaola, rucola e grana", "prezzo": "8,00 €", "allergeni": ["Latte"]}
+      ]
+    },
+    {
+      "id": "contorni-dolci", "numero": "v.", "titolo": "Contorni e dolci", "breve": "Contorni e dolci",
+      "piatti": [
+        {"nome": "Contorno singolo", "prezzo": "3,00 €", "allergeni": []},
+        {"nome": "Contorni misti", "prezzo": "6,00 €", "allergeni": []},
+        {"nome": "Dolci dal carrello", "prezzo": "6,00 €", "allergeni": [], "testo_allergeni": "Chiedi al personale"},
+        {"nome": "Sorbetto al limone", "prezzo": "5,00 €", "allergeni": []}
+      ]
+    },
+    {
+      "id": "bevande", "numero": "vi.", "titolo": "Bevande e caffè", "breve": "Bevande",
+      "nota": "Coperto 2,50 €",
+      "piatti": [
+        {"nome": "Acqua minerale 75 cl", "prezzo": "2,50 €", "allergeni": []},
+        {"nome": "Bibite", "prezzo": "3,00 €", "allergeni": []},
+        {"nome": "Birra in bottiglia 33 cl", "prezzo": "3,50 €", "allergeni": ["Glutine"]},
+        {"nome": "Birra alla spina", "prezzo": "4,00 €", "allergeni": ["Glutine"]},
+        {"nome": "Vino della casa alla spina", "prezzo": "3 · 5 · 10 €", "allergeni": ["Solfiti"]},
+        {"nome": "Caffè", "prezzo": "1,50 €", "allergeni": []},
+        {"nome": "Caffè corretto", "prezzo": "2,00 €", "allergeni": []},
+        {"nome": "Caffè decaffeinato", "prezzo": "2,00 €", "allergeni": []},
+        {"nome": "Caffè d’orzo", "prezzo": "2,00 €", "allergeni": ["Glutine"]},
+        {"nome": "Caffè al ginseng", "prezzo": "2,00 €", "allergeni": ["Latte"]}
+      ]
+    },
+    {
+      "id": "vini", "numero": "vii.", "titolo": "Carta dei vini", "breve": "Vini", "vini": true,
+      "nota": "Vini del territorio tra Custoza, Bardolino, Lugana e Valpolicella. Prezzi a bottiglia. Tutti i vini contengono solfiti.",
+      "gruppi": [
+        {"titolo": "Vini bianchi", "piatti": [
+          {"nome": "Bianco di Custoza", "sotto": "Cavalchina", "prezzo": "15,00 €"},
+          {"nome": "Bianco di Custoza", "sotto": "Corte Gardoni", "prezzo": "13,00 €"},
+          {"nome": "Bianco di Custoza", "sotto": "Le Muraglie", "prezzo": "13,00 €"},
+          {"nome": "Soave DOC «Otto»", "sotto": "Prà", "prezzo": "18,00 €"},
+          {"nome": "Lugana DOC", "sotto": "Zamichele", "prezzo": "18,00 €"},
+          {"nome": "Bianco IGT", "sotto": "Le Muraglie", "prezzo": "10,00 €"},
+          {"nome": "Vino bianco Glera", "sotto": "Vigne Verdi", "prezzo": "10,00 €"}
+        ]},
+        {"titolo": "Vini rossi", "piatti": [
+          {"nome": "Corvina Veronese", "sotto": "Corte Fornello", "prezzo": "14,00 €"},
+          {"nome": "Bardolino «Le Fontane»", "sotto": "Corte Gardoni", "prezzo": "13,00 €"},
+          {"nome": "Bardolino DOC", "sotto": "Le Muraglie", "prezzo": "13,00 €"},
+          {"nome": "Merlot DOC", "sotto": "Ricchi", "prezzo": "15,00 €"},
+          {"nome": "Cabernet DOC", "sotto": "Ricchi", "prezzo": "15,00 €"},
+          {"nome": "Valpolicella Classico", "sotto": "Le Ragose", "prezzo": "18,00 €"},
+          {"nome": "Valpolicella Superiore «Pavajo»", "sotto": "Vigneti di Ettore", "prezzo": "20,00 €"},
+          {"nome": "Valpolicella «Ripassa»", "sotto": "Zenato", "prezzo": "28,00 €"},
+          {"nome": "Lambrusco secco", "sotto": "Cantine Ceci", "prezzo": "15,00 €"},
+          {"nome": "Bardolino Superiore «Pràdicà» 2016", "sotto": "Corte Gardoni", "prezzo": "18,00 €"}
+        ]},
+        {"titolo": "Spumanti", "piatti": [
+          {"nome": "Prosecco di Valdobbiadene Extra Dry DOCG", "sotto": "De Faveri", "prezzo": "18,00 €"},
+          {"nome": "Prosecco di Valdobbiadene Brut «Cuvée di Boj» DOCG", "sotto": "Valdo", "prezzo": "18,00 €"},
+          {"nome": "Franciacorta", "sotto": "Ca’ del Bosco", "prezzo": "40,00 €"},
+          {"nome": "Trento DOC Brut", "sotto": "Moser", "prezzo": "40,00 €"}
+        ]},
+        {"titolo": "Fine pasto", "piatti": [
+          {"nome": "Recioto Classico 500 ml", "sotto": "Vaona", "prezzo": "25,00 €"},
+          {"nome": "Moscato d’Asti", "sotto": "La Trava", "prezzo": "15,00 €"}
+        ]}
+      ]
+    }
+  ],
+  "allergeni": ["Glutine", "Latte", "Uova", "Frutta a guscio", "Arachidi", "Pesce", "Crostacei", "Molluschi", "Soia", "Sedano", "Senape", "Sesamo", "Lupini", "Solfiti"]
+}

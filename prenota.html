@@ -2,176 +2,185 @@
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prenota — Ristorante Mara</title>
-  <style>
-    :root {
-      --bg: #f5f1ea; --card: #ffffff; --ink: #2b2622; --muted: #6b6259;
-      --line: #ddd5c9; --accent: #2f5d3a; --accent-ink: #ffffff; --error: #9b2c1f;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; background: var(--bg); color: var(--ink);
-      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    header { padding: 20px 16px; border-bottom: 1px solid var(--line); }
-    header p { max-width: 520px; margin: 0 auto; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 14px; }
-    main { max-width: 520px; margin: 0 auto; padding: 32px 16px 48px; }
-    h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.2; }
-    .intro { margin: 0 0 24px; color: var(--muted); }
-    form, .esito { background: var(--card); border-radius: 12px; padding: 24px; }
-    .riga { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .campo { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-    label { font-weight: 600; font-size: 14px; }
-    .opz { font-weight: 400; color: var(--muted); }
-    input, select, textarea {
-      font: inherit; color: inherit; background: #fff; width: 100%;
-      border: 1px solid var(--line); border-radius: 8px; padding: 12px; min-height: 48px;
-    }
-    textarea { min-height: 88px; resize: vertical; }
-    input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
-    .trappola { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-    button {
-      font: inherit; font-weight: 600; width: 100%; min-height: 52px; border: 0; border-radius: 8px;
-      background: var(--accent); color: var(--accent-ink); cursor: pointer; margin-top: 8px;
-    }
-    button[disabled] { opacity: .6; cursor: progress; }
-    .errore { color: var(--error); margin: 12px 0 0; min-height: 1.5em; }
-    .nota { font-size: 14px; color: var(--muted); margin: 16px 0 0; }
-    .esito h2 { margin: 0 0 8px; font-size: 22px; }
-    .esito p { margin: 0; color: var(--muted); }
-    [hidden] { display: none !important; }
-    @media (max-width: 420px) { .riga { grid-template-columns: 1fr; gap: 0; } }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Prenota un tavolo · Ristorante Mara, Valeggio sul Mincio</title>
+  <meta name="description" content="Prenota il tuo tavolo al Ristorante Mara: scegli giorno, orario e numero di persone. Aperti a pranzo dalle 12:00 alle 14:00, martedì chiuso.">
+  <meta name="theme-color" content="#f4ede1">
+  
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/instrument-sans-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/site.js" defer></script>
+  <script src="js/config.js" defer></script><script src="js/prenota.js" defer></script>
 </head>
-<body>
-<header><p>Ristorante Mara</p></header>
-<main>
-  <h1>Prenota un tavolo</h1>
-  <p class="intro">Siamo aperti a pranzo, dalle 12 alle 14. Ti confermiamo la prenotazione via email.</p>
+<body class="pagina-flusso">
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra-flusso">
+  <div class="barra-flusso__interno">
+    <a class="logo barra-flusso__logo" href="index.html" aria-label="Ristorante Mara, home">
+      <svg class="logo__segno" viewBox="0 0 40 40" aria-hidden="true"><path class="nodo-a" d="M24.5002 22.9167C24.5002 20.2818 22.316 17.9998 18.7502 17.9997C14.7513 17.9997 12.1663 20.5463 12.1663 23.6667C12.1663 26.628 14.8657 29.4085 19.7649 29.4948C19.3587 29.2664 19.0834 28.8328 19.0833 28.3337C19.0833 27.5974 19.68 26.9998 20.4163 26.9997C22.7632 26.9997 24.5002 25.2636 24.5002 22.9167ZM27.1663 22.9167C27.1663 25.8148 25.4787 28.1986 22.9963 29.1813C28.3219 28.0235 32.0002 23.819 32.0002 18.7497C32.0001 12.7759 26.8929 7.99982 20.0002 7.99967C19.2639 7.99967 18.6663 7.40304 18.6663 6.66666C18.6663 5.93028 19.2639 5.33366 20.0002 5.33366C28.1071 5.33381 34.6661 11.0573 34.6663 18.7497C34.6663 26.4422 28.1072 32.1665 20.0002 32.1667C14.0481 32.1667 9.50024 28.6583 9.50024 23.6667C9.50024 18.787 13.5825 15.3337 18.7502 15.3337C23.5175 15.3338 27.1663 18.5517 27.1663 22.9167Z"/><path class="nodo-b" d="M5.33374 21.8333C5.33374 21.097 5.93037 20.5003 6.66675 20.5003C7.40313 20.5003 7.99976 21.097 7.99976 21.8333C7.99976 25.7437 10.2277 29.0717 12.5398 31.0755C13.0962 31.5577 13.1566 32.3999 12.6746 32.9564C12.1923 33.5128 11.3502 33.5732 10.7937 33.0911C8.10584 30.7617 5.33374 26.7562 5.33374 21.8333Z"/></svg>
+      <span><span class="logo__nome">Mara</span><span class="logo__sotto">Ristorante · dal 1967</span></span>
+    </a>
+    <a class="barra-flusso__chiudi" href="index.html" aria-label="Esci dalla prenotazione"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></a>
+    <div class="barra-flusso__titolo-mobile"><p class="label" data-titolo-mobile>Prenota un tavolo</p><p class="testo-s" data-passo-mobile>Passo 1 di 3</p></div>
+    <ol class="passi-prenotazione" data-passi aria-label="Avanzamento">
+      <li class="passi-prenotazione__voce" data-passo-voce="1"><span class="passi-prenotazione__tondo"><span>1</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span>Quando</li>
+      <li class="passi-prenotazione__linea" aria-hidden="true"></li>
+      <li class="passi-prenotazione__voce" data-passo-voce="2"><span class="passi-prenotazione__tondo"><span>2</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span>I tuoi dati</li>
+      <li class="passi-prenotazione__linea" aria-hidden="true"></li>
+      <li class="passi-prenotazione__voce" data-passo-voce="3"><span class="passi-prenotazione__tondo"><span>3</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span>Conferma</li>
+    </ol>
+    <a class="btn btn--testo barra-flusso__esci" href="index.html">Esci<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></a>
+  </div>
+  <div class="avanzamento" aria-hidden="true" data-avanzamento><span></span><span></span><span></span></div>
+</header>
 
-  <form id="form" novalidate>
-    <div class="campo">
-      <label for="nome">Nome e cognome</label>
-      <input id="nome" name="nome" autocomplete="name" required maxlength="80">
-    </div>
-    <div class="riga">
-      <div class="campo">
-        <label for="telefono">Telefono</label>
-        <input id="telefono" name="telefono" type="tel" autocomplete="tel" required maxlength="25">
-      </div>
-      <div class="campo">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" autocomplete="email" required maxlength="120">
-      </div>
-    </div>
-    <div class="riga">
-      <div class="campo">
-        <label for="data">Data</label>
-        <input id="data" name="data" type="date" required>
-      </div>
-      <div class="campo">
-        <label for="ora">Orario</label>
-        <select id="ora" name="ora" required>
-          <option value="">Scegli</option>
-          <option>12:00</option><option>12:15</option><option>12:30</option><option>12:45</option>
-          <option>13:00</option><option>13:15</option><option>13:30</option>
-        </select>
-      </div>
-    </div>
-    <div class="campo">
-      <label for="persone">Persone</label>
-      <select id="persone" name="persone" required></select>
-    </div>
-    <div class="campo">
-      <label for="note">Note <span class="opz">(facoltativo)</span></label>
-      <textarea id="note" name="note" maxlength="500" placeholder="Allergie, seggiolone, occasioni speciali…"></textarea>
-    </div>
-    <div class="trappola" aria-hidden="true">
-      <label for="sito">Lascia vuoto</label>
-      <input id="sito" name="sito" tabindex="-1" autocomplete="off">
-    </div>
+<main id="contenuto" class="flusso">
+  <form class="flusso__corpo" data-prenota novalidate>
 
-    <button id="invia" type="submit">Invia richiesta</button>
-    <p class="errore" id="errore" role="alert"></p>
-    <p class="nota">La prenotazione è valida solo dopo la nostra mail di conferma.</p>
+    <!-- PASSO 1 · Quando -->
+    <section class="flusso__passo" data-passo="1" aria-labelledby="t-passo-1">
+      <div class="flusso__testa">
+        <p class="occhiello solo-desktop">Prenota un tavolo</p>
+        <h1 class="titolo-flusso" id="t-passo-1" tabindex="-1">Quando <span class="accento">venite a pranzo?</span></h1>
+      </div>
+
+      <div class="quando">
+        <fieldset class="quando__giorno">
+          <legend class="campo__etichetta legenda-giorno">Giorno</legend>
+          <div class="striscia-giorni solo-mobile" data-striscia role="radiogroup" aria-label="Prossimi giorni"></div>
+          <button class="btn btn--testo solo-mobile apri-calendario" type="button" data-apri-calendario aria-expanded="false">Altri giorni › apri il calendario</button>
+          <div class="calendario" data-calendario>
+            <div class="calendario__testa">
+              <button class="calendario__freccia" type="button" data-mese="-1" aria-label="Mese precedente"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrowLeft"/></svg></button>
+              <p class="calendario__mese" data-mese-titolo aria-live="polite"></p>
+              <button class="calendario__freccia" type="button" data-mese="1" aria-label="Mese successivo"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
+            </div>
+            <div class="calendario__settimana" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span></div>
+            <div class="calendario__griglia" data-griglia role="grid"></div>
+            <p class="testo-s">I martedì sono barrati: siamo chiusi.</p>
+          </div>
+          <p class="campo__errore flusso__errore" data-errore="data"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegli il giorno.</span></p>
+        </fieldset>
+
+        <div class="quando__persone">
+          <p class="campo__etichetta" id="et-persone">Quante persone?</p>
+          <div class="contatore" role="group" aria-labelledby="et-persone">
+            <button type="button" class="contatore__bottone" data-persone="-1" aria-label="Una persona in meno"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#minus"/></svg></button>
+            <output class="contatore__valore" data-persone-valore aria-live="polite">2</output>
+            <button type="button" class="contatore__bottone" data-persone="1" aria-label="Una persona in più"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#plus"/></svg></button>
+          </div>
+          <a class="testo-s link-gruppi" href="gruppi.html#preventivo">Più di 12 persone? Richiedi un preventivo per gruppi.</a>
+        </div>
+      </div>
+
+      <fieldset class="orari-arrivo">
+        <legend class="campo__etichetta">A che ora arrivate?</legend>
+        <div class="orari-arrivo__lista" role="radiogroup" data-orari-arrivo>
+          <button type="button" class="orario" role="radio" aria-checked="false" data-ora="12:00">12:00</button>
+          <button type="button" class="orario" role="radio" aria-checked="false" data-ora="12:30">12:30</button>
+          <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:00">13:00</button>
+          <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:30">13:30</button>
+        </div>
+        <p class="testo-s">Siamo aperti dalle 12:00 alle 14:00: l’ultimo tavolo si prenota alle 13:30.</p>
+        <p class="campo__errore flusso__errore" data-errore="ora"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegli l’orario di arrivo.</span></p>
+      </fieldset>
+
+      <div class="flusso__azioni">
+        <button class="btn btn--primario" type="button" data-avanti="2"><span class="solo-desktop">Continua</span><span class="solo-mobile" data-continua-mobile>Continua</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
+      </div>
+    </section>
+
+    <!-- PASSO 2 · I tuoi dati -->
+    <section class="flusso__passo" data-passo="2" aria-labelledby="t-passo-2" hidden>
+      <div class="flusso__testa">
+        <h1 class="titolo-flusso" id="t-passo-2" tabindex="-1">A chi <span class="accento">intestiamo il tavolo?</span></h1>
+        <p class="testo-s testo-inchiostro">I campi con * sono obbligatori.</p>
+      </div>
+      <div class="riga-campi riga-campi--20">
+        <div class="campo">
+          <label class="campo__etichetta" for="p-nome">Nome e cognome *</label>
+          <input class="campo__input" id="p-nome" name="nome" required maxlength="80" autocomplete="name" placeholder="es. Giulia Rossi">
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scrivi nome e cognome.</span></p>
+        </div>
+        <div class="campo">
+          <label class="campo__etichetta" for="p-telefono">Telefono *</label>
+          <input class="campo__input" id="p-telefono" name="telefono" type="tel" required maxlength="25" autocomplete="tel" inputmode="tel" placeholder="es. 333 123 4567">
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Il numero sembra incompleto: controlla le cifre e riprova.</span></p>
+        </div>
+      </div>
+      <div class="campo">
+        <label class="campo__etichetta" for="p-email">Email *</label>
+        <input class="campo__input" id="p-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="es. giulia.rossi@email.it">
+        <p class="campo__aiuto">Qui ti arriva la conferma della prenotazione.</p>
+        <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>L’email non sembra completa: controlla che ci siano @ e il dominio.</span></p>
+      </div>
+      <div class="campo">
+        <label class="campo__etichetta" for="p-note">Allergie, seggiolone o altre richieste <span class="opz">(facoltativo)</span></label>
+        <textarea class="campo__input" id="p-note" name="note" maxlength="500" rows="2" placeholder="es. un ospite celiaco, un seggiolone"></textarea>
+        <p class="campo__aiuto">Le leggiamo prima del vostro arrivo.</p>
+      </div>
+      <div class="campo campo--spunta">
+        <label class="spunta"><input type="checkbox" name="consenso" required><span class="spunta__box" aria-hidden="true"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span><span>Acconsento al trattamento dei dati per gestire la prenotazione. <a href="privacy.html">Informativa privacy</a>.</span></label>
+        <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Serve il consenso per gestire la prenotazione.</span></p>
+      </div>
+      <div class="trappola" aria-hidden="true"><label>Lascia vuoto<input name="sito" tabindex="-1" autocomplete="off"></label></div>
+      <div class="flusso__azioni">
+        <button class="btn btn--secondario" type="button" data-indietro="1">Indietro<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrowLeft"/></svg></button>
+        <button class="btn btn--primario" type="button" data-avanti="3">Continua<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
+      </div>
+    </section>
+
+    <!-- PASSO 3 · Conferma -->
+    <section class="flusso__passo" data-passo="3" aria-labelledby="t-passo-3" hidden>
+      <div class="flusso__testa">
+        <h1 class="titolo-flusso" id="t-passo-3" tabindex="-1">Controlla <span class="accento">e invia</span></h1>
+      </div>
+      <dl class="tabella-riepilogo">
+        <div><dt>Giorno</dt><dd data-r="giorno-lungo"></dd></div>
+        <div><dt>Orario</dt><dd data-r="ora-lunga"></dd></div>
+        <div><dt>Persone</dt><dd data-r="persone"></dd></div>
+        <div><dt>Nome</dt><dd data-r="nome"></dd></div>
+        <div><dt>Telefono</dt><dd data-r="telefono"></dd></div>
+        <div><dt>Email</dt><dd data-r="email"></dd></div>
+        <div data-r-riga="note"><dt>Richieste</dt><dd data-r="note"></dd></div>
+      </dl>
+      <p class="testo-s modifica">Qualcosa non va? <button type="button" class="link-modifica" data-indietro="1">Modifica</button></p>
+      <div class="form-errore" data-invio-errore hidden role="alert"></div>
+      <div class="flusso__azioni">
+        <button class="btn btn--secondario" type="button" data-indietro="2">Indietro<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrowLeft"/></svg></button>
+        <button class="btn btn--primario" type="submit" data-invia>Invia la richiesta<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></button>
+      </div>
+    </section>
+
+    <!-- Riepilogo laterale (desktop) -->
+    <aside class="riepilogo solo-desktop" data-riepilogo aria-label="La tua prenotazione">
+      <p class="occhiello">La tua prenotazione</p>
+      <p class="riepilogo__voce"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg><span data-r="giorno">Scegli il giorno</span></p>
+      <p class="riepilogo__voce"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#users"/></svg><span data-r="persone-testo">2 persone</span></p>
+      <p class="riepilogo__voce"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#clock"/></svg><span data-r="ora-testo">Scegli l’orario</span></p>
+      <p class="riepilogo__nota"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg><span data-nota-passo>Il martedì siamo chiusi: quei giorni non sono selezionabili.</span></p>
+    </aside>
   </form>
 
-  <div class="esito" id="esito" hidden>
-    <h2>Richiesta inviata</h2>
-    <p>Grazie! Ti scriveremo a <strong id="esito-email"></strong> appena confermiamo il tavolo.</p>
-  </div>
+  <!-- Richiesta inviata -->
+  <section class="flusso__inviata" data-inviata hidden aria-labelledby="t-inviata">
+    <span class="esito__icona" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#check"/></svg></span>
+    <h1 class="display-xl" id="t-inviata" tabindex="-1">Grazie<span data-r="nome-proprio"></span>!</h1>
+    <p class="esito__sotto">La tua richiesta è arrivata in cucina.</p>
+    <dl class="tabella-riepilogo solo-mobile">
+      <div><dt>Giorno</dt><dd data-r="giorno-breve"></dd></div>
+      <div><dt>Orario</dt><dd data-r="ora"></dd></div>
+      <div><dt>Persone</dt><dd data-r="persone"></dd></div>
+    </dl>
+    <p class="testo-l"><span class="solo-desktop" data-r="frase-riepilogo"></span> La conferma del tavolo arriverà a <strong data-r="email"></strong> (controlla anche lo spam). Per modifiche chiamaci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
+    <div class="azioni flusso__inviata-azioni">
+      <button class="btn btn--primario" type="button" data-calendario-ics>Aggiungi al calendario<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></button>
+      <a class="btn btn--secondario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Indicazioni stradali<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></a>
+      <a class="btn btn--testo" href="index.html">Torna alla home<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+    </div>
+  </section>
 </main>
-
-<script>
-  // ⬇︎ Incolla qui l'URL dell'app web di Apps Script (finisce con /exec)
-  var URL_PRENOTAZIONI = 'https://script.google.com/macros/s/AKfycbxaXMOKzb5O8Jcahcw9ja-_33KJNZ_npi7u2oEKxchhHECTZMTgPzfBJezPVzs88zqs/exec';
-
-  var form = document.getElementById('form');
-  var bottone = document.getElementById('invia');
-  var errore = document.getElementById('errore');
-
-  // Persone 1–12, default 2
-  var selPersone = document.getElementById('persone');
-  for (var n = 1; n <= 12; n++) {
-    var o = document.createElement('option');
-    o.value = n; o.textContent = n; if (n === 2) o.selected = true;
-    selPersone.appendChild(o);
-  }
-
-  // Date prenotabili: da oggi a 60 giorni
-  function iso(d) {
-    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-  }
-  var oggi = new Date();
-  var max = new Date(); max.setDate(max.getDate() + 60);
-  var campoData = document.getElementById('data');
-  campoData.min = iso(oggi);
-  campoData.max = iso(max);
-
-  form.addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    errore.textContent = '';
-
-    var dati = {};
-    new FormData(form).forEach(function (v, k) { dati[k] = v; });
-
-    if (!dati.nome || !dati.telefono || !dati.email || !dati.data || !dati.ora) {
-      errore.textContent = 'Compila tutti i campi obbligatori.';
-      return;
-    }
-    if (URL_PRENOTAZIONI.indexOf('/exec') === -1) {
-      errore.textContent = "Manca l'URL dell'app web in fondo a questo file.";
-      return;
-    }
-
-    bottone.disabled = true;
-    bottone.textContent = 'Invio in corso…';
-
-    // text/plain evita il controllo CORS preliminare che Apps Script non gestisce
-    fetch(URL_PRENOTAZIONI, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(dati)
-    })
-      .then(function (r) { return r.text(); }, function () {
-        throw { messaggio: 'Connessione non riuscita, controlla la rete e riprova.' };
-      })
-      .then(function (testo) {
-        var r;
-        try { r = JSON.parse(testo); } catch (e) { throw { messaggio: 'Qualcosa è andato storto, riprova tra poco.' }; }
-        if (!r.ok) throw { messaggio: r.errore || 'Qualcosa è andato storto, riprova.' };
-        document.getElementById('esito-email').textContent = dati.email;
-        form.hidden = true;
-        document.getElementById('esito').hidden = false;
-      })
-      .catch(function (err) {
-        // Mostriamo solo messaggi nostri, in italiano, mai quelli del browser
-        errore.textContent = (err && err.messaggio) || 'Qualcosa è andato storto, riprova.';
-        bottone.disabled = false;
-        bottone.textContent = 'Invia richiesta';
-      });
-  });
-</script>
 </body>
 </html>

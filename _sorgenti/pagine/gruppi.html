@@ -1,0 +1,107 @@
+---
+titolo: Gruppi, gite e pullman · Ristorante Mara, Valeggio sul Mincio
+descrizione: Pranzi per gruppi, gite parrocchiali e aziendali a Valeggio sul Mincio: menù su misura con prezzo a persona, sala ampia e parcheggio per pullman. Richiedi un preventivo gratuito.
+attivo: gruppi
+script: js/config.js, js/richieste.js
+---
+<main id="contenuto">
+  <section class="hero-scuro sfondo-scuro su-scuro">
+    <div class="contenitore">
+      <div class="testata">
+        <p class="occhiello">Gruppi, gite e comitive</p>
+        <h1 class="display-xxl titolo-blocchi"><span>Il pullman</span> <span class="accento">parcheggia da noi.</span></h1>
+        <p class="testo-l">Gite a Borghetto e al Parco Sigurtà, viaggi parrocchiali, uscite aziendali: vi accogliamo con un menù su misura, una sala ampia e un servizio puntuale, perché la tabella di marcia conta.</p>
+        <div class="azioni">
+          <a class="btn btn--su-scuro" href="#preventivo">Richiedi un preventivo<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+          <a class="btn btn--testo" href="tel:+390454857283">045 485 7283<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></a>
+        </div>
+      </div>
+      <figure class="foto"><figcaption class="didascalia"><svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#image"/></svg>Foto: tavolata di gruppo</figcaption></figure>
+    </div>
+  </section>
+
+  <div class="tenda" aria-hidden="true"></div>
+
+  <section class="fascia-info sfondo-farina" aria-label="Perché sceglierci">
+    <ul class="contenitore">
+      <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#users"/></svg></span><span><span class="info__titolo">Sala ampia</span><span class="info__testo">Per gruppi numerosi</span></span></li>
+      <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#bus"/></svg></span><span><span class="info__titolo">Parcheggio pullman</span><span class="info__testo">Ampio e comodo</span></span></li>
+      <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#clock"/></svg></span><span><span class="info__titolo">Servizio puntuale</span><span class="info__testo">Tempi concordati prima</span></span></li>
+      <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#utensils"/></svg></span><span><span class="info__titolo">Menù su misura</span><span class="info__testo">Prezzo a persona</span></span></li>
+    </ul>
+  </section>
+
+  <section class="sezione sezione-passi" aria-labelledby="passi-titolo">
+    <div class="contenitore">
+      <div class="testata">
+        <p class="occhiello">Come funziona</p>
+        <h2 class="display-xl" id="passi-titolo">Tre passi, nessuna telefonata a vuoto</h2>
+      </div>
+      <ol class="passi">
+        <li class="passo"><span class="passo__numero" aria-hidden="true">i.</span><h3 class="h3">Ci scrivete</h3><p class="testo-m">Data, numero di persone e un contatto: bastano trenta secondi.</p></li>
+        <li class="passo"><span class="passo__numero" aria-hidden="true">ii.</span><h3 class="h3">Concordiamo il menù</h3><p class="testo-m">Vi proponiamo un menù con prezzo a persona e gli orari di arrivo e partenza.</p></li>
+        <li class="passo"><span class="passo__numero" aria-hidden="true">iii.</span><h3 class="h3">Arrivate e vi sedete</h3><p class="testo-m">Il pullman parcheggia da noi, la tavola è già pronta.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sezione sfondo-sfoglia" id="preventivo" aria-labelledby="preventivo-titolo">
+    <div class="contenitore due-colonne">
+      <div class="testata">
+        <p class="occhiello">Preventivo gratuito</p>
+        <h2 class="display-xl" id="preventivo-titolo">Raccontateci il vostro gruppo</h2>
+        <p class="testo-l">Vi rispondiamo con una proposta di menù e il prezzo a persona. Preferite parlarne a voce? Chiamateci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
+        <div class="faq">
+          <h3 class="h3">Domande frequenti</h3>
+          <details class="faq__voce" open>
+            <summary>C’è posto per il pullman?<svg class="icona icona--piu" aria-hidden="true"><use href="assets/icons.svg#plus"/></svg><svg class="icona icona--meno" aria-hidden="true"><use href="assets/icons.svg#minus"/></svg></summary>
+            <p class="testo-m">Sì: il parcheggio è ampio e accoglie anche i pullman.</p>
+          </details>
+          <details class="faq__voce">
+            <summary>Potete gestire allergie e intolleranze?<svg class="icona icona--piu" aria-hidden="true"><use href="assets/icons.svg#plus"/></svg><svg class="icona icona--meno" aria-hidden="true"><use href="assets/icons.svg#minus"/></svg></summary>
+            <p class="testo-m">Sì: indicatecele nelle note della richiesta e prepariamo piatti adatti per chi ne ha bisogno.</p>
+          </details>
+          <details class="faq__voce">
+            <summary>Siete aperti anche la sera?<svg class="icona icona--piu" aria-hidden="true"><use href="assets/icons.svg#plus"/></svg><svg class="icona icona--meno" aria-hidden="true"><use href="assets/icons.svg#minus"/></svg></summary>
+            <p class="testo-m">No, siamo aperti solo a pranzo, dalle 12:00 alle 14:00. Il martedì siamo chiusi.</p>
+          </details>
+        </div>
+      </div>
+
+      <form class="form-scheda" data-form-richiesta="gruppo" data-successo="gruppi-grazie.html" novalidate>
+        <h3 class="h3">Richiedi un preventivo</h3>
+        <p class="testo-s">Tutti i campi sono obbligatori, tranne le note.</p>
+        <div class="campo">
+          <label class="campo__etichetta" for="g-gruppo">Gruppo o organizzazione</label>
+          <input class="campo__input" id="g-gruppo" name="gruppo" required maxlength="100" placeholder="es. Parrocchia San Marco" autocomplete="organization">
+          <p class="campo__errore" id="g-gruppo-err"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scrivete il nome del gruppo.</span></p>
+        </div>
+        <div class="riga-campi">
+          <div class="campo">
+            <label class="campo__etichetta" for="g-data">Data della visita</label>
+            <input class="campo__input" id="g-data" name="data" type="date" required data-data-futura>
+            <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegliete una data da oggi in poi.</span></p>
+          </div>
+          <div class="campo">
+            <label class="campo__etichetta" for="g-persone">Numero di persone</label>
+            <input class="campo__input" id="g-persone" name="persone" type="number" inputmode="numeric" min="10" max="300" required placeholder="es. 45">
+            <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Almeno 10 persone.</span></p>
+          </div>
+        </div>
+        <div class="campo">
+          <label class="campo__etichetta" for="g-contatto">Telefono o email</label>
+          <input class="campo__input" id="g-contatto" name="contatto" required maxlength="120" placeholder="Per inviarvi la proposta" data-contatto>
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Serve un telefono o un’email valida.</span></p>
+        </div>
+        <div class="campo">
+          <label class="campo__etichetta" for="g-note">Note <span class="opz">(facoltativo)</span></label>
+          <textarea class="campo__input" id="g-note" name="note" maxlength="600" rows="2" placeholder="Orario di arrivo, allergie, richieste particolari"></textarea>
+        </div>
+        <div class="trappola" aria-hidden="true"><label>Lascia vuoto<input name="sito" tabindex="-1" autocomplete="off"></label></div>
+        <div class="form-errore" data-form-errore hidden role="alert"></div>
+        <button class="btn btn--primario btn--blocco" type="submit">Invia la richiesta<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
+        <p class="testo-s">Inviando accetti di essere ricontattato per questa richiesta. <a href="privacy.html">Informativa privacy</a>.</p>
+      </form>
+    </div>
+  </section>
+</main>

@@ -1,8 +1,44 @@
-# Ristorante Mara — test prenotazioni
+# Ristorante Mara — sito di prova
 
-Pagine di prova del flusso di prenotazione, pubblicate con GitHub Pages su ristorantemara.github.io.
+Sito statico pubblicato con GitHub Pages su **https://ristorantemara.github.io**, costruito dal design Figma
+"Ristorante Mara" (design system 2.0: colori di cucina, Bricolage Grotesque + Instrument Sans, motivo tenda, arco).
 
-- `prenota.html` — form di prenotazione del cliente
-- `gestisci.html` — pagina che il ristorante apre dai pulsanti Conferma / Rifiuta della mail
+## Pagine
 
-Le mail e il registro delle prenotazioni sono gestiti da uno script Google Apps Script (Google Sheets + Gmail).
+| File | Pagina |
+| --- | --- |
+| `index.html` | Home |
+| `menu.html` | Menù alla carta con filtro allergeni |
+| `gruppi.html` · `gruppi-grazie.html` | Gruppi e gite, preventivo e conferma di invio |
+| `cerimonie.html` · `cerimonie-grazie.html` | Cerimonie, richiesta e conferma di invio |
+| `storia.html` | La nostra storia |
+| `dove-siamo.html` | Dove siamo e contatti |
+| `prenota.html` | Prenotazione in 3 passi (Quando → I tuoi dati → Conferma → Richiesta inviata) |
+| `gestisci.html` | Area ristorante: conferma o rifiuta una prenotazione (si apre dalla mail) |
+| `privacy.html` | Privacy e cookie (testo provvisorio) |
+| `404.html` | Pagina non trovata |
+
+## Come si modifica
+
+Le pagine **non vanno modificate direttamente**: si generano dai sorgenti in `_sorgenti/`.
+
+- `_sorgenti/pagine/` — il contenuto di ogni pagina
+- `_sorgenti/parti/` — parti comuni (header, footer, banner cookie, orari)
+- `_sorgenti/menu.json` — piatti, prezzi e allergeni del menù
+
+Dopo una modifica:
+
+```
+python3 _sorgenti/build.py
+```
+
+Stili in `css/styles.css`, comportamenti in `js/`. L'indirizzo dello script Google che riceve
+prenotazioni e richieste è in `js/config.js`.
+
+## Prenotazioni (test con Google Apps Script)
+
+1. Il cliente prenota da `prenota.html` → lo script salva la richiesta nel Foglio e manda una mail al ristorante.
+2. Nella mail, **Conferma** / **Rifiuta** aprono `gestisci.html` → un tocco e il cliente riceve la mail.
+3. I form Gruppi e Cerimonie arrivano allo stesso script (foglio "Richieste") e al ristorante via mail.
+
+Foto: per ora segnaposto (sfumatura) con didascalia; vanno sostituite con foto vere in WebP.

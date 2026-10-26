@@ -1,0 +1,94 @@
+---
+titolo: Cerimonie e feste di famiglia · Ristorante Mara, Valeggio sul Mincio
+descrizione: Battesimi, comunioni, cresime, compleanni e anniversari al Ristorante Mara di Valeggio sul Mincio. Componiamo il menù insieme e prepariamo la sala per voi.
+attivo: cerimonie
+script: js/config.js, js/richieste.js
+---
+<main id="contenuto">
+  <section class="sezione-hero-centro">
+    <div class="contenitore testata testata--centro hero-centro">
+      <p class="occhiello">Cerimonie e feste</p>
+      <h1 class="display-xxl titolo-blocchi"><span>Le feste di famiglia,</span> <span class="accento">come a casa.</span></h1>
+      <p class="testo-l">Dal 1967 apparecchiamo la tavola per battesimi, comunioni, cresime e anniversari. Il menù lo componiamo insieme, la sala la prepariamo per voi.</p>
+      <a class="btn btn--primario" href="#richiesta">Organizza la tua festa<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+      <div class="archi">
+        <figure class="foto"><figcaption class="didascalia"><svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#image"/></svg>Foto: tavola per un battesimo</figcaption></figure>
+        <figure class="foto"><figcaption class="didascalia"><svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#image"/></svg>Foto: torta della comunione</figcaption></figure>
+        <figure class="foto"><figcaption class="didascalia"><svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#image"/></svg>Foto: brindisi di anniversario</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="tenda" aria-hidden="true"></div>
+
+  <section class="sezione sfondo-farina" aria-labelledby="occasioni-titolo">
+    <div class="contenitore sezione-passi-int">
+      <h2 class="occhiello" id="occasioni-titolo">Le occasioni</h2>
+      <ul class="schede">
+        <li class="scheda"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#heart"/></svg><h3 class="h3">Battesimi</h3><p class="testo-m">Il primo pranzo di festa, con tutta la famiglia attorno.</p></li>
+        <li class="scheda"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#heart"/></svg><h3 class="h3">Comunioni e cresime</h3><p class="testo-m">Menù pensati anche per i più piccoli.</p></li>
+        <li class="scheda"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#heart"/></svg><h3 class="h3">Compleanni e anniversari</h3><p class="testo-m">Dalle nozze d’oro ai novant’anni della nonna.</p></li>
+        <li class="scheda"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#heart"/></svg><h3 class="h3">Pranzi di lavoro</h3><p class="testo-m">Colleghi, clienti, fine anno: tavolo riservato e servizio curato.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sezione sezione-passi" aria-labelledby="festa-titolo">
+    <div class="contenitore">
+      <div class="testata">
+        <p class="occhiello">Come prepariamo la festa</p>
+        <h2 class="display-xl" id="festa-titolo">Voi pensate agli invitati, al resto pensiamo noi</h2>
+      </div>
+      <ol class="passi">
+        <li class="passo"><span class="passo__numero" aria-hidden="true">i.</span><h3 class="h3">Raccontateci la festa</h3><p class="testo-m">Data, numero di ospiti e che cosa festeggiate.</p></li>
+        <li class="passo"><span class="passo__numero" aria-hidden="true">ii.</span><h3 class="h3">Componiamo il menù</h3><p class="testo-m">Una proposta su misura, con attenzione ad allergie e bambini.</p></li>
+        <li class="passo"><span class="passo__numero" aria-hidden="true">iii.</span><h3 class="h3">Prepariamo la sala</h3><p class="testo-m">Tavola apparecchiata e servizio dedicato per il vostro giorno.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sezione sfondo-scuro su-scuro" id="richiesta" aria-labelledby="richiesta-titolo">
+    <div class="contenitore due-colonne due-colonne--centro">
+      <div class="testata">
+        <p class="occhiello">Parliamone</p>
+        <h2 class="display-xl" id="richiesta-titolo">Avete una data in mente?</h2>
+        <p class="testo-l">Scriveteci due righe: vi richiamiamo noi per fissare un incontro e scegliere insieme il menù.</p>
+      </div>
+
+      <form class="form-scheda" data-form-richiesta="cerimonia" data-successo="cerimonie-grazie.html" novalidate>
+        <h3 class="h3">Richiedi una proposta</h3>
+        <p class="testo-s">Vi ricontattiamo per telefono o email.</p>
+        <div class="riga-campi">
+          <div class="campo">
+            <label class="campo__etichetta" for="c-data">Data della festa</label>
+            <input class="campo__input" id="c-data" name="data" type="date" required data-data-futura>
+            <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegliete una data da oggi in poi.</span></p>
+          </div>
+          <div class="campo">
+            <label class="campo__etichetta" for="c-ospiti">Numero di ospiti</label>
+            <input class="campo__input" id="c-ospiti" name="persone" type="number" inputmode="numeric" min="2" max="300" required placeholder="es. 30">
+            <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Indicate quanti sarete.</span></p>
+          </div>
+        </div>
+        <div class="campo">
+          <label class="campo__etichetta" for="c-occasione">Che cosa festeggiate?</label>
+          <select class="campo__input" id="c-occasione" name="occasione" required>
+            <option value="">Seleziona: battesimo, comunione, cresima, anniversario…</option>
+            <option>Battesimo</option><option>Comunione</option><option>Cresima</option>
+            <option>Compleanno</option><option>Anniversario</option><option>Pranzo di lavoro</option><option>Altro</option>
+          </select>
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegliete l’occasione.</span></p>
+        </div>
+        <div class="campo">
+          <label class="campo__etichetta" for="c-nome">Nome e telefono</label>
+          <input class="campo__input" id="c-nome" name="contatto" required maxlength="120" placeholder="es. Giulia Rossi · 333 123 4567" data-nome-telefono>
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scrivete nome e numero di telefono.</span></p>
+        </div>
+        <div class="trappola" aria-hidden="true"><label>Lascia vuoto<input name="sito" tabindex="-1" autocomplete="off"></label></div>
+        <div class="form-errore" data-form-errore hidden role="alert"></div>
+        <button class="btn btn--primario btn--blocco" type="submit">Invia la richiesta<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
+        <p class="testo-s">Inviando accetti di essere ricontattato per questa richiesta. <a href="privacy.html">Informativa privacy</a>.</p>
+      </form>
+    </div>
+  </section>
+</main>

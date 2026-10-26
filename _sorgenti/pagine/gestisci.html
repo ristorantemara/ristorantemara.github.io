@@ -1,0 +1,32 @@
+---
+titolo: Gestisci prenotazione · Ristorante Mara
+descrizione: Conferma o rifiuta una richiesta di prenotazione.
+layout: flusso
+classe_body: pagina-flusso pagina-gestisci
+robots: noindex
+script: js/config.js, js/gestisci.js
+---
+<header class="barra-flusso">
+  <div class="barra-flusso__interno">
+    <a class="logo barra-flusso__logo" href="index.html" aria-label="Ristorante Mara, home">
+      {{nodo}}
+      <span><span class="logo__nome">Mara</span><span class="logo__sotto">Ristorante · dal 1967</span></span>
+    </a>
+    <div class="barra-flusso__titolo-mobile"><p class="label">Gestisci prenotazione</p><p class="testo-s">Area ristorante</p></div>
+    <p class="occhiello solo-desktop barra-flusso__etichetta">Area ristorante · Gestisci prenotazione</p>
+  </div>
+</header>
+
+<main id="contenuto" class="flusso">
+  <div class="gestisci">
+    <h1 class="titolo-flusso" id="titolo" tabindex="-1">Carico la prenotazione…</h1>
+    <p class="testo-m" id="sottotitolo"></p>
+    <dl class="tabella-riepilogo" id="dettagli" hidden></dl>
+    <div class="form-errore" id="errore" hidden role="alert"></div>
+    <p class="esito-gestisci" id="esito" hidden role="status"><span class="esito__icona" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#check"/></svg></span><span id="esito-testo"></span></p>
+    <div class="gestisci__azioni" id="azioni" hidden>
+      <button class="btn btn--primario" type="button" id="principale"></button>
+      <button class="btn btn--secondario" type="button" id="alternativa"></button>
+    </div>
+  </div>
+</main>

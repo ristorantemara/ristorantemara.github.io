@@ -2,186 +2,43 @@
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gestisci prenotazione · Ristorante Mara</title>
+  <meta name="description" content="Conferma o rifiuta una richiesta di prenotazione.">
+  <meta name="theme-color" content="#f4ede1">
   <meta name="robots" content="noindex">
-  <title>Gestisci prenotazione — Ristorante Mara</title>
-  <style>
-    :root {
-      --bg: #f5f1ea; --card: #ffffff; --ink: #2b2622; --muted: #6b6259; --line: #ece6dc;
-      --ok: #2f5d3a; --no: #8a3b2e; --error: #9b2c1f;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; background: var(--bg); color: var(--ink);
-      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    header { padding: 20px 16px; border-bottom: 1px solid #ddd5c9; }
-    header p { max-width: 520px; margin: 0 auto; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 14px; }
-    main { max-width: 520px; margin: 0 auto; padding: 32px 16px 48px; }
-    .card { background: var(--card); border-radius: 12px; padding: 24px; }
-    h1 { margin: 0 0 16px; font-size: 22px; line-height: 1.25; }
-    dl { margin: 0; display: grid; grid-template-columns: 100px 1fr; }
-    dt, dd { margin: 0; padding: 8px 0; border-top: 1px solid var(--line); }
-    dt { color: var(--muted); }
-    dd { font-weight: 600; overflow-wrap: anywhere; }
-    .azioni { display: grid; gap: 12px; margin-top: 24px; }
-    button {
-      font: inherit; font-weight: 600; width: 100%; min-height: 52px; border-radius: 8px;
-      cursor: pointer; border: 0; color: #fff;
-    }
-    button.conferma { background: var(--ok); }
-    button.rifiuta { background: var(--no); }
-    button.secondario { background: transparent; color: var(--no); border: 1px solid #d9c7c2; min-height: 44px; }
-    button[disabled] { opacity: .6; cursor: progress; }
-    .msg { margin: 16px 0 0; color: var(--muted); }
-    .msg.errore { color: var(--error); }
-    [hidden] { display: none !important; }
-  </style>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/instrument-sans-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/site.js" defer></script>
+  <script src="js/config.js" defer></script><script src="js/gestisci.js" defer></script>
 </head>
-<body>
-<header><p>Ristorante Mara</p></header>
-<main>
-  <div class="card">
-    <h1 id="titolo">Carico la prenotazione…</h1>
-    <dl id="dettagli" hidden></dl>
-    <div class="azioni" id="azioni" hidden>
-      <button id="principale" type="button"></button>
-      <button id="alternativa" type="button" class="secondario"></button>
+<body class="pagina-flusso pagina-gestisci">
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra-flusso">
+  <div class="barra-flusso__interno">
+    <a class="logo barra-flusso__logo" href="index.html" aria-label="Ristorante Mara, home">
+      <svg class="logo__segno" viewBox="0 0 40 40" aria-hidden="true"><path class="nodo-a" d="M24.5002 22.9167C24.5002 20.2818 22.316 17.9998 18.7502 17.9997C14.7513 17.9997 12.1663 20.5463 12.1663 23.6667C12.1663 26.628 14.8657 29.4085 19.7649 29.4948C19.3587 29.2664 19.0834 28.8328 19.0833 28.3337C19.0833 27.5974 19.68 26.9998 20.4163 26.9997C22.7632 26.9997 24.5002 25.2636 24.5002 22.9167ZM27.1663 22.9167C27.1663 25.8148 25.4787 28.1986 22.9963 29.1813C28.3219 28.0235 32.0002 23.819 32.0002 18.7497C32.0001 12.7759 26.8929 7.99982 20.0002 7.99967C19.2639 7.99967 18.6663 7.40304 18.6663 6.66666C18.6663 5.93028 19.2639 5.33366 20.0002 5.33366C28.1071 5.33381 34.6661 11.0573 34.6663 18.7497C34.6663 26.4422 28.1072 32.1665 20.0002 32.1667C14.0481 32.1667 9.50024 28.6583 9.50024 23.6667C9.50024 18.787 13.5825 15.3337 18.7502 15.3337C23.5175 15.3338 27.1663 18.5517 27.1663 22.9167Z"/><path class="nodo-b" d="M5.33374 21.8333C5.33374 21.097 5.93037 20.5003 6.66675 20.5003C7.40313 20.5003 7.99976 21.097 7.99976 21.8333C7.99976 25.7437 10.2277 29.0717 12.5398 31.0755C13.0962 31.5577 13.1566 32.3999 12.6746 32.9564C12.1923 33.5128 11.3502 33.5732 10.7937 33.0911C8.10584 30.7617 5.33374 26.7562 5.33374 21.8333Z"/></svg>
+      <span><span class="logo__nome">Mara</span><span class="logo__sotto">Ristorante · dal 1967</span></span>
+    </a>
+    <div class="barra-flusso__titolo-mobile"><p class="label">Gestisci prenotazione</p><p class="testo-s">Area ristorante</p></div>
+    <p class="occhiello solo-desktop barra-flusso__etichetta">Area ristorante · Gestisci prenotazione</p>
+  </div>
+</header>
+
+<main id="contenuto" class="flusso">
+  <div class="gestisci">
+    <h1 class="titolo-flusso" id="titolo" tabindex="-1">Carico la prenotazione…</h1>
+    <p class="testo-m" id="sottotitolo"></p>
+    <dl class="tabella-riepilogo" id="dettagli" hidden></dl>
+    <div class="form-errore" id="errore" hidden role="alert"></div>
+    <p class="esito-gestisci" id="esito" hidden role="status"><span class="esito__icona" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#check"/></svg></span><span id="esito-testo"></span></p>
+    <div class="gestisci__azioni" id="azioni" hidden>
+      <button class="btn btn--primario" type="button" id="principale"></button>
+      <button class="btn btn--secondario" type="button" id="alternativa"></button>
     </div>
-    <p class="msg" id="msg" role="status"></p>
   </div>
 </main>
-
-<script>
-  var URL_PRENOTAZIONI = 'https://script.google.com/macros/s/AKfycbxaXMOKzb5O8Jcahcw9ja-_33KJNZ_npi7u2oEKxchhHECTZMTgPzfBJezPVzs88zqs/exec';
-
-  var q = new URLSearchParams(location.search);
-  var id = q.get('id') || '';
-  var token = q.get('token') || '';
-  var azione = q.get('azione') === 'rifiuta' ? 'rifiuta' : 'conferma';
-
-  var titolo = document.getElementById('titolo');
-  var dettagli = document.getElementById('dettagli');
-  var azioni = document.getElementById('azioni');
-  var principale = document.getElementById('principale');
-  var alternativa = document.getElementById('alternativa');
-  var msg = document.getElementById('msg');
-
-  function chiama(dati) {
-    return fetch(URL_PRENOTAZIONI, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(dati)
-    }).then(function (r) { return r.text(); })
-      .then(function (testo) {
-        try { return JSON.parse(testo); }
-        catch (e) { var err = new Error('risposta'); err.tecnico = true; throw err; }
-      }, function () {
-        var err = new Error('rete'); err.tecnico = true; throw err;
-      });
-  }
-
-  // Messaggi del server (già in italiano) oppure un testo generico, mai quelli del browser
-  function testoErrore(e, generico) {
-    return e && !e.tecnico && e.message ? e.message : generico;
-  }
-
-  function mostraEsito(stato, giaGestita) {
-    azioni.hidden = true;
-    msg.className = 'msg';
-    if (giaGestita) {
-      titolo.textContent = 'Prenotazione già ' + String(stato).toLowerCase();
-      msg.textContent = "Era già stata gestita: non è stata inviata un'altra mail.";
-    } else {
-      titolo.textContent = stato === 'Confermata' ? 'Prenotazione confermata ✓' : 'Prenotazione rifiutata';
-      msg.textContent = 'Fatto: il cliente ha ricevuto una mail.';
-    }
-  }
-
-  function errore(testo) {
-    msg.className = 'msg errore';
-    msg.textContent = testo;
-  }
-
-  function riga(etichetta, valore) {
-    var dt = document.createElement('dt'); dt.textContent = etichetta;
-    var dd = document.createElement('dd'); dd.textContent = valore;
-    dettagli.appendChild(dt); dettagli.appendChild(dd);
-  }
-
-  function preparaPulsanti() {
-    var conferma = azione === 'conferma';
-    titolo.textContent = conferma ? 'Confermare questa prenotazione?' : 'Rifiutare questa prenotazione?';
-    principale.className = conferma ? 'conferma' : 'rifiuta';
-    principale.textContent = conferma ? 'Conferma e avvisa il cliente' : 'Rifiuta e avvisa il cliente';
-    alternativa.textContent = conferma ? 'No, voglio rifiutarla' : 'No, voglio confermarla';
-  }
-
-  function decidi() {
-    principale.disabled = true; alternativa.disabled = true;
-    msg.className = 'msg'; msg.textContent = 'Invio in corso…';
-    chiama({ tipo: 'decidi', id: id, token: token, azione: azione })
-      .then(function (r) {
-        if (r.ok) return mostraEsito(r.stato, false);
-        if (r.giaGestita) return mostraEsito(r.stato, true);
-        throw new Error(r.errore);
-      })
-      .catch(function (e) {
-        if (!e.tecnico) {
-          principale.disabled = false; alternativa.disabled = false;
-          return errore(testoErrore(e, 'Qualcosa è andato storto, riprova.'));
-        }
-        // Risposta illeggibile: ricontrolliamo lo stato prima di dire che non ha funzionato
-        msg.textContent = 'Verifico…';
-        return chiama({ tipo: 'leggi', id: id, token: token })
-          .then(function (r) {
-            if (r.ok && r.prenotazione.stato !== 'In attesa') {
-              return mostraEsito(r.prenotazione.stato, false);
-            }
-            throw new Error('non aggiornata');
-          })
-          .catch(function () {
-            principale.disabled = false; alternativa.disabled = false;
-            errore('Non sono riuscito a completare l\'operazione. Controlla la connessione e riprova.');
-          });
-      });
-  }
-
-  principale.addEventListener('click', decidi);
-  alternativa.addEventListener('click', function () {
-    azione = azione === 'conferma' ? 'rifiuta' : 'conferma';
-    preparaPulsanti();
-  });
-
-  if (!id || !token) {
-    titolo.textContent = 'Link non valido';
-    errore('Apri di nuovo il pulsante dalla mail.');
-  } else {
-    chiama({ tipo: 'leggi', id: id, token: token })
-      .then(function (r) {
-        if (!r.ok) throw new Error(r.errore);
-        var p = r.prenotazione;
-        riga('Nome', p.nome);
-        riga('Quando', p.dataLeggibile + ' ore ' + p.ora);
-        riga('Persone', String(p.persone));
-        riga('Telefono', p.telefono);
-        riga('Email', p.email);
-        if (p.note) riga('Note', p.note);
-        dettagli.hidden = false;
-
-        if (p.stato !== 'In attesa') {
-          titolo.textContent = 'Prenotazione già ' + p.stato.toLowerCase();
-          msg.textContent = 'Non serve fare altro.';
-        } else {
-          preparaPulsanti();
-          azioni.hidden = false;
-        }
-      })
-      .catch(function (e) {
-        titolo.textContent = 'Non riesco ad aprire la prenotazione';
-        errore(testoErrore(e, 'Connessione non riuscita, ricarica la pagina.'));
-      });
-  }
-</script>
 </body>
 </html>

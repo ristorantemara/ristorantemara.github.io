@@ -1,0 +1,173 @@
+---
+titolo: Prenota un tavolo · Ristorante Mara, Valeggio sul Mincio
+descrizione: Prenota il tuo tavolo al Ristorante Mara: scegli giorno, orario e numero di persone. Aperti a pranzo dalle 12:00 alle 14:00, martedì chiuso.
+layout: flusso
+classe_body: pagina-flusso
+script: js/config.js, js/prenota.js
+---
+<header class="barra-flusso">
+  <div class="barra-flusso__interno">
+    <a class="logo barra-flusso__logo" href="index.html" aria-label="Ristorante Mara, home">
+      {{nodo}}
+      <span><span class="logo__nome">Mara</span><span class="logo__sotto">Ristorante · dal 1967</span></span>
+    </a>
+    <a class="barra-flusso__chiudi" href="index.html" aria-label="Esci dalla prenotazione"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></a>
+    <div class="barra-flusso__titolo-mobile"><p class="label" data-titolo-mobile>Prenota un tavolo</p><p class="testo-s" data-passo-mobile>Passo 1 di 3</p></div>
+    <ol class="passi-prenotazione" data-passi aria-label="Avanzamento">
+      <li class="passi-prenotazione__voce" data-passo-voce="1"><span class="passi-prenotazione__tondo"><span>1</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span>Quando</li>
+      <li class="passi-prenotazione__linea" aria-hidden="true"></li>
+      <li class="passi-prenotazione__voce" data-passo-voce="2"><span class="passi-prenotazione__tondo"><span>2</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span>I tuoi dati</li>
+      <li class="passi-prenotazione__linea" aria-hidden="true"></li>
+      <li class="passi-prenotazione__voce" data-passo-voce="3"><span class="passi-prenotazione__tondo"><span>3</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span>Conferma</li>
+    </ol>
+    <a class="btn btn--testo barra-flusso__esci" href="index.html">Esci<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></a>
+  </div>
+  <div class="avanzamento" aria-hidden="true" data-avanzamento><span></span><span></span><span></span></div>
+</header>
+
+<main id="contenuto" class="flusso">
+  <form class="flusso__corpo" data-prenota novalidate>
+
+    <!-- PASSO 1 · Quando -->
+    <section class="flusso__passo" data-passo="1" aria-labelledby="t-passo-1">
+      <div class="flusso__testa">
+        <p class="occhiello solo-desktop">Prenota un tavolo</p>
+        <h1 class="titolo-flusso" id="t-passo-1" tabindex="-1">Quando <span class="accento">venite a pranzo?</span></h1>
+      </div>
+
+      <div class="quando">
+        <fieldset class="quando__giorno">
+          <legend class="campo__etichetta legenda-giorno">Giorno</legend>
+          <div class="striscia-giorni solo-mobile" data-striscia role="radiogroup" aria-label="Prossimi giorni"></div>
+          <button class="btn btn--testo solo-mobile apri-calendario" type="button" data-apri-calendario aria-expanded="false">Altri giorni › apri il calendario</button>
+          <div class="calendario" data-calendario>
+            <div class="calendario__testa">
+              <button class="calendario__freccia" type="button" data-mese="-1" aria-label="Mese precedente"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrowLeft"/></svg></button>
+              <p class="calendario__mese" data-mese-titolo aria-live="polite"></p>
+              <button class="calendario__freccia" type="button" data-mese="1" aria-label="Mese successivo"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
+            </div>
+            <div class="calendario__settimana" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span></div>
+            <div class="calendario__griglia" data-griglia role="grid"></div>
+            <p class="testo-s">I martedì sono barrati: siamo chiusi.</p>
+          </div>
+          <p class="campo__errore flusso__errore" data-errore="data"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegli il giorno.</span></p>
+        </fieldset>
+
+        <div class="quando__persone">
+          <p class="campo__etichetta" id="et-persone">Quante persone?</p>
+          <div class="contatore" role="group" aria-labelledby="et-persone">
+            <button type="button" class="contatore__bottone" data-persone="-1" aria-label="Una persona in meno"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#minus"/></svg></button>
+            <output class="contatore__valore" data-persone-valore aria-live="polite">2</output>
+            <button type="button" class="contatore__bottone" data-persone="1" aria-label="Una persona in più"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#plus"/></svg></button>
+          </div>
+          <a class="testo-s link-gruppi" href="gruppi.html#preventivo">Più di 12 persone? Richiedi un preventivo per gruppi.</a>
+        </div>
+      </div>
+
+      <fieldset class="orari-arrivo">
+        <legend class="campo__etichetta">A che ora arrivate?</legend>
+        <div class="orari-arrivo__lista" role="radiogroup" data-orari-arrivo>
+          <button type="button" class="orario" role="radio" aria-checked="false" data-ora="12:00">12:00</button>
+          <button type="button" class="orario" role="radio" aria-checked="false" data-ora="12:30">12:30</button>
+          <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:00">13:00</button>
+          <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:30">13:30</button>
+        </div>
+        <p class="testo-s">Siamo aperti dalle 12:00 alle 14:00: l’ultimo tavolo si prenota alle 13:30.</p>
+        <p class="campo__errore flusso__errore" data-errore="ora"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegli l’orario di arrivo.</span></p>
+      </fieldset>
+
+      <div class="flusso__azioni">
+        <button class="btn btn--primario" type="button" data-avanti="2"><span class="solo-desktop">Continua</span><span class="solo-mobile" data-continua-mobile>Continua</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
+      </div>
+    </section>
+
+    <!-- PASSO 2 · I tuoi dati -->
+    <section class="flusso__passo" data-passo="2" aria-labelledby="t-passo-2" hidden>
+      <div class="flusso__testa">
+        <h1 class="titolo-flusso" id="t-passo-2" tabindex="-1">A chi <span class="accento">intestiamo il tavolo?</span></h1>
+        <p class="testo-s testo-inchiostro">I campi con * sono obbligatori.</p>
+      </div>
+      <div class="riga-campi riga-campi--20">
+        <div class="campo">
+          <label class="campo__etichetta" for="p-nome">Nome e cognome *</label>
+          <input class="campo__input" id="p-nome" name="nome" required maxlength="80" autocomplete="name" placeholder="es. Giulia Rossi">
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scrivi nome e cognome.</span></p>
+        </div>
+        <div class="campo">
+          <label class="campo__etichetta" for="p-telefono">Telefono *</label>
+          <input class="campo__input" id="p-telefono" name="telefono" type="tel" required maxlength="25" autocomplete="tel" inputmode="tel" placeholder="es. 333 123 4567">
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Il numero sembra incompleto: controlla le cifre e riprova.</span></p>
+        </div>
+      </div>
+      <div class="campo">
+        <label class="campo__etichetta" for="p-email">Email *</label>
+        <input class="campo__input" id="p-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="es. giulia.rossi@email.it">
+        <p class="campo__aiuto">Qui ti arriva la conferma della prenotazione.</p>
+        <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>L’email non sembra completa: controlla che ci siano @ e il dominio.</span></p>
+      </div>
+      <div class="campo">
+        <label class="campo__etichetta" for="p-note">Allergie, seggiolone o altre richieste <span class="opz">(facoltativo)</span></label>
+        <textarea class="campo__input" id="p-note" name="note" maxlength="500" rows="2" placeholder="es. un ospite celiaco, un seggiolone"></textarea>
+        <p class="campo__aiuto">Le leggiamo prima del vostro arrivo.</p>
+      </div>
+      <div class="campo campo--spunta">
+        <label class="spunta"><input type="checkbox" name="consenso" required><span class="spunta__box" aria-hidden="true"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span><span>Acconsento al trattamento dei dati per gestire la prenotazione. <a href="privacy.html">Informativa privacy</a>.</span></label>
+        <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Serve il consenso per gestire la prenotazione.</span></p>
+      </div>
+      <div class="trappola" aria-hidden="true"><label>Lascia vuoto<input name="sito" tabindex="-1" autocomplete="off"></label></div>
+      <div class="flusso__azioni">
+        <button class="btn btn--secondario" type="button" data-indietro="1">Indietro<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrowLeft"/></svg></button>
+        <button class="btn btn--primario" type="button" data-avanti="3">Continua<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
+      </div>
+    </section>
+
+    <!-- PASSO 3 · Conferma -->
+    <section class="flusso__passo" data-passo="3" aria-labelledby="t-passo-3" hidden>
+      <div class="flusso__testa">
+        <h1 class="titolo-flusso" id="t-passo-3" tabindex="-1">Controlla <span class="accento">e invia</span></h1>
+      </div>
+      <dl class="tabella-riepilogo">
+        <div><dt>Giorno</dt><dd data-r="giorno-lungo"></dd></div>
+        <div><dt>Orario</dt><dd data-r="ora-lunga"></dd></div>
+        <div><dt>Persone</dt><dd data-r="persone"></dd></div>
+        <div><dt>Nome</dt><dd data-r="nome"></dd></div>
+        <div><dt>Telefono</dt><dd data-r="telefono"></dd></div>
+        <div><dt>Email</dt><dd data-r="email"></dd></div>
+        <div data-r-riga="note"><dt>Richieste</dt><dd data-r="note"></dd></div>
+      </dl>
+      <p class="testo-s modifica">Qualcosa non va? <button type="button" class="link-modifica" data-indietro="1">Modifica</button></p>
+      <div class="form-errore" data-invio-errore hidden role="alert"></div>
+      <div class="flusso__azioni">
+        <button class="btn btn--secondario" type="button" data-indietro="2">Indietro<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrowLeft"/></svg></button>
+        <button class="btn btn--primario" type="submit" data-invia>Invia la richiesta<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></button>
+      </div>
+    </section>
+
+    <!-- Riepilogo laterale (desktop) -->
+    <aside class="riepilogo solo-desktop" data-riepilogo aria-label="La tua prenotazione">
+      <p class="occhiello">La tua prenotazione</p>
+      <p class="riepilogo__voce"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg><span data-r="giorno">Scegli il giorno</span></p>
+      <p class="riepilogo__voce"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#users"/></svg><span data-r="persone-testo">2 persone</span></p>
+      <p class="riepilogo__voce"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#clock"/></svg><span data-r="ora-testo">Scegli l’orario</span></p>
+      <p class="riepilogo__nota"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg><span data-nota-passo>Il martedì siamo chiusi: quei giorni non sono selezionabili.</span></p>
+    </aside>
+  </form>
+
+  <!-- Richiesta inviata -->
+  <section class="flusso__inviata" data-inviata hidden aria-labelledby="t-inviata">
+    <span class="esito__icona" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#check"/></svg></span>
+    <h1 class="display-xl" id="t-inviata" tabindex="-1">Grazie<span data-r="nome-proprio"></span>!</h1>
+    <p class="esito__sotto">La tua richiesta è arrivata in cucina.</p>
+    <dl class="tabella-riepilogo solo-mobile">
+      <div><dt>Giorno</dt><dd data-r="giorno-breve"></dd></div>
+      <div><dt>Orario</dt><dd data-r="ora"></dd></div>
+      <div><dt>Persone</dt><dd data-r="persone"></dd></div>
+    </dl>
+    <p class="testo-l"><span class="solo-desktop" data-r="frase-riepilogo"></span> La conferma del tavolo arriverà a <strong data-r="email"></strong> (controlla anche lo spam). Per modifiche chiamaci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
+    <div class="azioni flusso__inviata-azioni">
+      <button class="btn btn--primario" type="button" data-calendario-ics>Aggiungi al calendario<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></button>
+      <a class="btn btn--secondario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Indicazioni stradali<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></a>
+      <a class="btn btn--testo" href="index.html">Torna alla home<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+    </div>
+  </section>
+</main>
