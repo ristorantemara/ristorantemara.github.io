@@ -181,10 +181,16 @@
           <a class="btn btn--secondario" href="tel:+390454857283">Chiama<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></a>
         </div>
       </div>
-      <div class="mappa" aria-hidden="true">
-        <svg class="icona" style="width:40px;height:40px"><use href="assets/icons.svg#pin"/></svg>
-        <p class="testo-s">Via Mantovana 1180, Valeggio sul Mincio</p>
-      </div>
+      <div class="mappa" data-mappa data-src="https://www.google.com/maps?q=Ristorante+Mara,+Via+Mantovana+1180,+37067+Valeggio+sul+Mincio+VR&hl=it&z=15&output=embed">
+          <div class="mappa__segnaposto">
+            <svg class="icona mappa__pin" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg>
+            <p class="mappa__nome">Ristorante Mara</p>
+            <p class="testo-s">Via Mantovana 1180, Valeggio sul Mincio</p>
+            <button class="btn btn--secondario mappa__carica" type="button" data-mappa-carica>Mostra la mappa</button>
+            <p class="mappa__nota">La mappa è di Google Maps: caricandola, Google può usare cookie. <a href="privacy.html#cookie">Maggiori informazioni</a></p>
+          </div>
+        </div>
+
     </div>
   </section>
 </main>
@@ -234,10 +240,11 @@
 <section class="cookie su-scuro" aria-labelledby="cookie-titolo" data-cookie hidden>
   <div class="cookie__testo">
     <h2 class="cookie__titolo" id="cookie-titolo">Un biscotto prima del pranzo?</h2>
-    <p class="testo-s">Usiamo cookie tecnici per far funzionare il sito e, solo con il tuo consenso, cookie statistici per migliorarlo. Puoi cambiare idea quando vuoi da «Preferenze cookie».</p>
-    <label class="cookie__opzione" data-cookie-opzioni hidden>
-      <input type="checkbox" data-cookie-statistici> Cookie statistici (anonimi)
-    </label>
+    <p class="testo-s">Usiamo cookie tecnici per far funzionare il sito e, solo con il tuo consenso, cookie statistici per migliorarlo e la mappa di Google Maps. Puoi cambiare idea quando vuoi da «Preferenze cookie».</p>
+    <div class="cookie__opzioni" data-cookie-opzioni hidden>
+      <label class="cookie__opzione"><input type="checkbox" data-cookie-statistici> Cookie statistici (anonimi)</label>
+      <label class="cookie__opzione"><input type="checkbox" data-cookie-mappe> Mappa di Google Maps</label>
+    </div>
   </div>
   <div class="cookie__azioni">
     <button class="btn btn--testo cookie__personalizza" type="button" data-cookie-personalizza>Personalizza</button>

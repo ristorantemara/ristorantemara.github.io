@@ -110,6 +110,7 @@ def componi(meta, corpo):
         "script_extra": "".join(f'<script src="{s.strip()}" defer></script>' for s in meta.get("script", "").split(",") if s.strip()),
         "orari": PARTI["orari"],
         "nodo": PARTI["nodo"],
+        "mappa": PARTI["mappa"],
         **MENU,
     }
     for voce in ("menu", "gruppi", "cerimonie", "storia", "dove"):

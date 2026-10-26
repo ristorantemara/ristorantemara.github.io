@@ -100,16 +100,19 @@
     var rifiuta = banner.querySelector('[data-cookie-scelta="rifiuta"]');
     var accetta = banner.querySelector('[data-cookie-scelta="accetta"]');
 
+    var mappe = banner.querySelector('[data-cookie-mappe]');
     personalizza.addEventListener('click', function () {
       opzioni.hidden = false;
       statistici.checked = leggi() === 'accetta';
+      mappe.checked = mappeConsentite();
       personalizza.hidden = true;
       accetta.textContent = 'Salva le scelte';
       statistici.focus();
     });
-    rifiuta.addEventListener('click', function () { salva('rifiuta'); banner.hidden = true; });
+    rifiuta.addEventListener('click', function () { salva('rifiuta'); impostaMappe(false); banner.hidden = true; });
     accetta.addEventListener('click', function () {
       salva(opzioni.hidden || statistici.checked ? 'accetta' : 'rifiuta');
+      impostaMappe(opzioni.hidden || mappe.checked);
       banner.hidden = true;
     });
     document.querySelectorAll('[data-preferenze-cookie]').forEach(function (a) {
@@ -120,4 +123,31 @@
       });
     });
   }
+
+  /* ---------- Mappa di Google: si carica solo con il consenso ---------- */
+  function mappeConsentite() { try { return localStorage.getItem('mara-mappe') === 'si'; } catch (e) { return false; } }
+  function caricaMappa(box) {
+    if (box.querySelector('iframe') || !box.getClientRects().length) return; // già caricata o nascosta (es. home su mobile)
+    var f = document.createElement('iframe');
+    f.src = box.dataset.src;
+    f.title = 'Mappa: Ristorante Mara, Via Mantovana 1180, Valeggio sul Mincio';
+    f.loading = 'lazy';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    f.allowFullscreen = true;
+    box.appendChild(f);
+    box.classList.add('is-caricata');
+  }
+  function togliMappa(box) {
+    var f = box.querySelector('iframe');
+    if (f) f.remove();
+    box.classList.remove('is-caricata');
+  }
+  function impostaMappe(si) {
+    try { localStorage.setItem('mara-mappe', si ? 'si' : 'no'); } catch (e) { /* storage non disponibile */ }
+    document.querySelectorAll('[data-mappa]').forEach(function (b) { if (si) caricaMappa(b); else togliMappa(b); });
+  }
+  document.querySelectorAll('[data-mappa]').forEach(function (box) {
+    if (mappeConsentite()) caricaMappa(box);
+    box.querySelector('[data-mappa-carica]').addEventListener('click', function () { impostaMappe(true); });
+  });
 })();

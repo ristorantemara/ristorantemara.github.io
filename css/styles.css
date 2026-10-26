@@ -441,6 +441,13 @@ body.menu-aperto { overflow: hidden; }
 }
 .mappa iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .mappa .testo-s { color: var(--terra); }
+.mappa__segnaposto { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 96px 32px 32px; max-width: 360px; text-align: center; }
+.mappa__pin { width: 44px; height: 44px; }
+.mappa__carica { margin-top: 8px; }
+.mappa__nota { font-size: 12px; line-height: 1.5; color: var(--terra); }
+.mappa__nota a { color: var(--inchiostro); text-decoration: underline; }
+.mappa.is-caricata { border-radius: 6px; background: var(--sfoglia); }
+.mappa.is-caricata .mappa__segnaposto { visibility: hidden; }
 @media (max-width: 1023px) {
   .dove .contenitore { flex-direction: column; gap: 32px; }
   .dove__testo { width: 100%; }
@@ -465,6 +472,7 @@ body.menu-aperto { overflow: hidden; }
 .cookie[hidden] { display: none; }
 .cookie__testo { flex: 1; display: flex; flex-direction: column; gap: 6px; }
 .cookie__titolo { font: 500 30px/1.15 var(--display); letter-spacing: -0.01em; }
+.cookie__opzioni { display: flex; flex-direction: column; gap: 4px; }
 .cookie__opzione { display: flex; align-items: center; gap: 10px; margin-top: 8px; font: 600 14px/1.25 var(--testo); }
 .cookie__opzione input { width: 20px; height: 20px; accent-color: var(--zucca); }
 .cookie .btn--testo.cookie__personalizza { color: var(--su-scuro); }
@@ -719,7 +727,8 @@ select.campo__input {
 .dove-pagina .contenitore { padding-top: 80px; padding-bottom: 80px; display: flex; flex-direction: column; gap: 20px; }
 .dove-pagina__corpo { display: flex; gap: 64px; align-items: stretch; padding-top: 24px; }
 .dove-pagina .mappa { min-height: 640px; border-radius: 400px 400px 6px 6px; gap: 14px; }
-.dove-pagina .mappa .icona { width: 48px; height: 48px; }
+.dove-pagina .mappa.is-caricata, .dove .mappa.is-caricata { border-radius: 6px; }
+.dove-pagina .mappa .mappa__pin { width: 48px; height: 48px; }
 .mappa__nome { font: 600 22px/1.25 var(--display); color: var(--inchiostro); }
 .dove-pagina__info { width: 460px; flex: none; display: flex; flex-direction: column; gap: 28px; align-items: flex-start; }
 .riquadro-orari { width: 100%; padding: 8px 24px; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
@@ -758,7 +767,9 @@ select.campo__input {
   .esito__sotto { font-size: 28px; }
   .dove-pagina .contenitore { padding-top: 32px; padding-bottom: 48px; }
   .dove-pagina__corpo { flex-direction: column; gap: 32px; padding-top: 8px; }
-  .dove-pagina .mappa { display: flex; min-height: 280px; border-radius: 999px 999px 6px 6px / 60% 60% 6px 6px; order: 2; }
+  .dove-pagina .mappa { display: flex; min-height: 420px; border-radius: calc(50vw - var(--gutter)) calc(50vw - var(--gutter)) 6px 6px; order: 2; }
+  .dove-pagina .mappa.is-caricata { border-radius: 6px; }
+  .dove-pagina .mappa__segnaposto { padding-top: 72px; }
   .dove-pagina__info { width: 100%; }
   .faq__voce summary { font-size: 18px; }
 }
