@@ -3,7 +3,6 @@
   'use strict';
 
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  var TELEFONO = /\+?\d[\d\s./-]{5,}/;
 
   function valida(campo) {
     var input = campo.querySelector('.campo__input');
@@ -16,8 +15,6 @@
       ok = n >= Number(input.min || 0) && n <= Number(input.max || 1e9);
     } else if (v && input.hasAttribute('data-data-futura')) {
       ok = v >= window.maraOggi();
-    } else if (v && input.hasAttribute('data-contatto')) {
-      ok = EMAIL.test(v) || TELEFONO.test(v);
     } else if (v && input.hasAttribute('data-nome-cognome')) {
       ok = /[a-zà-ú'’]{2,}\s+[a-zà-ú'’]{2,}/i.test(v); // almeno due parole
     } else if (v && input.hasAttribute('data-telefono')) {

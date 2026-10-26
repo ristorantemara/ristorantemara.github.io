@@ -38,7 +38,7 @@ script: js/config.js, js/richieste.js
         <h2 class="display-xl" id="passi-titolo">Tre passi, nessuna telefonata a vuoto</h2>
       </div>
       <ol class="passi">
-        <li class="passo"><span class="passo__numero" aria-hidden="true">i.</span><h3 class="h3">Ci scrivete</h3><p class="testo-m">Data, numero di persone e un contatto: bastano trenta secondi.</p></li>
+        <li class="passo"><span class="passo__numero" aria-hidden="true">i.</span><h3 class="h3">Ci scrivete</h3><p class="testo-m">Data, numero di persone e i vostri contatti: basta un minuto.</p></li>
         <li class="passo"><span class="passo__numero" aria-hidden="true">ii.</span><h3 class="h3">Concordiamo il menù</h3><p class="testo-m">Vi proponiamo un menù con prezzo a persona e gli orari di arrivo e partenza.</p></li>
         <li class="passo"><span class="passo__numero" aria-hidden="true">iii.</span><h3 class="h3">Arrivate e vi sedete</h3><p class="testo-m">Il pullman parcheggia da noi, la tavola è già pronta.</p></li>
       </ol>
@@ -89,9 +89,21 @@ script: js/config.js, js/richieste.js
           </div>
         </div>
         <div class="campo">
-          <label class="campo__etichetta" for="g-contatto">Telefono o email</label>
-          <input class="campo__input" id="g-contatto" name="contatto" required maxlength="120" placeholder="Per inviarvi la proposta" data-contatto>
-          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Serve un telefono o un’email valida.</span></p>
+          <label class="campo__etichetta" for="g-nome">Nome e cognome del referente</label>
+          <input class="campo__input" id="g-nome" name="nome" required maxlength="120" autocomplete="name" placeholder="es. Luca Bianchi" data-nome-cognome>
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scrivete nome e cognome.</span></p>
+        </div>
+        <div class="riga-campi">
+          <div class="campo">
+            <label class="campo__etichetta" for="g-telefono">Telefono</label>
+            <input class="campo__input" id="g-telefono" name="telefono" type="tel" required maxlength="30" autocomplete="tel" inputmode="tel" placeholder="es. 333 123 4567" data-telefono>
+            <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Controllate il numero.</span></p>
+          </div>
+          <div class="campo">
+            <label class="campo__etichetta" for="g-email">Email</label>
+            <input class="campo__input" id="g-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="Per inviarvi la proposta" data-email>
+            <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Controllate l’indirizzo email.</span></p>
+          </div>
         </div>
         <div class="campo">
           <label class="campo__etichetta" for="g-note">Note <span class="opz">(facoltativo)</span></label>
