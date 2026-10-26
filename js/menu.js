@@ -30,7 +30,7 @@
     'contorni-dolci': 'contorni e dolci', bevande: 'le bevande', vini: 'i vini'
   };
   var VUOTO = 'Avvisaci quando prenoti: la cucina può proporti un’alternativa.';
-  var ROMANI = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi', 'xii', 'xiii', 'xiv', 'xv'];
+  var ROMANI = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV'];
 
   function sezioni() { return document.querySelectorAll('[data-sezione]'); }
 

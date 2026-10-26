@@ -2,14 +2,14 @@
   "_nota": "Menù alla carta. 'allergeni' = elenco usato dal filtro; 'testo_allergeni' sostituisce l'elenco mostrato quando serve una frase. 'sotto' = riga in corsivo (produttore, traduzione).",
   "sezioni": [
     {
-      "id": "antipasti", "numero": "i.", "titolo": "Antipasti", "breve": "Antipasti",
+      "id": "antipasti", "numero": "I.", "titolo": "Antipasti", "breve": "Antipasti",
       "piatti": [
         {"nome": "Salumi misti con verdure sott’olio", "prezzo": "7,00 €", "allergeni": ["Solfiti"]},
         {"nome": "Salumi misti per due", "prezzo": "12,00 €", "allergeni": ["Solfiti"]}
       ]
     },
     {
-      "id": "primi", "numero": "ii.", "titolo": "Primi", "breve": "Primi",
+      "id": "primi", "numero": "II.", "titolo": "Primi", "breve": "Primi",
       "vuoto": "La nostra pasta è all’uovo e di grano. Avvisaci quando prenoti: la cucina può proporti un’alternativa.",
       "piatti": [
         {"nome": "Tortellini al burro e salvia", "prezzo": "11,00 €", "allergeni": ["Glutine", "Uova", "Latte"]},
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "id": "secondi", "numero": "iii.", "titolo": "Secondi", "breve": "Secondi",
+      "id": "secondi", "numero": "III.", "titolo": "Secondi", "breve": "Secondi",
       "nota": "Le carni alla griglia non contengono allergeni principali: chiedi per salse e contorni.",
       "piatti": [
         {"nome": "Bistecca di cavallo o di manzo", "prezzo": "10,00 €", "allergeni": []},
@@ -38,7 +38,7 @@
       ]
     },
     {
-      "id": "freddi", "numero": "iv.", "titolo": "Piatti freddi", "breve": "Freddi",
+      "id": "freddi", "numero": "IV.", "titolo": "Piatti freddi", "breve": "Freddi",
       "piatti": [
         {"nome": "Vitello tonnato", "prezzo": "9,00 €", "allergeni": ["Pesce", "Uova", "Senape"]},
         {"nome": "Prosciutto e melone", "prezzo": "8,00 €", "allergeni": []},
@@ -47,7 +47,7 @@
       ]
     },
     {
-      "id": "contorni-dolci", "numero": "v.", "titolo": "Contorni e dolci", "breve": "Contorni e dolci",
+      "id": "contorni-dolci", "numero": "V.", "titolo": "Contorni e dolci", "breve": "Contorni e dolci",
       "piatti": [
         {"nome": "Contorno singolo", "prezzo": "3,00 €", "allergeni": []},
         {"nome": "Contorni misti", "prezzo": "6,00 €", "allergeni": []},
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "id": "bevande", "numero": "vi.", "titolo": "Bevande e caffè", "breve": "Bevande",
+      "id": "bevande", "numero": "VI.", "titolo": "Bevande e caffè", "breve": "Bevande",
       "nota": "Coperto 2,50 €",
       "piatti": [
         {"nome": "Acqua minerale 75 cl", "prezzo": "2,50 €", "allergeni": []},
@@ -72,7 +72,7 @@
       ]
     },
     {
-      "id": "vini", "numero": "vii.", "titolo": "Carta dei vini", "breve": "Vini", "vini": true,
+      "id": "vini", "numero": "VII.", "titolo": "Carta dei vini", "breve": "Vini", "vini": true,
       "nota": "Vini del territorio tra Custoza, Bardolino, Lugana e Valpolicella. Prezzi a bottiglia. Tutti i vini contengono solfiti.",
       "gruppi": [
         {"titolo": "Vini bianchi", "piatti": [
