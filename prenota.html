@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prenota — Ristorante Mara</title>
+  <style>
+    :root {
+      --bg: #f5f1ea; --card: #ffffff; --ink: #2b2622; --muted: #6b6259;
+      --line: #ddd5c9; --accent: #2f5d3a; --accent-ink: #ffffff; --error: #9b2c1f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    header { padding: 20px 16px; border-bottom: 1px solid var(--line); }
+    header p { max-width: 520px; margin: 0 auto; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 14px; }
+    main { max-width: 520px; margin: 0 auto; padding: 32px 16px 48px; }
+    h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.2; }
+    .intro { margin: 0 0 24px; color: var(--muted); }
+    form, .esito { background: var(--card); border-radius: 12px; padding: 24px; }
+    .riga { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .campo { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    label { font-weight: 600; font-size: 14px; }
+    .opz { font-weight: 400; color: var(--muted); }
+    input, select, textarea {
+      font: inherit; color: inherit; background: #fff; width: 100%;
+      border: 1px solid var(--line); border-radius: 8px; padding: 12px; min-height: 48px;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+    .trappola { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    button {
+      font: inherit; font-weight: 600; width: 100%; min-height: 52px; border: 0; border-radius: 8px;
+      background: var(--accent); color: var(--accent-ink); cursor: pointer; margin-top: 8px;
+    }
+    button[disabled] { opacity: .6; cursor: progress; }
+    .errore { color: var(--error); margin: 12px 0 0; min-height: 1.5em; }
+    .nota { font-size: 14px; color: var(--muted); margin: 16px 0 0; }
+    .esito h2 { margin: 0 0 8px; font-size: 22px; }
+    .esito p { margin: 0; color: var(--muted); }
+    [hidden] { display: none !important; }
+    @media (max-width: 420px) { .riga { grid-template-columns: 1fr; gap: 0; } }
+  </style>
+</head>
+<body>
+<header><p>Ristorante Mara</p></header>
+<main>
+  <h1>Prenota un tavolo</h1>
+  <p class="intro">Siamo aperti a pranzo, dalle 12 alle 14. Ti confermiamo la prenotazione via email.</p>
+
+  <form id="form" novalidate>
+    <div class="campo">
+      <label for="nome">Nome e cognome</label>
+      <input id="nome" name="nome" autocomplete="name" required maxlength="80">
+    </div>
+    <div class="riga">
+      <div class="campo">
+        <label for="telefono">Telefono</label>
+        <input id="telefono" name="telefono" type="tel" autocomplete="tel" required maxlength="25">
+      </div>
+      <div class="campo">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required maxlength="120">
+      </div>
+    </div>
+    <div class="riga">
+      <div class="campo">
+        <label for="data">Data</label>
+        <input id="data" name="data" type="date" required>
+      </div>
+      <div class="campo">
+        <label for="ora">Orario</label>
+        <select id="ora" name="ora" required>
+          <option value="">Scegli</option>
+          <option>12:00</option><option>12:15</option><option>12:30</option><option>12:45</option>
+          <option>13:00</option><option>13:15</option><option>13:30</option>
+        </select>
+      </div>
+    </div>
+    <div class="campo">
+      <label for="persone">Persone</label>
+      <select id="persone" name="persone" required></select>
+    </div>
+    <div class="campo">
+      <label for="note">Note <span class="opz">(facoltativo)</span></label>
+      <textarea id="note" name="note" maxlength="500" placeholder="Allergie, seggiolone, occasioni speciali…"></textarea>
+    </div>
+    <div class="trappola" aria-hidden="true">
+      <label for="sito">Lascia vuoto</label>
+      <input id="sito" name="sito" tabindex="-1" autocomplete="off">
+    </div>
+
+    <button id="invia" type="submit">Invia richiesta</button>
+    <p class="errore" id="errore" role="alert"></p>
+    <p class="nota">La prenotazione è valida solo dopo la nostra mail di conferma.</p>
+  </form>
+
+  <div class="esito" id="esito" hidden>
+    <h2>Richiesta inviata</h2>
+    <p>Grazie! Ti scriveremo a <strong id="esito-email"></strong> appena confermiamo il tavolo.</p>
+  </div>
+</main>
+
+<script>
+  // ⬇︎ Incolla qui l'URL dell'app web di Apps Script (finisce con /exec)
+  var URL_PRENOTAZIONI = 'https://script.google.com/macros/s/AKfycbxaXMOKzb5O8Jcahcw9ja-_33KJNZ_npi7u2oEKxchhHECTZMTgPzfBJezPVzs88zqs/exec';
+
+  var form = document.getElementById('form');
+  var bottone = document.getElementById('invia');
+  var errore = document.getElementById('errore');
+
+  // Persone 1–12, default 2
+  var selPersone = document.getElementById('persone');
+  for (var n = 1; n <= 12; n++) {
+    var o = document.createElement('option');
+    o.value = n; o.textContent = n; if (n === 2) o.selected = true;
+    selPersone.appendChild(o);
+  }
+
+  // Date prenotabili: da oggi a 60 giorni
+  function iso(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  var oggi = new Date();
+  var max = new Date(); max.setDate(max.getDate() + 60);
+  var campoData = document.getElementById('data');
+  campoData.min = iso(oggi);
+  campoData.max = iso(max);
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    errore.textContent = '';
+
+    var dati = {};
+    new FormData(form).forEach(function (v, k) { dati[k] = v; });
+
+    if (!dati.nome || !dati.telefono || !dati.email || !dati.data || !dati.ora) {
+      errore.textContent = 'Compila tutti i campi obbligatori.';
+      return;
+    }
+    if (URL_PRENOTAZIONI.indexOf('/exec') === -1) {
+      errore.textContent = "Manca l'URL dell'app web in fondo a questo file.";
+      return;
+    }
+
+    bottone.disabled = true;
+    bottone.textContent = 'Invio in corso…';
+
+    // text/plain evita il controllo CORS preliminare che Apps Script non gestisce
+    fetch(URL_PRENOTAZIONI, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(dati)
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.errore || 'Qualcosa è andato storto, riprova.');
+        document.getElementById('esito-email').textContent = dati.email;
+        form.hidden = true;
+        document.getElementById('esito').hidden = false;
+      })
+      .catch(function (err) {
+        errore.textContent = err.message === 'Failed to fetch'
+          ? 'Connessione non riuscita, riprova.'
+          : err.message;
+        bottone.disabled = false;
+        bottone.textContent = 'Invia richiesta';
+      });
+  });
+</script>
+</body>
+</html>

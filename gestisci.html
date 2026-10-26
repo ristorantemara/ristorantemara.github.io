@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Gestisci prenotazione — Ristorante Mara</title>
+  <style>
+    :root {
+      --bg: #f5f1ea; --card: #ffffff; --ink: #2b2622; --muted: #6b6259; --line: #ece6dc;
+      --ok: #2f5d3a; --no: #8a3b2e; --error: #9b2c1f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    header { padding: 20px 16px; border-bottom: 1px solid #ddd5c9; }
+    header p { max-width: 520px; margin: 0 auto; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 14px; }
+    main { max-width: 520px; margin: 0 auto; padding: 32px 16px 48px; }
+    .card { background: var(--card); border-radius: 12px; padding: 24px; }
+    h1 { margin: 0 0 16px; font-size: 22px; line-height: 1.25; }
+    dl { margin: 0; display: grid; grid-template-columns: 100px 1fr; }
+    dt, dd { margin: 0; padding: 8px 0; border-top: 1px solid var(--line); }
+    dt { color: var(--muted); }
+    dd { font-weight: 600; overflow-wrap: anywhere; }
+    .azioni { display: grid; gap: 12px; margin-top: 24px; }
+    button {
+      font: inherit; font-weight: 600; width: 100%; min-height: 52px; border-radius: 8px;
+      cursor: pointer; border: 0; color: #fff;
+    }
+    button.conferma { background: var(--ok); }
+    button.rifiuta { background: var(--no); }
+    button.secondario { background: transparent; color: var(--no); border: 1px solid #d9c7c2; min-height: 44px; }
+    button[disabled] { opacity: .6; cursor: progress; }
+    .msg { margin: 16px 0 0; color: var(--muted); }
+    .msg.errore { color: var(--error); }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<header><p>Ristorante Mara</p></header>
+<main>
+  <div class="card">
+    <h1 id="titolo">Carico la prenotazione…</h1>
+    <dl id="dettagli" hidden></dl>
+    <div class="azioni" id="azioni" hidden>
+      <button id="principale" type="button"></button>
+      <button id="alternativa" type="button" class="secondario"></button>
+    </div>
+    <p class="msg" id="msg" role="status"></p>
+  </div>
+</main>
+
+<script>
+  var URL_PRENOTAZIONI = 'https://script.google.com/macros/s/AKfycbxaXMOKzb5O8Jcahcw9ja-_33KJNZ_npi7u2oEKxchhHECTZMTgPzfBJezPVzs88zqs/exec';
+
+  var q = new URLSearchParams(location.search);
+  var id = q.get('id') || '';
+  var token = q.get('token') || '';
+  var azione = q.get('azione') === 'rifiuta' ? 'rifiuta' : 'conferma';
+
+  var titolo = document.getElementById('titolo');
+  var dettagli = document.getElementById('dettagli');
+  var azioni = document.getElementById('azioni');
+  var principale = document.getElementById('principale');
+  var alternativa = document.getElementById('alternativa');
+  var msg = document.getElementById('msg');
+
+  function chiama(dati) {
+    return fetch(URL_PRENOTAZIONI, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(dati)
+    }).then(function (r) { return r.json(); });
+  }
+
+  function errore(testo) {
+    msg.className = 'msg errore';
+    msg.textContent = testo;
+  }
+
+  function riga(etichetta, valore) {
+    var dt = document.createElement('dt'); dt.textContent = etichetta;
+    var dd = document.createElement('dd'); dd.textContent = valore;
+    dettagli.appendChild(dt); dettagli.appendChild(dd);
+  }
+
+  function preparaPulsanti() {
+    var conferma = azione === 'conferma';
+    titolo.textContent = conferma ? 'Confermare questa prenotazione?' : 'Rifiutare questa prenotazione?';
+    principale.className = conferma ? 'conferma' : 'rifiuta';
+    principale.textContent = conferma ? 'Conferma e avvisa il cliente' : 'Rifiuta e avvisa il cliente';
+    alternativa.textContent = conferma ? 'No, voglio rifiutarla' : 'No, voglio confermarla';
+  }
+
+  function decidi() {
+    principale.disabled = true; alternativa.disabled = true;
+    msg.className = 'msg'; msg.textContent = 'Invio in corso…';
+    chiama({ tipo: 'decidi', id: id, token: token, azione: azione })
+      .then(function (r) {
+        azioni.hidden = true;
+        if (r.ok) {
+          titolo.textContent = r.stato === 'Confermata' ? 'Prenotazione confermata ✓' : 'Prenotazione rifiutata';
+          msg.textContent = 'Fatto: il cliente ha ricevuto una mail.';
+        } else if (r.giaGestita) {
+          titolo.textContent = 'Prenotazione già ' + String(r.stato).toLowerCase();
+          msg.textContent = "Era già stata gestita: non è stata inviata un'altra mail.";
+        } else {
+          throw new Error(r.errore);
+        }
+      })
+      .catch(function (e) {
+        principale.disabled = false; alternativa.disabled = false;
+        errore(e.message && e.message !== 'Failed to fetch' ? e.message : 'Connessione non riuscita, riprova.');
+      });
+  }
+
+  principale.addEventListener('click', decidi);
+  alternativa.addEventListener('click', function () {
+    azione = azione === 'conferma' ? 'rifiuta' : 'conferma';
+    preparaPulsanti();
+  });
+
+  if (!id || !token) {
+    titolo.textContent = 'Link non valido';
+    errore('Apri di nuovo il pulsante dalla mail.');
+  } else {
+    chiama({ tipo: 'leggi', id: id, token: token })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.errore);
+        var p = r.prenotazione;
+        riga('Nome', p.nome);
+        riga('Quando', p.dataLeggibile + ' ore ' + p.ora);
+        riga('Persone', String(p.persone));
+        riga('Telefono', p.telefono);
+        riga('Email', p.email);
+        if (p.note) riga('Note', p.note);
+        dettagli.hidden = false;
+
+        if (p.stato !== 'In attesa') {
+          titolo.textContent = 'Prenotazione già ' + p.stato.toLowerCase();
+          msg.textContent = 'Non serve fare altro.';
+        } else {
+          preparaPulsanti();
+          azioni.hidden = false;
+        }
+      })
+      .catch(function (e) {
+        titolo.textContent = 'Non riesco ad aprire la prenotazione';
+        errore(e.message && e.message !== 'Failed to fetch' ? e.message : 'Connessione non riuscita, ricarica la pagina.');
+      });
+  }
+</script>
+</body>
+</html>
