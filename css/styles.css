@@ -1037,3 +1037,7 @@ select.campo__input {
 /* Caroselli con scroll-snap: lo snap ignora il padding del contenitore,
    quindi senza scroll-padding la prima card si allinea al bordo e il gutter iniziale sparisce. */
 .specialita__griglia, .archi, .striscia-giorni { scroll-padding-inline: var(--gutter); }
+
+/* Il <legend> di un fieldset non è un flex item, quindi ignora il gap:
+   con float diventa un figlio normale e prende la stessa spaziatura del resto. */
+.orari-arrivo > legend { float: left; width: 100%; padding: 0; }
