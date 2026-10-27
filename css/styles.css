@@ -883,7 +883,11 @@ select.campo__input {
 .contatore__valore:focus-visible, .contatore__valore:focus { outline: none; background: var(--sfoglia); box-shadow: inset 0 0 0 2px var(--inchiostro); }
 .contatore:has(.contatore__valore[aria-invalid="true"]) { border-color: var(--errore); }
 
-.orari-arrivo { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.orari-arrivo { border: 0; padding: 0; margin: 0; display: block; min-width: 0; }
+/* Il <legend> non segue il gap dei flex in tutti i browser (Safari lo attacca agli orari):
+   spaziature esplicite, 12px tra titoletto, orari e note come nel Figma */
+.orari-arrivo > legend { display: block; float: none; width: 100%; padding: 0; margin: 0 0 12px; }
+.orari-arrivo > :not(legend) + :not(legend) { margin-top: 12px; }
 .orari-arrivo__lista { display: flex; flex-wrap: wrap; gap: 10px; }
 .orario {
   width: 92px; height: 48px; border-radius: 999px; border: 1px solid var(--bordo); background: var(--farina);
@@ -1054,9 +1058,6 @@ body.is-inviata .flusso__tenda { display: block; }
    quindi senza scroll-padding la prima card si allinea al bordo e il gutter iniziale sparisce. */
 .specialita__griglia, .archi, .striscia-giorni { scroll-padding-inline: var(--gutter); }
 
-/* Il <legend> di un fieldset non è un flex item, quindi ignora il gap:
-   con float diventa un figlio normale e prende la stessa spaziatura del resto. */
-.orari-arrivo > legend { float: left; width: 100%; padding: 0; }
 
 /* Testi legali: indice, tabelle, elenchi */
 .indice-legale { margin: 24px 0 8px; padding: 20px 24px; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
