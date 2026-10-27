@@ -5,6 +5,12 @@
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   function valida(campo) {
+    var spunta = campo.querySelector('input[type="checkbox"][required]');
+    if (spunta) {
+      campo.classList.toggle('is-errore', !spunta.checked);
+      spunta.setAttribute('aria-invalid', spunta.checked ? 'false' : 'true');
+      return spunta.checked;
+    }
     var input = campo.querySelector('.campo__input');
     if (!input) return true;
     var v = input.value.trim();
@@ -41,6 +47,8 @@
     form.querySelectorAll('[data-data-futura]').forEach(function (i) { i.min = window.maraOggi(); });
 
     campi.forEach(function (c) {
+      var s = c.querySelector('input[type="checkbox"][required]');
+      if (s) s.addEventListener('change', function () { valida(c); });
       var i = c.querySelector('.campo__input');
       if (!i) return;
       i.addEventListener('blur', function () { if (i.value.trim()) valida(c); });
@@ -52,7 +60,7 @@
       erroreForm.hidden = true;
       var primoErrato = null;
       campi.forEach(function (c) { if (!valida(c) && !primoErrato) primoErrato = c; });
-      if (primoErrato) { primoErrato.querySelector('.campo__input').focus(); return; }
+      if (primoErrato) { primoErrato.querySelector('.campo__input, input').focus(); return; }
 
       var dati = { tipo: form.getAttribute('data-form-richiesta') };
       new FormData(form).forEach(function (v, k) { dati[k] = String(v).trim(); });

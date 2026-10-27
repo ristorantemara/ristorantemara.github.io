@@ -96,10 +96,14 @@ script: js/richieste.js
             <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Controllate l’indirizzo email.</span></p>
           </div>
         </div>
+        <div class="campo campo--spunta">
+          <label class="spunta"><input type="checkbox" name="consenso" required><span class="spunta__box" aria-hidden="true"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span><span>Ho letto l’<a href="privacy.html">informativa privacy</a> e, se nelle note indico allergie o intolleranze, acconsento a usarle per preparare il menù.</span></label>
+          <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Spuntate la casella per inviare la richiesta.</span></p>
+        </div>
         <div class="trappola" aria-hidden="true"><label>Lascia vuoto<input name="sito" tabindex="-1" autocomplete="off"></label></div>
         <div class="form-errore" data-form-errore hidden role="alert"></div>
         <button class="btn btn--primario btn--blocco" type="submit">Invia la richiesta<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
-        <p class="testo-s">Usiamo i vostri dati solo per rispondere a questa richiesta. Se nelle note indicate allergie o intolleranze, inviando acconsentite a usarle per preparare il menù. <a href="privacy.html">Informativa privacy</a>.</p>
+        <p class="testo-s">Usiamo i vostri dati solo per rispondere a questa richiesta.</p>
       </form>
     </div>
   </section>

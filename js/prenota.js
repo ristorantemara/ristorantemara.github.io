@@ -371,7 +371,8 @@
       tipo: 'prenota',
       nome: valore('nome'), telefono: valore('telefono'), email: valore('email'),
       data: stato.data, ora: stato.ora, persone: stato.persone, note: valore('note'),
-      sito: valore('sito')
+      sito: valore('sito'),
+      consenso: form.querySelector('[name="consenso"]').checked
     }).then(function (r) {
       if (!r.ok) throw new Error(r.errore || 'Qualcosa è andato storto, riprova.');
       mostraInviata();

@@ -198,6 +198,24 @@
   }
   function salvaScelta(mappeSi) {
     try { localStorage.setItem(CHIAVE, JSON.stringify({ mappe: mappeSi, t: Date.now() })); } catch (e) { /* storage non disponibile */ }
+    registraConsenso(mappeSi);
+  }
+
+  /* Registro dei consensi (richiesto dal Garante): un codice casuale del browser e la scelta, nessun dato personale */
+  function idConsenso() {
+    var id = null;
+    try { id = localStorage.getItem('mara-consenso-id'); } catch (e) { /* storage non disponibile */ }
+    if (!id) {
+      id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+        : 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+      try { localStorage.setItem('mara-consenso-id', id); } catch (e) { /* storage non disponibile */ }
+    }
+    return id;
+  }
+  function registraConsenso(mappeSi) {
+    if (!window.maraInvia) return;
+    window.maraInvia({ tipo: 'consenso-cookie', id: idConsenso(), mappe: Boolean(mappeSi), pagina: location.pathname })
+      .catch(function () { /* il sito funziona comunque */ });
   }
 
   if (banner) {
@@ -260,6 +278,6 @@
   }
   document.querySelectorAll('[data-mappa]').forEach(function (box) {
     if (mappeConsentite()) caricaMappa(box);
-    box.querySelector('[data-mappa-carica]').addEventListener('click', function () { impostaMappe(true); });
+    box.querySelector('[data-mappa-carica]').addEventListener('click', function () { impostaMappe(true); registraConsenso(true); });
   });
 })();
