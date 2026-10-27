@@ -266,6 +266,7 @@
     scrivi('nota-orari', g.aperto
       ? 'Siamo aperti dalle ' + g.dalle + ' alle ' + g.alle + ': l’ultimo tavolo si prenota alle ' + g.ultima + '.'
       : '');
+    scrivi('nota-orari-breve', g.aperto ? 'Aperti ' + g.dalle + '–' + g.alle + ' · ultimo tavolo alle ' + g.ultima : '');
   }
 
   /** Solo il giorno di chiusura settimanale e nessuna chiusura straordinaria: le frasi del Figma */
@@ -308,6 +309,11 @@
     3: 'È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.'
   };
 
+  var TITOLI_MOBILE = { 1: 'Prenota un tavolo', 2: 'I tuoi dati', 3: 'Conferma' };
+  document.querySelector('[data-barra-indietro]').addEventListener('click', function () {
+    if (stato.passo > 1) vaiA(stato.passo - 1);
+  });
+
   function vaiA(passo, daStoria, iniziale) {
     stato.passo = passo;
     form.querySelectorAll('[data-passo]').forEach(function (s) { s.hidden = Number(s.dataset.passo) !== passo; });
@@ -320,6 +326,10 @@
     document.querySelectorAll('.passi-prenotazione__linea').forEach(function (l, i) { l.classList.toggle('is-fatto', i + 1 < passo); });
     document.querySelectorAll('[data-avanzamento] span').forEach(function (s, i) { s.classList.toggle('is-fatto', i < passo); });
     document.querySelector('[data-passo-mobile]').textContent = 'Passo ' + passo + ' di 3';
+    // barra mobile (Figma): titolo del passo, ✕ al primo passo, freccia indietro dal secondo
+    document.querySelector('[data-titolo-mobile]').textContent = TITOLI_MOBILE[passo];
+    document.querySelector('[data-barra-esci]').hidden = passo > 1;
+    document.querySelector('[data-barra-indietro]').hidden = passo === 1;
     document.querySelector('[data-nota-passo]').textContent = passo === 1 ? notaRiepilogo() : NOTE[passo];
     if (passo === 3) riempiRiepilogo();
     if (!daStoria) history.pushState({ passo: passo }, '', passo === 1 ? location.pathname : '#passo-' + passo);
@@ -416,6 +426,8 @@
     document.querySelector('[data-titolo-mobile]').textContent = 'Richiesta inviata';
     document.querySelector('[data-passo-mobile]').hidden = true;
     document.body.classList.add('is-inviata');
+    document.querySelector('[data-barra-esci]').hidden = false;
+    document.querySelector('[data-barra-indietro]').hidden = true;
     history.replaceState({ passo: 4 }, '', location.pathname + '#inviata');
     window.scrollTo(0, 0);
     document.getElementById('t-inviata').focus({ preventScroll: true });

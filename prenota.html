@@ -125,7 +125,8 @@
       <svg class="logo__segno" viewBox="0 0 40 40" aria-hidden="true"><path class="nodo-a" d="M24.5002 22.9167C24.5002 20.2818 22.316 17.9998 18.7502 17.9997C14.7513 17.9997 12.1663 20.5463 12.1663 23.6667C12.1663 26.628 14.8657 29.4085 19.7649 29.4948C19.3587 29.2664 19.0834 28.8328 19.0833 28.3337C19.0833 27.5974 19.68 26.9998 20.4163 26.9997C22.7632 26.9997 24.5002 25.2636 24.5002 22.9167ZM27.1663 22.9167C27.1663 25.8148 25.4787 28.1986 22.9963 29.1813C28.3219 28.0235 32.0002 23.819 32.0002 18.7497C32.0001 12.7759 26.8929 7.99982 20.0002 7.99967C19.2639 7.99967 18.6663 7.40304 18.6663 6.66666C18.6663 5.93028 19.2639 5.33366 20.0002 5.33366C28.1071 5.33381 34.6661 11.0573 34.6663 18.7497C34.6663 26.4422 28.1072 32.1665 20.0002 32.1667C14.0481 32.1667 9.50024 28.6583 9.50024 23.6667C9.50024 18.787 13.5825 15.3337 18.7502 15.3337C23.5175 15.3338 27.1663 18.5517 27.1663 22.9167Z"/><path class="nodo-b" d="M5.33374 21.8333C5.33374 21.097 5.93037 20.5003 6.66675 20.5003C7.40313 20.5003 7.99976 21.097 7.99976 21.8333C7.99976 25.7437 10.2277 29.0717 12.5398 31.0755C13.0962 31.5577 13.1566 32.3999 12.6746 32.9564C12.1923 33.5128 11.3502 33.5732 10.7937 33.0911C8.10584 30.7617 5.33374 26.7562 5.33374 21.8333Z"/></svg>
       <span><span class="logo__nome">Mara</span><span class="logo__sotto">Ristorante · dal 1967</span></span>
     </a>
-    <a class="barra-flusso__chiudi" href="index.html" aria-label="Esci dalla prenotazione"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></a>
+    <a class="barra-flusso__chiudi" href="index.html" aria-label="Esci dalla prenotazione" data-barra-esci><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></a>
+    <button class="barra-flusso__chiudi" type="button" aria-label="Torna al passo precedente" data-barra-indietro hidden><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrowLeft"/></svg></button>
     <div class="barra-flusso__titolo-mobile"><p class="label" data-titolo-mobile>Prenota un tavolo</p><p class="testo-s" data-passo-mobile>Passo 1 di 3</p></div>
     <ol class="passi-prenotazione" data-passi aria-label="Avanzamento">
       <li class="passi-prenotazione__voce" data-passo-voce="1"><span class="passi-prenotazione__tondo"><span>1</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#check"/></svg></span>Quando</li>
@@ -169,28 +170,30 @@
         </fieldset>
 
         <div class="quando__persone">
-          <label class="campo__etichetta" id="et-persone" for="persone-numero">Quante persone?</label>
+          <label class="campo__etichetta" id="et-persone" for="persone-numero"><span class="solo-desktop">Quante persone?</span><span class="solo-mobile">Persone</span></label>
           <div class="contatore" role="group" aria-labelledby="et-persone">
             <button type="button" class="contatore__bottone" data-persone="-1" aria-label="Una persona in meno"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#minus"/></svg></button>
             <input class="contatore__valore" id="persone-numero" data-persone-valore type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" value="2" role="spinbutton" aria-valuemin="1" aria-valuemax="12" aria-valuenow="2" aria-describedby="persone-errore">
             <button type="button" class="contatore__bottone" data-persone="1" aria-label="Una persona in più"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#plus"/></svg></button>
           </div>
           <p class="campo__errore flusso__errore" data-errore="persone" id="persone-errore" role="alert"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Si prenota online fino a 12 persone.</span></p>
-          <a class="testo-s link-gruppi" href="gruppi.html#preventivo">Più di 12 persone? Richiedi un preventivo per gruppi.</a>
+          <a class="testo-s link-gruppi solo-desktop" href="gruppi.html#preventivo">Più di 12 persone? Richiedi un preventivo per gruppi.</a>
         </div>
       </div>
 
       <fieldset class="orari-arrivo">
-        <legend class="campo__etichetta">A che ora arrivate?</legend>
+        <legend class="campo__etichetta"><span class="solo-desktop">A che ora arrivate?</span><span class="solo-mobile">Orario di arrivo</span></legend>
         <div class="orari-arrivo__lista" role="radiogroup" data-orari-arrivo>
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="12:00">12:00</button>
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="12:30">12:30</button>
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:00">13:00</button>
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:30">13:30</button>
         </div>
-        <p class="testo-s" data-r="nota-orari">Siamo aperti dalle 12:00 alle 14:00: l’ultimo tavolo si prenota alle 13:30.</p>
+        <p class="testo-s solo-desktop" data-r="nota-orari">Siamo aperti dalle 12:00 alle 14:00: l’ultimo tavolo si prenota alle 13:30.</p>
+        <p class="testo-s testo-inchiostro solo-mobile" data-r="nota-orari-breve">Aperti 12:00–14:00 · ultimo tavolo alle 13:30</p>
         <p class="campo__errore flusso__errore" data-errore="ora"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegli l’orario di arrivo.</span></p>
       </fieldset>
+      <a class="testo-s link-gruppi solo-mobile" href="gruppi.html#preventivo">Più di 12 persone? Richiedi un preventivo per gruppi.</a>
 
       <div class="flusso__azioni">
         <button class="btn btn--primario" type="button" data-avanti="2"><span class="solo-desktop">Continua</span><span class="solo-mobile" data-continua-mobile>Continua</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
@@ -218,7 +221,7 @@
       <div class="campo">
         <label class="campo__etichetta" for="p-email">Email *</label>
         <input class="campo__input" id="p-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="es. giulia.rossi@email.it">
-        <p class="campo__aiuto">Qui ti arriva la conferma della prenotazione.</p>
+        <p class="campo__aiuto"><span class="solo-desktop">Qui ti arriva la conferma della prenotazione.</span><span class="solo-mobile">Qui ti arriva la conferma.</span></p>
         <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>L’email non sembra completa: controlla che ci siano @ e il dominio.</span></p>
       </div>
       <div class="campo">
@@ -243,8 +246,8 @@
         <h1 class="titolo-flusso titolo-coppia" id="t-passo-3" tabindex="-1"><span>Controlla</span> <span class="accento">e invia</span></h1>
       </div>
       <dl class="tabella-riepilogo">
-        <div><dt>Giorno</dt><dd data-r="giorno-lungo"></dd></div>
-        <div><dt>Orario</dt><dd data-r="ora-lunga"></dd></div>
+        <div><dt>Giorno</dt><dd><span class="solo-desktop" data-r="giorno-lungo"></span><span class="solo-mobile" data-r="giorno-breve"></span></dd></div>
+        <div><dt>Orario</dt><dd><span class="solo-desktop" data-r="ora-lunga"></span><span class="solo-mobile" data-r="ora"></span></dd></div>
         <div><dt>Persone</dt><dd data-r="persone"></dd></div>
         <div><dt>Nome</dt><dd data-r="nome"></dd></div>
         <div><dt>Telefono</dt><dd data-r="telefono"></dd></div>
@@ -252,6 +255,7 @@
         <div data-r-riga="note"><dt>Richieste</dt><dd data-r="note"></dd></div>
       </dl>
       <p class="testo-s modifica">Qualcosa non va? <button type="button" class="link-modifica" data-indietro="1">Modifica</button></p>
+      <p class="riepilogo__nota solo-mobile"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg><span>È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.</span></p>
       <div class="form-errore" data-invio-errore hidden role="alert"></div>
       <div class="flusso__azioni">
         <button class="btn btn--secondario" type="button" data-indietro="2">Indietro<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrowLeft"/></svg></button>
@@ -273,13 +277,13 @@
   <section class="flusso__inviata" data-inviata hidden aria-labelledby="t-inviata">
     <span class="esito__icona" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#check"/></svg></span>
     <h1 class="display-xl" id="t-inviata" tabindex="-1">Grazie<span data-r="nome-proprio"></span>!</h1>
-    <p class="esito__sotto">La tua richiesta è arrivata in cucina.</p>
+    <p class="esito__sotto"><span class="solo-desktop">La tua richiesta è arrivata in cucina.</span><span class="solo-mobile">La richiesta è arrivata in cucina.</span></p>
     <dl class="tabella-riepilogo solo-mobile">
       <div><dt>Giorno</dt><dd data-r="giorno-breve"></dd></div>
       <div><dt>Orario</dt><dd data-r="ora"></dd></div>
       <div><dt>Persone</dt><dd data-r="persone"></dd></div>
     </dl>
-    <p class="testo-l"><span class="solo-desktop" data-r="frase-riepilogo"></span> Ti abbiamo scritto a <span data-r="email"></span>: la conferma del tavolo arriverà lì (controlla anche lo spam). Per modifiche chiamaci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
+    <p class="testo-l"><span class="solo-desktop" data-r="frase-riepilogo"></span> Ti abbiamo scritto a <span data-r="email"></span>: la conferma del tavolo arriverà lì (controlla anche lo spam). <span class="solo-desktop">Per modifiche chiamaci allo</span><span class="solo-mobile">Per modifiche:</span> <a href="tel:+390454857283">045 485 7283</a>.</p>
     <div class="azioni flusso__inviata-azioni">
       <button class="btn btn--primario" type="button" data-calendario-ics>Aggiungi al calendario<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></button>
       <a class="btn btn--secondario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Indicazioni stradali<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></a>

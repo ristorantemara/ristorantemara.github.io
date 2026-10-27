@@ -9,7 +9,7 @@ attivo:
       <div class="hero__testo">
         <p class="stato-apertura" data-stato-apertura="breve"><span class="pallino" aria-hidden="true"></span><span data-stato-testo>Aperti oggi · 12:00–14:00</span></p>
         <h1 class="hero__titolo display-xxl"><span>Il tortellino</span> <span class="accento">nodo d’amore</span> <span>dal 1967.</span></h1>
-        <p class="testo-l">Ristorante di famiglia a Valeggio sul Mincio, a due passi da Borghetto. Sfoglia tirata a mano, carni alla griglia, vini del territorio e un parcheggio grande abbastanza anche per i pullman.</p>
+        <p class="testo-l"><span class="solo-desktop">Ristorante di famiglia a Valeggio sul Mincio, a due passi da Borghetto. Sfoglia tirata a mano, carni alla griglia, vini del territorio e un parcheggio grande abbastanza anche per i pullman.</span><span class="solo-mobile">Ristorante di famiglia a Valeggio sul Mincio, a due passi da Borghetto. Parcheggio anche per pullman.</span></p>
         <div class="hero__azioni">
           <a class="btn btn--primario" href="prenota.html">Prenota un tavolo<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></a>
           <a class="btn btn--secondario" href="menu.html">Sfoglia il menù<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
@@ -28,8 +28,8 @@ attivo:
   <section class="da-sapere sfondo-farina" aria-label="Da sapere">
     <ul class="contenitore">
       <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#clock"/></svg></span><span><span class="info__titolo" data-orari-testo="fascia">Aperti 12:00–14:00</span><span class="info__testo" data-orari-testo="giorni">Tutti i giorni, martedì chiuso</span></span></li>
-      <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></span><span><span class="info__titolo">A due passi da Borghetto</span><span class="info__testo">Parco Sigurtà vicino, Garda a 15 minuti</span></span></li>
-      <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#bus"/></svg></span><span><span class="info__titolo">Parcheggio ampio</span><span class="info__testo">Anche per pullman e gruppi</span></span></li>
+      <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></span><span><span class="info__titolo">A due passi da Borghetto</span><span class="info__testo"><span class="solo-desktop">Parco Sigurtà vicino, Garda a 15 minuti</span><span class="solo-mobile">Garda a 15 minuti</span></span></span></li>
+      <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#bus"/></svg></span><span><span class="info__titolo">Parcheggio ampio</span><span class="info__testo"><span class="solo-desktop">Anche per pullman e gruppi</span><span class="solo-mobile">Anche per pullman</span></span></span></li>
       <li class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#utensils"/></svg></span><span><span class="info__titolo">Menù con allergeni</span><span class="info__testo">Indicati su ogni piatto</span></span></li>
     </ul>
   </section>
@@ -64,31 +64,31 @@ attivo:
     </div>
   </section>
 
-  <section class="sezione sfondo-scuro su-scuro" aria-labelledby="gruppi-titolo">
+  <section class="sezione sfondo-scuro su-scuro home-gruppi" aria-labelledby="gruppi-titolo">
     <div class="contenitore blocco-foto blocco-foto--gruppi">
       <figure class="foto"><figcaption class="didascalia"><svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#image"/></svg>Foto: tavolata per un gruppo</figcaption></figure>
       <div class="blocco-foto__testo">
-        <p class="occhiello">Gruppi, gite e pullman</p>
+        <p class="occhiello"><span class="solo-desktop">Gruppi, gite e pullman</span><span class="solo-mobile">Gruppi e gite</span></p>
         <h2 class="display-l" id="gruppi-titolo"><span class="titolo-desktop">Gruppi numerosi a tavola,<br>e tutti puntuali al pullman.</span><span class="titolo-mobile">Il pullman <span class="accento">parcheggia da noi.</span></span></h2>
-        <p class="testo-l">Agenzie, parrocchie, gite aziendali: un menù su misura con prezzo a persona, una sala ampia e un servizio che rispetta la vostra tabella di marcia. Il pullman lo parcheggiate da noi.</p>
+        <p class="testo-l"><span class="solo-desktop">Agenzie, parrocchie, gite aziendali: un menù su misura con prezzo a persona, una sala ampia e un servizio che rispetta la vostra tabella di marcia. Il pullman lo parcheggiate da noi.</span><span class="solo-mobile">Menù su misura con prezzo a persona, sala ampia e servizio puntuale.</span></p>
         <a class="btn btn--su-scuro" href="gruppi.html#preventivo">Richiedi un preventivo<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
       </div>
     </div>
   </section>
 
-  <section class="sezione" aria-labelledby="cerimonie-titolo">
+  <section class="sezione home-cerimonie" aria-labelledby="cerimonie-titolo">
     <div class="contenitore blocco-foto blocco-foto--cerimonie">
       <figure class="foto"><figcaption class="didascalia"><svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#image"/></svg>Foto: tavola apparecchiata per una cerimonia</figcaption></figure>
       <div class="blocco-foto__testo">
         <p class="occhiello">Cerimonie</p>
         <h2 class="h2" id="cerimonie-titolo">Le feste di famiglia, come a casa</h2>
-        <p class="testo-m">Battesimi, comunioni, cresime, anniversari. Componiamo il menù insieme e prepariamo la sala per voi.</p>
+        <p class="testo-m solo-desktop">Battesimi, comunioni, cresime, anniversari. Componiamo il menù insieme e prepariamo la sala per voi.</p>
         <a class="btn btn--testo" href="cerimonie.html">Organizza la tua festa<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
       </div>
     </div>
   </section>
 
-  <section class="sezione sfondo-sfoglia" aria-labelledby="storia-titolo">
+  <section class="sezione sfondo-sfoglia home-storia" aria-labelledby="storia-titolo">
     <div class="contenitore blocco-foto blocco-foto--storia">
       <figure class="foto foto--tondo"><figcaption class="didascalia"><svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#image"/></svg>Foto d’archivio: la famiglia, anni ’60</figcaption></figure>
       <div class="blocco-foto__testo">
@@ -100,14 +100,14 @@ attivo:
     </div>
   </section>
 
-  <section class="sezione dove" aria-labelledby="dove-titolo">
+  <section class="sezione dove home-dove sfondo-sfoglia-mobile" aria-labelledby="dove-titolo">
     <div class="contenitore">
       <div class="dove__testo">
-        <p class="occhiello">Orari e indirizzo</p>
-        <h2 class="h2" id="dove-titolo">Ci trovi sulla Mantovana</h2>
+        <p class="occhiello solo-desktop">Orari e indirizzo</p>
+        <h2 class="h2" id="dove-titolo"><span class="solo-desktop">Ci trovi sulla Mantovana</span><span class="solo-mobile">Orari e indirizzo</span></h2>
         {{orari}}
-        <div class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></span><span><span class="info__titolo">Via Mantovana 1180</span><span class="info__testo">37067 Valeggio sul Mincio (VR)</span></span></div>
-        <div class="dove__azioni">
+        <div class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></span><span><span class="info__titolo">Via Mantovana 1180</span><span class="info__testo"><span class="solo-desktop">37067 Valeggio sul Mincio (VR)</span><span class="solo-mobile">Valeggio sul Mincio (VR)</span></span></span></div>
+        <div class="dove__azioni solo-desktop">
           <a class="btn btn--primario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Indicazioni<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></a>
           <a class="btn btn--secondario" href="tel:+390454857283">Chiama<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></a>
         </div>

@@ -7,15 +7,23 @@ attivo: dove
   <section class="dove-pagina">
     <div class="contenitore">
       <p class="occhiello">Dove siamo</p>
-      <h1 class="display-xl titolo-coppia"><span>Come</span> <span class="accento">arrivare da noi</span></h1>
+      <h1 class="display-xl titolo-coppia solo-desktop-flex"><span>Come</span> <span class="accento">arrivare da noi</span></h1>
+      <h1 class="display-xl titolo-blocchi solo-mobile"><span>Come arrivare</span> <span class="accento">da noi</span></h1>
+      <a class="mappa-mobile solo-mobile" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener"><svg class="icona mappa__pin" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg><span>Tocca per aprire la mappa</span></a>
+      <div class="dove-pagina__mobile-azioni solo-mobile">
+        <a class="btn btn--primario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Indicazioni<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></a>
+        <a class="btn btn--secondario" href="tel:+390454857283">Chiama<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></a>
+      </div>
       <div class="dove-pagina__corpo">
         {{mappa}}
         <div class="dove-pagina__info">
+          <div class="dove-contatti">
           <div class="info"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></span><span><span class="info__titolo">Via Mantovana 1180</span><span class="info__testo">37067 Valeggio sul Mincio (VR)</span></span></div>
           <a class="info" href="tel:+390454857283"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></span><span><span class="info__titolo">045 485 7283</span><span class="info__testo">Chiamaci per prenotare</span></span></a>
           <a class="info" href="mailto:info@ristorantemara.com"><span class="info__icona"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#mail"/></svg></span><span><span class="info__titolo">info@ristorantemara.com</span><span class="info__testo">Gruppi e cerimonie</span></span></a>
+          </div>
           <div class="riquadro-orari">
-            <p class="riquadro-orari__titolo"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#clock"/></svg>Orari</p>
+            <h2 class="riquadro-orari__titolo"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#clock"/></svg>Orari</h2>
             <dl class="orari" data-orari="giorni">
               <div class="orari__riga" data-giorni="1"><dt class="orari__giorno">Lunedì</dt><dd class="orari__ora">12:00 – 14:00</dd></div>
               <div class="orari__riga" data-giorni="2"><dt class="orari__giorno">Martedì</dt><dd class="orari__ora orari__ora--chiuso">Chiuso</dd></div>
@@ -27,7 +35,7 @@ attivo: dove
             </dl>
           </div>
           <p class="testo-s">Ultime prenotazioni alle 13:30.</p>
-          <div class="azioni">
+          <div class="azioni solo-desktop">
             <a class="btn btn--primario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Indicazioni stradali<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></a>
             <a class="btn btn--secondario" href="tel:+390454857283">Chiama<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></a>
           </div>

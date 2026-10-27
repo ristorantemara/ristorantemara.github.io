@@ -8,12 +8,11 @@ script: js/menu.js
   <section class="intro-pagina intro-menu">
     <div class="contenitore">
       <p class="occhiello">Menù</p>
-      <h1 class="display-xl">Il menù <span class="accento">alla carta</span></h1>
-      <p class="testo-l solo-desktop">Pasta fresca fatta in casa, carni alla griglia e piatti freddi della tradizione. Prezzi in euro, coperto 2,50 €.</p>
-      <p class="testo-m solo-mobile">Prezzi in euro · coperto 2,50 €</p>
-      <div class="avviso solo-desktop">
+      <h1 class="display-xl titolo-menu">Il menù <span class="accento">alla carta</span></h1>
+      <p class="testo-l">Pasta fresca fatta in casa, carni alla griglia e piatti freddi della tradizione. Prezzi in euro, coperto 2,50 €.</p>
+      <div class="avviso avviso--intro">
         <svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg>
-        <div><p class="label">Allergie o intolleranze?</p><p class="testo-s">Sotto ogni piatto trovi gli allergeni (Reg. UE 1169/2011). Per qualsiasi dubbio chiedici prima di ordinare.</p></div>
+        <div><p class="label solo-desktop">Allergie o intolleranze?</p><p class="testo-s">Sotto ogni piatto trovi gli allergeni (Reg. UE 1169/2011). Per qualsiasi dubbio chiedici prima di ordinare.</p></div>
       </div>
     </div>
   </section>
@@ -25,7 +24,7 @@ script: js/menu.js
     <nav class="menu-pillole contenitore solo-mobile" aria-label="Sezioni del menù" data-menu-pillole>{{menu_pillole}}</nav>
     <div class="menu-filtro contenitore">
       <div class="menu-filtro__testa">
-        <p class="menu-filtro__titolo"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#filter"/></svg><span class="solo-desktop">Nascondi i piatti che contengono</span><span class="solo-mobile" data-filtro-etichetta-mobile>Filtra allergeni</span></p>
+        <p class="menu-filtro__titolo"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#filter"/></svg><span class="solo-desktop">Nascondi i piatti che contengono</span><span class="solo-mobile" data-filtro-etichetta-mobile>Escludi allergeni</span></p>
         <div class="menu-filtro__attivi solo-mobile" data-filtro-attivi></div>
         <p class="menu-filtro__stato solo-desktop" aria-live="polite" data-filtro-stato>Tocca un allergene per nascondere i piatti che lo contengono</p>
         <button class="btn btn--testo menu-filtro__modifica solo-mobile" type="button" data-apri-allergeni aria-haspopup="dialog">Scegli</button>
@@ -42,7 +41,8 @@ script: js/menu.js
     <div class="menu-sezioni">
       <div class="menu-sezioni__elenco" data-menu-sezioni>{{menu_sezioni}}</div>
       {{menu_meta}}
-      <aside class="menu-cta su-scuro">
+      <p class="testo-s menu-coperto solo-mobile">Coperto 2,50 €</p>
+      <aside class="menu-cta su-scuro solo-desktop-flex">
         <div>
           <h2 class="h2">Ti è venuta fame?</h2>
           <p class="testo-m" data-orari-testo="frase">Aperti tutti i giorni dalle 12:00 alle 14:00, il martedì siamo chiusi.</p>

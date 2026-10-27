@@ -162,7 +162,7 @@
         b.addEventListener('click', function () { attiva(a); });
         attiviMobile.appendChild(b);
       });
-      etichettaMobile.textContent = esclusi.length ? 'Senza:' : 'Filtra allergeni';
+      etichettaMobile.textContent = esclusi.length ? 'Senza:' : 'Escludi allergeni';
       bottoneScegli.textContent = esclusi.length ? 'Modifica' : 'Scegli';
     }
   }
