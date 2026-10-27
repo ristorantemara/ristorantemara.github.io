@@ -32,7 +32,7 @@ script: js/prenota.js
     <!-- PASSO 1 · Quando -->
     <section class="flusso__passo" data-passo="1" aria-labelledby="t-passo-1">
       <div class="flusso__testa">
-        <p class="occhiello solo-desktop">Prenota un tavolo</p>
+        <p class="occhiello">Prenota un tavolo</p>
         <h1 class="titolo-flusso titolo-coppia" id="t-passo-1" tabindex="-1"><span>Quando</span> <span class="accento">venite a pranzo?</span></h1>
       </div>
 
@@ -56,33 +56,31 @@ script: js/prenota.js
         </fieldset>
 
         <div class="quando__persone">
-          <label class="campo__etichetta" id="et-persone" for="persone-numero"><span class="solo-desktop">Quante persone?</span><span class="solo-mobile">Persone</span></label>
+          <label class="campo__etichetta" id="et-persone" for="persone-numero">Quante persone?</label>
           <div class="contatore" role="group" aria-labelledby="et-persone">
             <button type="button" class="contatore__bottone" data-persone="-1" aria-label="Una persona in meno"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#minus"/></svg></button>
             <input class="contatore__valore" id="persone-numero" data-persone-valore type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" value="2" role="spinbutton" aria-valuemin="1" aria-valuemax="12" aria-valuenow="2" aria-describedby="persone-errore">
             <button type="button" class="contatore__bottone" data-persone="1" aria-label="Una persona in più"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#plus"/></svg></button>
           </div>
           <p class="campo__errore flusso__errore" data-errore="persone" id="persone-errore" role="alert"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Si prenota online fino a 12 persone.</span></p>
-          <a class="testo-s link-gruppi solo-desktop" href="gruppi.html#preventivo">Più di 12 persone? Richiedi un preventivo per gruppi.</a>
+          <a class="testo-s link-gruppi" href="gruppi.html#preventivo">Più di 12 persone? Richiedi un preventivo per gruppi.</a>
         </div>
       </div>
 
       <fieldset class="orari-arrivo">
-        <legend class="campo__etichetta"><span class="solo-desktop">A che ora arrivate?</span><span class="solo-mobile">Orario di arrivo</span></legend>
+        <legend class="campo__etichetta">A che ora arrivate?</legend>
         <div class="orari-arrivo__lista" role="radiogroup" data-orari-arrivo>
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="12:00">12:00</button>
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="12:30">12:30</button>
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:00">13:00</button>
           <button type="button" class="orario" role="radio" aria-checked="false" data-ora="13:30">13:30</button>
         </div>
-        <p class="testo-s solo-desktop" data-r="nota-orari">Siamo aperti dalle 12:00 alle 14:00: l’ultimo tavolo si prenota alle 13:30.</p>
-        <p class="testo-s testo-inchiostro solo-mobile" data-r="nota-orari-breve">Aperti 12:00–14:00 · ultimo tavolo alle 13:30</p>
+        <p class="testo-s" data-r="nota-orari">Siamo aperti dalle 12:00 alle 14:00: l’ultimo tavolo si prenota alle 13:30.</p>
         <p class="campo__errore flusso__errore" data-errore="ora"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegli l’orario di arrivo.</span></p>
       </fieldset>
-      <a class="testo-s link-gruppi solo-mobile" href="gruppi.html#preventivo">Più di 12 persone? Richiedi un preventivo per gruppi.</a>
 
       <div class="flusso__azioni">
-        <button class="btn btn--primario" type="button" data-avanti="2"><span class="solo-desktop">Continua</span><span class="solo-mobile" data-continua-mobile>Continua</span><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
+        <button class="btn btn--primario" type="button" data-avanti="2">Continua<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button>
       </div>
     </section>
 
@@ -107,7 +105,7 @@ script: js/prenota.js
       <div class="campo">
         <label class="campo__etichetta" for="p-email">Email *</label>
         <input class="campo__input" id="p-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="es. giulia.rossi@email.it">
-        <p class="campo__aiuto"><span class="solo-desktop">Qui ti arriva la conferma della prenotazione.</span><span class="solo-mobile">Qui ti arriva la conferma.</span></p>
+        <p class="campo__aiuto">Qui ti arriva la conferma della prenotazione.</p>
         <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>L’email non sembra completa: controlla che ci siano @ e il dominio.</span></p>
       </div>
       <div class="campo">
@@ -132,8 +130,8 @@ script: js/prenota.js
         <h1 class="titolo-flusso titolo-coppia" id="t-passo-3" tabindex="-1"><span>Controlla</span> <span class="accento">e invia</span></h1>
       </div>
       <dl class="tabella-riepilogo">
-        <div><dt>Giorno</dt><dd><span class="solo-desktop" data-r="giorno-lungo"></span><span class="solo-mobile" data-r="giorno-breve"></span></dd></div>
-        <div><dt>Orario</dt><dd><span class="solo-desktop" data-r="ora-lunga"></span><span class="solo-mobile" data-r="ora"></span></dd></div>
+        <div><dt>Giorno</dt><dd data-r="giorno-lungo"></dd></div>
+        <div><dt>Orario</dt><dd data-r="ora-lunga"></dd></div>
         <div><dt>Persone</dt><dd data-r="persone"></dd></div>
         <div><dt>Nome</dt><dd data-r="nome"></dd></div>
         <div><dt>Telefono</dt><dd data-r="telefono"></dd></div>
@@ -163,13 +161,8 @@ script: js/prenota.js
   <section class="flusso__inviata" data-inviata hidden aria-labelledby="t-inviata">
     <span class="esito__icona" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#check"/></svg></span>
     <h1 class="display-xl" id="t-inviata" tabindex="-1">Grazie<span data-r="nome-proprio"></span>!</h1>
-    <p class="esito__sotto"><span class="solo-desktop">La tua richiesta è arrivata in cucina.</span><span class="solo-mobile">La richiesta è arrivata in cucina.</span></p>
-    <dl class="tabella-riepilogo solo-mobile">
-      <div><dt>Giorno</dt><dd data-r="giorno-breve"></dd></div>
-      <div><dt>Orario</dt><dd data-r="ora"></dd></div>
-      <div><dt>Persone</dt><dd data-r="persone"></dd></div>
-    </dl>
-    <p class="testo-l"><span class="solo-desktop" data-r="frase-riepilogo"></span> Ti abbiamo scritto a <span data-r="email"></span>: la conferma del tavolo arriverà lì (controlla anche lo spam). <span class="solo-desktop">Per modifiche chiamaci allo</span><span class="solo-mobile">Per modifiche:</span> <a href="tel:+390454857283">045 485 7283</a>.</p>
+    <p class="esito__sotto">La tua richiesta è arrivata in cucina.</p>
+    <p class="testo-l"><span data-r="frase-riepilogo"></span> Ti abbiamo scritto a <span data-r="email"></span>: la conferma del tavolo arriverà lì (controlla anche lo spam). Per modifiche chiamaci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
     <div class="azioni flusso__inviata-azioni">
       <button class="btn btn--primario" type="button" data-calendario-ics>Aggiungi al calendario<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></button>
       <a class="btn btn--secondario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Indicazioni stradali<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></a>

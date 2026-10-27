@@ -33,9 +33,7 @@
       var riapre = quandoRiapre(1);
       return { chiuso: true, testo: motivo + (riapre ? ' · riapriamo ' + riapre : '') };
     }
-    // su mobile la barra in alto usa la forma corta del Figma: «Aperti oggi 12:00–14:00 · martedì chiuso»
-    var corto = tipo === 'lungo' && window.matchMedia && window.matchMedia('(max-width: 1023px)').matches;
-    if (adesso < O.minuti(o.dalle)) return { chiuso: false, testo: tipo === 'breve' ? 'Aperti oggi · ' + O.fascia(o) : corto ? 'Aperti oggi ' + O.fascia(o) + coda : 'Aperti oggi dalle ' + o.dalle + ' alle ' + o.alle + coda };
+    if (adesso < O.minuti(o.dalle)) return { chiuso: false, testo: tipo === 'breve' ? 'Aperti oggi · ' + O.fascia(o) : 'Aperti oggi dalle ' + o.dalle + ' alle ' + o.alle + coda };
     if (adesso < O.minuti(o.alle)) return { chiuso: false, testo: 'Aperti ora · fino alle ' + o.alle + coda };
     var dopo = quandoRiapre(1);
     return { chiuso: true, testo: 'Chiuso ora' + (dopo ? ' · ' + (tipo === 'breve' ? '' : 'riapriamo ') + dopo : '') };
@@ -115,13 +113,6 @@
         p.textContent = O.maiuscola(unisci(chiusi)) + ' chiuso';
         box.appendChild(p);
       }
-    });
-    // Footer mobile (Figma): tutto su una riga, «… 12:00–14:00 · martedì chiuso»
-    document.querySelectorAll('[data-orari-footer-riga]').forEach(function (el) {
-      var box = document.querySelector('[data-orari-footer]');
-      if (!box) return;
-      var righe = [].map.call(box.querySelectorAll('p'), function (p, i) { return i ? p.textContent.charAt(0).toLowerCase() + p.textContent.slice(1) : p.textContent; });
-      el.textContent = righe.join(' · ');
     });
 
     // Avviso di chiusura (ferie, giorni straordinari) in cima alle pagine

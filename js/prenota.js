@@ -240,11 +240,6 @@
     scrivi('persone-testo', personeTesto);
     scrivi('ora-testo', stato.ora ? 'Ore ' + stato.ora : 'Scegli l’orario');
 
-    var mobile = form.querySelector('[data-continua-mobile]');
-    if (stato.data && stato.ora) {
-      var d = daISO(stato.data);
-      mobile.textContent = 'Continua · ' + GIORNI_BREVI[d.getUTCDay()] + ' ' + d.getUTCDate() + ', ' + stato.ora + ', ' + stato.persone + ' pers.';
-    } else mobile.textContent = 'Continua';
   }
 
   function disegnaOrariArrivo() {
@@ -266,7 +261,6 @@
     scrivi('nota-orari', g.aperto
       ? 'Siamo aperti dalle ' + g.dalle + ' alle ' + g.alle + ': l’ultimo tavolo si prenota alle ' + g.ultima + '.'
       : '');
-    scrivi('nota-orari-breve', g.aperto ? 'Aperti ' + g.dalle + '–' + g.alle + ' · ultimo tavolo alle ' + g.ultima : '');
   }
 
   /** Solo il giorno di chiusura settimanale e nessuna chiusura straordinaria: le frasi del Figma */

@@ -89,7 +89,7 @@ def blocchi_menu():
             totale = len(s["piatti"])
         indice.append(f'<li><a href="#{s["id"]}" data-indice="{s["id"]}"><span>{esc(s["titolo"])}</span>'
                       f'<span class="menu-indice__conta" data-conta="{s["id"]}">{totale}</span></a></li>')
-        pillole.append(f'<a class="pillola" href="#{s["id"]}" data-indice="{s["id"]}">{esc(s["breve"])}</a>')
+        pillole.append(f'<a class="pillola" href="#{s["id"]}" data-indice="{s["id"]}">{esc(s["titolo"])}</a>')
         corpo = [f'<section class="menu-sezione" id="{s["id"]}" data-sezione="{s["id"]}"{" data-vini" if vino else ""} aria-labelledby="t-{s["id"]}">',
                  f'<h2 class="menu-sezione__titolo h2" id="t-{s["id"]}"><span class="accento">{s["numero"]}</span> {esc(s["titolo"])}</h2>']
         if s.get("nota"):

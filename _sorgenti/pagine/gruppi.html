@@ -10,7 +10,7 @@ script: js/richieste.js
       <div class="testata">
         <p class="occhiello">Gruppi, gite e comitive</p>
         <h1 class="display-xxl titolo-blocchi"><span>Il pullman</span> <span class="accento">parcheggia da noi.</span></h1>
-        <p class="testo-l"><span class="solo-desktop">Gite a Borghetto e al Parco Sigurtà, viaggi parrocchiali, uscite aziendali: vi accogliamo con un menù su misura, una sala ampia e un servizio puntuale, perché la tabella di marcia conta.</span><span class="solo-mobile">Gite a Borghetto e al Parco Sigurtà, viaggi parrocchiali, uscite aziendali: menù su misura, sala ampia e servizio puntuale.</span></p>
+        <p class="testo-l">Gite a Borghetto e al Parco Sigurtà, viaggi parrocchiali, uscite aziendali: vi accogliamo con un menù su misura, una sala ampia e un servizio puntuale, perché la tabella di marcia conta.</p>
         <div class="azioni">
           <a class="btn btn--su-scuro" href="#preventivo">Richiedi un preventivo<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
           <a class="btn btn--testo solo-desktop" href="tel:+390454857283">045 485 7283<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></a>
@@ -38,9 +38,9 @@ script: js/richieste.js
         <h2 class="display-xl" id="passi-titolo">Tre passi, nessuna telefonata a vuoto</h2>
       </div>
       <ol class="passi">
-        <li class="passo"><span class="passo__numero" aria-hidden="true"><span class="solo-desktop">I.</span><span class="solo-mobile">1</span></span><div class="passo__testo"><h3 class="h3">Ci scrivete</h3><p class="testo-m"><span class="solo-desktop">Data, numero di persone e i vostri contatti: basta un minuto.</span><span class="solo-mobile">Data, numero di persone e un contatto.</span></p></div></li>
-        <li class="passo"><span class="passo__numero" aria-hidden="true"><span class="solo-desktop">II.</span><span class="solo-mobile">2</span></span><div class="passo__testo"><h3 class="h3">Concordiamo il menù</h3><p class="testo-m"><span class="solo-desktop">Vi chiamiamo, fissiamo un incontro e scegliamo assieme menù, prezzo a persona e orari.</span><span class="solo-mobile">Proposta con prezzo a persona e orari.</span></p></div></li>
-        <li class="passo"><span class="passo__numero" aria-hidden="true"><span class="solo-desktop">III.</span><span class="solo-mobile">3</span></span><div class="passo__testo"><h3 class="h3">Arrivate e vi sedete</h3><p class="testo-m"><span class="solo-desktop">Il pullman parcheggia da noi, la tavola è già pronta.</span><span class="solo-mobile">Il pullman parcheggia da noi.</span></p></div></li>
+        <li class="passo"><span class="passo__numero" aria-hidden="true">I.</span><div class="passo__testo"><h3 class="h3">Ci scrivete</h3><p class="testo-m">Data, numero di persone e i vostri contatti: basta un minuto.</p></div></li>
+        <li class="passo"><span class="passo__numero" aria-hidden="true">II.</span><div class="passo__testo"><h3 class="h3">Concordiamo il menù</h3><p class="testo-m">Vi chiamiamo, fissiamo un incontro e scegliamo assieme menù, prezzo a persona e orari.</p></div></li>
+        <li class="passo"><span class="passo__numero" aria-hidden="true">III.</span><div class="passo__testo"><h3 class="h3">Arrivate e vi sedete</h3><p class="testo-m">Il pullman parcheggia da noi, la tavola è già pronta.</p></div></li>
       </ol>
     </div>
   </section>
@@ -48,9 +48,9 @@ script: js/richieste.js
   <section class="sezione sfondo-sfoglia" id="preventivo" aria-labelledby="preventivo-titolo">
     <div class="contenitore due-colonne">
       <div class="testata">
-        <p class="occhiello solo-desktop">Preventivo gratuito</p>
+        <p class="occhiello">Preventivo gratuito</p>
         <h2 class="display-xl" id="preventivo-titolo">Raccontateci il vostro gruppo</h2>
-        <p class="testo-l"><span class="solo-desktop">Vi rispondiamo con una proposta di menù e il prezzo a persona. Preferite parlarne a voce? Chiamateci allo <a href="tel:+390454857283">045 485 7283</a>.</span><span class="solo-mobile">Vi rispondiamo con un menù e il prezzo a persona.</span></p>
+        <p class="testo-l">Vi rispondiamo con una proposta di menù e il prezzo a persona. Preferite parlarne a voce? Chiamateci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
         <div class="foglio-azioni solo-mobile">
           <a class="btn btn--primario btn--blocco" href="#preventivo">Richiedi un preventivo<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
           <a class="btn btn--secondario btn--blocco" href="tel:+390454857283">Chiama 045 485 7283<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></a>
@@ -74,8 +74,7 @@ script: js/richieste.js
 
       <form class="form-scheda" data-form-richiesta="gruppo" data-successo="gruppi-grazie.html" data-foglio-form novalidate>
         <div class="foglio-barra solo-mobile"><button class="foglio-chiudi" type="button" data-chiudi-foglio aria-label="Chiudi"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></button><p class="label">Preventivo gruppi</p><span class="foglio-barra__vuoto"></span></div>
-        <h2 class="foglio-titolo solo-mobile">Raccontateci <span class="accento">il vostro gruppo</span></h2>
-        <h3 class="h3 solo-desktop">Richiedi un preventivo</h3>
+        <h3 class="h3 foglio-titolo">Richiedi un preventivo</h3>
         <p class="testo-s">Tutti i campi sono obbligatori, tranne le note.</p>
         <div class="campo">
           <label class="campo__etichetta" for="g-gruppo">Gruppo o organizzazione</label>
@@ -84,12 +83,12 @@ script: js/richieste.js
         </div>
         <div class="riga-campi">
           <div class="campo">
-            <label class="campo__etichetta" for="g-data"><span class="solo-desktop">Data della visita</span><span class="solo-mobile">Data</span></label>
+            <label class="campo__etichetta" for="g-data">Data della visita</label>
             <input class="campo__input" id="g-data" name="data" type="date" required data-data-futura>
             <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Scegliete una data da oggi in poi.</span></p>
           </div>
           <div class="campo">
-            <label class="campo__etichetta" for="g-persone"><span class="solo-desktop">Numero di persone</span><span class="solo-mobile">Persone</span></label>
+            <label class="campo__etichetta" for="g-persone">Numero di persone</label>
             <input class="campo__input" id="g-persone" name="persone" type="number" inputmode="numeric" min="10" max="300" required placeholder="es. 45">
             <p class="campo__errore"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span>Almeno 10 persone.</span></p>
           </div>
