@@ -264,8 +264,28 @@
     });
     var g = giornoDi(stato.data || O.prossimaApertura(dati, oggi) || oggi);
     scrivi('nota-orari', g.aperto
-      ? (stato.data ? 'Quel giorno siamo aperti' : 'Siamo aperti') + ' dalle ' + g.dalle + ' alle ' + g.alle + ': l’ultimo tavolo si prenota alle ' + g.ultima + '.'
+      ? 'Siamo aperti dalle ' + g.dalle + ' alle ' + g.alle + ': l’ultimo tavolo si prenota alle ' + g.ultima + '.'
       : '');
+  }
+
+  /** Solo il giorno di chiusura settimanale e nessuna chiusura straordinaria: le frasi del Figma */
+  function soloChiusuraSettimanale() {
+    var r = O.riassunto(dati);
+    if (r.nChiusi !== 1) return null;
+    var vicine = dati.chiusure.some(function (c) { return c.al >= oggi && c.dal <= ultimo; });
+    return vicine ? null : r.elencoChiusi;
+  }
+  var PLURALI = { sabato: 'I sabati', domenica: 'Le domeniche' };
+  var ARTICOLI = { domenica: 'La domenica' };
+  /** Nota sotto il calendario: "I martedì sono barrati: siamo chiusi." */
+  function notaCalendario() {
+    var g = soloChiusuraSettimanale();
+    return g ? (PLURALI[g] || 'I ' + g) + ' sono barrat' + (g === 'domenica' ? 'e' : 'i') + ': siamo chiusi.' : notaChiusure();
+  }
+  /** Nota nel riepilogo: "Il martedì siamo chiusi: quei giorni non sono selezionabili." */
+  function notaRiepilogo() {
+    var g = soloChiusuraSettimanale();
+    return g ? (ARTICOLI[g] || 'Il ' + g) + ' siamo chiusi: quei giorni non sono selezionabili.' : notaChiusure();
   }
 
   /** "Nei giorni barrati siamo chiusi: di martedì e dal 10 al 24 agosto (ferie estive)." */
@@ -300,7 +320,7 @@
     document.querySelectorAll('.passi-prenotazione__linea').forEach(function (l, i) { l.classList.toggle('is-fatto', i + 1 < passo); });
     document.querySelectorAll('[data-avanzamento] span').forEach(function (s, i) { s.classList.toggle('is-fatto', i < passo); });
     document.querySelector('[data-passo-mobile]').textContent = 'Passo ' + passo + ' di 3';
-    document.querySelector('[data-nota-passo]').textContent = passo === 1 ? notaChiusure() : NOTE[passo];
+    document.querySelector('[data-nota-passo]').textContent = passo === 1 ? notaRiepilogo() : NOTE[passo];
     if (passo === 3) riempiRiepilogo();
     if (!daStoria) history.pushState({ passo: passo }, '', passo === 1 ? location.pathname : '#passo-' + passo);
     if (iniziale) return;
@@ -432,7 +452,7 @@
     // se con i dati nuovi il giorno o l'orario scelto non sono più disponibili, li togliamo
     if (stato.data && !aperto(stato.data)) { stato.data = ''; stato.ora = ''; }
     if (stato.ora && (stato.data ? orariLiberi(stato.data) : orariDelGiorno('')).indexOf(stato.ora) === -1) stato.ora = '';
-    scrivi('nota-calendario', notaChiusure());
+    scrivi('nota-calendario', notaCalendario());
     // su mobile la striscia salta i giorni di chiusura: diciamo perché
     var vicine = dati.chiusure.filter(function (c) { return c.al >= oggi && c.dal <= piuGiorni(oggi, 21); });
     var notaStriscia = form.querySelector('[data-nota-striscia]');
@@ -440,7 +460,7 @@
       return O.maiuscola(O.periodo(c, oggi)) + ' siamo chiusi' + (c.motivo ? ' (' + c.motivo.toLowerCase() + ')' : '') + '.';
     }).join(' ');
     notaStriscia.hidden = !vicine.length;
-    if (stato.passo === 1) document.querySelector('[data-nota-passo]').textContent = notaChiusure();
+    if (stato.passo === 1) document.querySelector('[data-nota-passo]').textContent = notaRiepilogo();
     aggiorna();
     if (!avviato) { avviato = true; vaiA(1, true, true); }
   });

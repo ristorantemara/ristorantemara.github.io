@@ -146,7 +146,7 @@
     <section class="flusso__passo" data-passo="1" aria-labelledby="t-passo-1">
       <div class="flusso__testa">
         <p class="occhiello solo-desktop">Prenota un tavolo</p>
-        <h1 class="titolo-flusso" id="t-passo-1" tabindex="-1">Quando <span class="accento">venite a pranzo?</span></h1>
+        <h1 class="titolo-flusso titolo-coppia" id="t-passo-1" tabindex="-1"><span>Quando</span> <span class="accento">venite a pranzo?</span></h1>
       </div>
 
       <div class="quando">
@@ -200,7 +200,7 @@
     <!-- PASSO 2 · I tuoi dati -->
     <section class="flusso__passo" data-passo="2" aria-labelledby="t-passo-2" hidden>
       <div class="flusso__testa">
-        <h1 class="titolo-flusso" id="t-passo-2" tabindex="-1">A chi <span class="accento">intestiamo il tavolo?</span></h1>
+        <h1 class="titolo-flusso titolo-coppia" id="t-passo-2" tabindex="-1"><span>A chi</span> <span class="accento">intestiamo il tavolo?</span></h1>
         <p class="testo-s testo-inchiostro">I campi con * sono obbligatori.</p>
       </div>
       <div class="riga-campi riga-campi--20">
@@ -223,7 +223,7 @@
       </div>
       <div class="campo">
         <label class="campo__etichetta" for="p-note">Allergie, seggiolone o altre richieste <span class="opz">(facoltativo)</span></label>
-        <textarea class="campo__input" id="p-note" name="note" maxlength="500" rows="2" placeholder="es. un ospite celiaco, un seggiolone"></textarea>
+        <textarea class="campo__input" id="p-note" name="note" maxlength="500" rows="1" placeholder="es. un ospite celiaco, un seggiolone"></textarea>
         <p class="campo__aiuto">Le leggiamo prima del vostro arrivo.</p>
       </div>
       <div class="campo campo--spunta">
@@ -240,7 +240,7 @@
     <!-- PASSO 3 · Conferma -->
     <section class="flusso__passo" data-passo="3" aria-labelledby="t-passo-3" hidden>
       <div class="flusso__testa">
-        <h1 class="titolo-flusso" id="t-passo-3" tabindex="-1">Controlla <span class="accento">e invia</span></h1>
+        <h1 class="titolo-flusso titolo-coppia" id="t-passo-3" tabindex="-1"><span>Controlla</span> <span class="accento">e invia</span></h1>
       </div>
       <dl class="tabella-riepilogo">
         <div><dt>Giorno</dt><dd data-r="giorno-lungo"></dd></div>
@@ -279,13 +279,14 @@
       <div><dt>Orario</dt><dd data-r="ora"></dd></div>
       <div><dt>Persone</dt><dd data-r="persone"></dd></div>
     </dl>
-    <p class="testo-l"><span class="solo-desktop" data-r="frase-riepilogo"></span> La conferma del tavolo arriverà a <strong data-r="email"></strong> (controlla anche lo spam). Per modifiche chiamaci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
+    <p class="testo-l"><span class="solo-desktop" data-r="frase-riepilogo"></span> Ti abbiamo scritto a <span data-r="email"></span>: la conferma del tavolo arriverà lì (controlla anche lo spam). Per modifiche chiamaci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
     <div class="azioni flusso__inviata-azioni">
       <button class="btn btn--primario" type="button" data-calendario-ics>Aggiungi al calendario<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></button>
       <a class="btn btn--secondario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Indicazioni stradali<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></a>
       <a class="btn btn--testo" href="index.html">Torna alla home<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
     </div>
   </section>
+  <div class="tenda flusso__tenda" aria-hidden="true"></div>
 </main>
 </body>
 </html>

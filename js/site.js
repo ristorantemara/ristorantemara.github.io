@@ -80,7 +80,7 @@
     var frasi = {
       fascia: r.fascia ? 'Aperti ' + r.fascia : 'Aperti a pranzo',
       giorni: r.tuttiAperti ? 'Tutti i giorni' : (r.nChiusi === 1 ? 'Tutti i giorni, ' + r.chiusi : r.chiusi.charAt(0).toUpperCase() + r.chiusi.slice(1)),
-      frase: 'Aperti ' + (r.tuttiAperti ? 'tutti i giorni ' : '') + dalleAlle + (r.chiusi ? ', ' + (r.nChiusi === 1 ? 'il ' : '') + r.elencoChiusi + ' siamo chiusi.' : '.'),
+      frase: 'Aperti ' + (r.tuttiAperti || r.nChiusi === 1 ? 'tutti i giorni ' : '') + dalleAlle + (r.chiusi ? ', ' + (r.nChiusi === 1 ? 'il ' : '') + r.elencoChiusi + ' siamo chiusi.' : '.'),
       breve: 'Aperti ' + fascia + (r.chiusi ? ' · ' + r.chiusi : '')
     };
     document.querySelectorAll('[data-orari-testo]').forEach(function (el) {
@@ -88,14 +88,31 @@
       if (t) el.textContent = t;
     });
 
-    // Footer: una riga per orario, poi i giorni di chiusura
+    // Footer (come nel Figma): i giorni con lo stesso orario in una frase sola
+    // («Lunedì e da mercoledì a domenica, 12:00–14:00»), poi i giorni di chiusura
     document.querySelectorAll('[data-orari-footer]').forEach(function (box) {
-      box.innerHTML = '';
+      var gruppi = [], perOrario = {}, chiusi = [];
       O.righe(dati, false).forEach(function (riga) {
+        var nome = function (g) { return O.GIORNI[g]; };
+        var pezzo = riga.giorni.length === 1 ? nome(riga.giorni[0])
+          : 'da ' + nome(riga.giorni[0]) + ' a ' + nome(riga.giorni[riga.giorni.length - 1]);
+        if (riga.chiuso) { chiusi.push(pezzo); return; }
+        var orario = riga.testo.replace(' – ', '–');
+        if (!perOrario[orario]) { perOrario[orario] = []; gruppi.push(orario); }
+        perOrario[orario].push(pezzo);
+      });
+      var unisci = function (l) { return l.length < 2 ? l.join('') : l.slice(0, -1).join(', ') + ' e ' + l[l.length - 1]; };
+      box.innerHTML = '';
+      gruppi.forEach(function (orario) {
         var p = document.createElement('p');
-        p.textContent = riga.etichetta + (riga.chiuso ? ' chiuso' : ', ' + riga.testo.replace(' – ', '–'));
+        p.textContent = O.maiuscola(unisci(perOrario[orario])) + ', ' + orario;
         box.appendChild(p);
       });
+      if (chiusi.length) {
+        var p = document.createElement('p');
+        p.textContent = O.maiuscola(unisci(chiusi)) + ' chiuso';
+        box.appendChild(p);
+      }
     });
 
     // Avviso di chiusura (ferie, giorni straordinari) in cima alle pagine
