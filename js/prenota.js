@@ -5,9 +5,10 @@
   var form = document.querySelector('[data-prenota]');
   if (!form) return;
 
-  var GIORNI = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
-  var GIORNI_BREVI = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
-  var MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+  var L = window.maraL; // lingua della pagina (js/lingua.js)
+  var t = L.t;
+  var GIORNI_BREVI = L.GIORNI_BREVI;
+  var MESI = L.MESI;
   var GIORNI_MAX = 60;
   var MAX_PERSONE = 12;
 
@@ -28,9 +29,9 @@
   function maiuscola(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
   function giornoLungo(iso, conAnno) {
     var d = daISO(iso);
-    return maiuscola(GIORNI[d.getUTCDay()]) + ' ' + d.getUTCDate() + ' ' + MESI[d.getUTCMonth()] + (conAnno ? ' ' + d.getUTCFullYear() : '');
+    return maiuscola(L.giornoData(d.getUTCDay(), L.data(d.getUTCDate(), d.getUTCMonth(), conAnno ? d.getUTCFullYear() : '')));
   }
-  function giornoBreve(iso) { var d = daISO(iso); return maiuscola(GIORNI_BREVI[d.getUTCDay()]) + ' ' + d.getUTCDate() + ' ' + MESI[d.getUTCMonth()]; }
+  function giornoBreve(iso) { var d = daISO(iso); return maiuscola(L.giornoData(d.getUTCDay(), L.data(d.getUTCDate(), d.getUTCMonth()), true)); }
 
   function oraAdesso() {
     try {
@@ -78,8 +79,8 @@
       if (iso === oggi) b.classList.add('is-oggi');
       if (!aperto(iso)) { b.disabled = true; }
       if (iso === stato.data) { b.classList.add('is-scelto'); b.setAttribute('aria-pressed', 'true'); } else b.setAttribute('aria-pressed', 'false');
-      if (chiuso && info.chiusura && info.chiusura.motivo) b.title = info.chiusura.motivo;
-      b.setAttribute('aria-label', giornoLungo(iso) + (chiuso ? ', chiuso' + (info.chiusura && info.chiusura.motivo ? ' (' + info.chiusura.motivo + ')' : '') : (b.disabled ? ', non disponibile' : '')));
+      if (chiuso && info.chiusura && info.chiusura.motivo) b.title = t(info.chiusura.motivo);
+      b.setAttribute('aria-label', giornoLungo(iso) + (chiuso ? t(', chiuso') + (info.chiusura && info.chiusura.motivo ? ' (' + t(info.chiusura.motivo) + ')' : '') : (b.disabled ? t(', non disponibile') : '')));
       griglia.appendChild(b);
     }
     form.querySelector('[data-mese="-1"]').disabled = meseVisto <= oggi.slice(0, 7);
@@ -131,7 +132,7 @@
   apriCal.addEventListener('click', function () {
     var aperto = calendario.classList.toggle('is-aperto');
     apriCal.setAttribute('aria-expanded', aperto ? 'true' : 'false');
-    apriCal.textContent = aperto ? 'Chiudi il calendario' : 'Altri giorni › apri il calendario';
+    apriCal.textContent = aperto ? t('Chiudi il calendario') : t('Altri giorni › apri il calendario');
   });
 
   function scegliData(iso) {
@@ -229,16 +230,16 @@
     disegnaStriscia();
     if (document.activeElement !== valorePersone) valorePersone.value = stato.persone;
     valorePersone.setAttribute('aria-valuenow', stato.persone);
-    valorePersone.setAttribute('aria-valuetext', stato.persone + (stato.persone === 1 ? ' persona' : ' persone'));
+    valorePersone.setAttribute('aria-valuetext', L.persone(stato.persone));
     form.querySelector('[data-persone="-1"]').disabled = stato.persone <= 1;
     form.querySelector('[data-persone="1"]').disabled = stato.persone >= MAX_PERSONE;
 
     disegnaOrariArrivo();
 
-    var personeTesto = stato.persone + (stato.persone === 1 ? ' persona' : ' persone');
-    scrivi('giorno', stato.data ? giornoLungo(stato.data) : 'Scegli il giorno');
+    var personeTesto = L.persone(stato.persone);
+    scrivi('giorno', stato.data ? giornoLungo(stato.data) : t('Scegli il giorno'));
     scrivi('persone-testo', personeTesto);
-    scrivi('ora-testo', stato.ora ? 'Ore ' + stato.ora : 'Scegli l’orario');
+    scrivi('ora-testo', stato.ora ? t('Ore {o}', { o: stato.ora }) : t('Scegli l’orario'));
 
   }
 
@@ -259,7 +260,7 @@
     });
     var g = giornoDi(stato.data || O.prossimaApertura(dati, oggi) || oggi);
     scrivi('nota-orari', g.aperto
-      ? 'Siamo aperti dalle ' + g.dalle + ' alle ' + g.alle + ': l’ultimo tavolo si prenota alle ' + g.ultima + '.'
+      ? t('Siamo aperti dalle {a} alle {b}: l’ultimo tavolo si prenota alle {u}.', { a: g.dalle, b: g.alle, u: g.ultima })
       : '');
   }
 
@@ -268,42 +269,39 @@
     var r = O.riassunto(dati);
     if (r.nChiusi !== 1) return null;
     var vicine = dati.chiusure.some(function (c) { return c.al >= oggi && c.dal <= ultimo; });
-    return vicine ? null : r.elencoChiusi;
+    return vicine ? null : r.giorniChiusi[0];
   }
-  var PLURALI = { sabato: 'I sabati', domenica: 'Le domeniche' };
-  var ARTICOLI = { domenica: 'La domenica' };
   /** Nota sotto il calendario: "I martedì sono barrati: siamo chiusi." */
   function notaCalendario() {
     var g = soloChiusuraSettimanale();
-    return g ? (PLURALI[g] || 'I ' + g) + ' sono barrat' + (g === 'domenica' ? 'e' : 'i') + ': siamo chiusi.' : notaChiusure();
+    return g != null ? L.notaCalendario(g) : notaChiusure();
   }
   /** Nota nel riepilogo: "Il martedì siamo chiusi: quei giorni non sono selezionabili." */
   function notaRiepilogo() {
     var g = soloChiusuraSettimanale();
-    return g ? (ARTICOLI[g] || 'Il ' + g) + ' siamo chiusi: quei giorni non sono selezionabili.' : notaChiusure();
+    return g != null ? L.notaRiepilogo(g) : notaChiusure();
   }
 
   /** "Nei giorni barrati siamo chiusi: di martedì e dal 10 al 24 agosto (ferie estive)." */
   function notaChiusure() {
     var parti = [];
     var r = O.riassunto(dati);
-    if (r.elencoChiusi) parti.push('di ' + r.elencoChiusi);
+    if (r.giorniChiusi.length) parti.push(L.diGiorni(r.giorniChiusi));
     dati.chiusure.forEach(function (c) {
-      if (c.al >= oggi && c.dal <= ultimo) parti.push(O.periodo(c, oggi) + (c.motivo ? ' (' + c.motivo.toLowerCase() + ')' : ''));
+      if (c.al >= oggi && c.dal <= ultimo) parti.push(O.periodo(c, oggi) + (c.motivo ? ' (' + t(c.motivo).toLowerCase() + ')' : ''));
     });
-    if (!parti.length) return 'Scegli il giorno: prenoti fino a due mesi prima.';
-    var elenco = parti.length < 2 ? parti[0] : parti.slice(0, -1).join(', ') + ' e ' + parti[parti.length - 1];
-    return 'Nei giorni barrati siamo chiusi: ' + elenco + '.';
+    if (!parti.length) return t('Scegli il giorno: prenoti fino a due mesi prima.');
+    return t('Nei giorni barrati siamo chiusi: {e}.', { e: L.elenco(parti) });
   }
 
   /* ---------- Navigazione tra i passi ---------- */
   var NOTE = {
     1: '',
-    2: 'La conferma arriva via email. Il telefono ci serve solo in caso di imprevisti.',
-    3: 'È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.'
+    2: t('La conferma arriva via email. Il telefono ci serve solo in caso di imprevisti.'),
+    3: t('È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.')
   };
 
-  var TITOLI_MOBILE = { 1: 'Prenota un tavolo', 2: 'I tuoi dati', 3: 'Conferma' };
+  var TITOLI_MOBILE = { 1: t('Prenota un tavolo'), 2: t('I tuoi dati'), 3: t('Conferma') };
   document.querySelector('[data-barra-indietro]').addEventListener('click', function () {
     if (stato.passo > 1) vaiA(stato.passo - 1);
   });
@@ -319,7 +317,7 @@
     });
     document.querySelectorAll('.passi-prenotazione__linea').forEach(function (l, i) { l.classList.toggle('is-fatto', i + 1 < passo); });
     document.querySelectorAll('[data-avanzamento] span').forEach(function (s, i) { s.classList.toggle('is-fatto', i < passo); });
-    document.querySelector('[data-passo-mobile]').textContent = 'Passo ' + passo + ' di 3';
+    document.querySelector('[data-passo-mobile]').textContent = t('Passo {n} di 3', { n: passo });
     // barra mobile (Figma): titolo del passo, ✕ al primo passo, freccia indietro dal secondo
     document.querySelector('[data-titolo-mobile]').textContent = TITOLI_MOBILE[passo];
     document.querySelector('[data-barra-esci]').hidden = passo > 1;
@@ -370,7 +368,7 @@
   function riempiRiepilogo() {
     scrivi('giorno-lungo', giornoLungo(stato.data, true));
     scrivi('giorno-breve', giornoBreve(stato.data));
-    scrivi('ora-lunga', 'Ore ' + stato.ora);
+    scrivi('ora-lunga', t('Ore {o}', { o: stato.ora }));
     scrivi('ora', stato.ora);
     scrivi('persone', String(stato.persone));
     scrivi('nome', valore('nome'));
@@ -389,20 +387,21 @@
     if (stato.passo !== 3) return;
     erroreInvio.hidden = true;
     bottoneInvia.classList.add('is-caricamento');
-    bottoneInvia.textContent = 'Invio in corso…';
+    bottoneInvia.textContent = t('Invio in corso…');
 
     window.maraInvia({
       tipo: 'prenota',
       nome: valore('nome'), telefono: valore('telefono'), email: valore('email'),
       data: stato.data, ora: stato.ora, persone: stato.persone, note: valore('note'),
       sito: valore('sito'),
+      lingua: L.lingua,
       consenso: form.querySelector('[name="consenso"]').checked
     }).then(function (r) {
-      if (!r.ok) throw new Error(r.errore || 'Qualcosa è andato storto, riprova.');
+      if (!r.ok) throw new Error((L.lingua === 'it' && r.errore) || t('Qualcosa è andato storto, riprova.'));
       mostraInviata();
     }).catch(function (err) {
-      erroreInvio.innerHTML = '<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span></span>';
-      erroreInvio.querySelector('span').textContent = err.message + ' Se il problema continua, chiamaci allo 045 485 7283.';
+      erroreInvio.innerHTML = '<svg class="icona" aria-hidden="true"><use href="' + L.icona('alert') + '"/></svg><span></span>';
+      erroreInvio.querySelector('span').textContent = err.message + t(' Se il problema continua, chiamaci allo 045 485 7283.');
       erroreInvio.hidden = false;
       bottoneInvia.classList.remove('is-caricamento');
       bottoneInvia.innerHTML = testoInvia;
@@ -412,12 +411,12 @@
   function mostraInviata() {
     var nome = valore('nome').split(/\s+/)[0];
     scrivi('nome-proprio', nome ? ', ' + nome : '');
-    scrivi('frase-riepilogo', giornoLungo(stato.data) + ', ore ' + stato.ora + ', ' + stato.persone + (stato.persone === 1 ? ' persona.' : ' persone.'));
+    scrivi('frase-riepilogo', t('{g}, ore {o}, {p}.', { g: giornoLungo(stato.data), o: stato.ora, p: L.persone(stato.persone) }));
     form.hidden = true;
     document.querySelector('[data-inviata]').hidden = false;
     document.querySelector('[data-passi]').hidden = true;
     document.querySelector('[data-avanzamento]').hidden = true;
-    document.querySelector('[data-titolo-mobile]').textContent = 'Richiesta inviata';
+    document.querySelector('[data-titolo-mobile]').textContent = t('Richiesta inviata');
     document.querySelector('[data-passo-mobile]').hidden = true;
     document.body.classList.add('is-inviata');
     document.querySelector('[data-barra-esci]').hidden = false;
@@ -439,9 +438,9 @@
       'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
       'DTSTART;TZID=Europe/Rome:' + inizio,
       'DTEND;TZID=Europe/Rome:' + fine,
-      'SUMMARY:Pranzo al Ristorante Mara (' + stato.persone + ' pers.)',
+      'SUMMARY:' + t('Pranzo al Ristorante Mara ({n} pers.)', { n: stato.persone }),
       'LOCATION:Ristorante Mara\\, Via Mantovana 1180\\, 37067 Valeggio sul Mincio (VR)',
-      'DESCRIPTION:Richiesta di prenotazione: attendi la mail di conferma. Tel. 045 485 7283',
+      'DESCRIPTION:' + t('Richiesta di prenotazione: attendi la mail di conferma. Tel. 045 485 7283').replace(/,/g, '\\,'),
       'END:VEVENT', 'END:VCALENDAR'
     ].join('\r\n');
     var a = document.createElement('a');
@@ -463,7 +462,7 @@
     var vicine = dati.chiusure.filter(function (c) { return c.al >= oggi && c.dal <= piuGiorni(oggi, 21); });
     var notaStriscia = form.querySelector('[data-nota-striscia]');
     notaStriscia.textContent = vicine.map(function (c) {
-      return O.maiuscola(O.periodo(c, oggi)) + ' siamo chiusi' + (c.motivo ? ' (' + c.motivo.toLowerCase() + ')' : '') + '.';
+      return t('{P} siamo chiusi{m}.', { P: O.maiuscola(O.periodo(c, oggi)), p: O.periodo(c, oggi), m: c.motivo ? ' (' + t(c.motivo).toLowerCase() + ')' : '' });
     }).join(' ');
     notaStriscia.hidden = !vicine.length;
     if (stato.passo === 1) document.querySelector('[data-nota-passo]').textContent = notaRiepilogo();

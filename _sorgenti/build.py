@@ -14,6 +14,21 @@ import re
 
 import datetime
 import json
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent / "lingue"))
+import testi  # noqa: E402  traduzioni inglese e tedesco
+
+LINGUE = ("it", "en", "de")
+LOCALE = {"it": "it_IT", "en": "en_GB", "de": "de_DE"}
+
+
+def tr(testo, lingua):
+    """Traduzione di un testo breve (allergeni, note del menù); se manca resta l'italiano."""
+    if not testo or lingua == "it":
+        return testo
+    v = testi.TESTI.get(testo)
+    return v[LINGUE.index(lingua) - 1] if v else testo
 
 # Indirizzo pubblico del sito: cambialo qui quando il sito passa al dominio definitivo
 # (es. https://www.ristorantemara.com) e rilancia la build.
@@ -61,25 +76,33 @@ def slug(t):
     return re.sub(r"[^a-z]+", "-", t.lower().replace("à", "a")).strip("-")
 
 
-def riga_piatto(p, vino=False):
+def riga_piatto(p, vino=False, lingua="it"):
     allergeni = ["Solfiti"] if vino else p.get("allergeni", [])
-    testo_all = p.get("testo_allergeni") or " · ".join(allergeni)
+    testo_all = tr(p.get("testo_allergeni"), lingua) or " · ".join(tr(a, lingua) for a in allergeni)
     html = [f'<li class="piatto" data-allergeni="{esc(",".join(slug(a) for a in allergeni))}">',
             '<div class="piatto__testa">',
             f'<h3 class="piatto-nome">{esc(p["nome"])}</h3>',
             '<span class="piatto__puntini" aria-hidden="true"></span>',
             f'<p class="prezzo">{esc(p["prezzo"])}</p></div>']
-    if p.get("sotto"):
-        html.append(f'<p class="piatto__sotto">{esc(p["sotto"])}</p>')
+    sotto = p.get("sotto")
+    if not sotto and lingua != "it" and p["nome"] in testi.PIATTI:
+        sotto = testi.PIATTI[p["nome"]][LINGUE.index(lingua) - 1]
+    if sotto:
+        html.append(f'<p class="piatto__sotto">{esc(sotto)}</p>')
     if testo_all and not vino:
         html.append(f'<p class="piatto__allergeni"><span class="visually-hidden">Allergeni: </span>{esc(testo_all)}</p>')
     html.append("</li>")
     return "".join(html)
 
 
-def blocchi_menu():
-    import json
+def blocchi_menu(lingua="it"):
     dati = json.loads((RADICE / "menu.json").read_text(encoding="utf-8"))
+    # nomi dei piatti, dei vini e dei produttori restano in italiano
+    for s_ in dati["sezioni"]:
+        for p_ in s_.get("piatti", []) + [q for g in s_.get("gruppi", []) for q in g["piatti"]]:
+            testi.NON_TRADURRE.add(p_["nome"])
+            if p_.get("sotto"):
+                testi.NON_TRADURRE.add(p_["sotto"])
     indice, pillole, sezioni = [], [], []
     for s in dati["sezioni"]:
         vino = bool(s.get("vini"))
@@ -101,15 +124,15 @@ def blocchi_menu():
         if vino:
             for g in s["gruppi"]:
                 corpo.append(f'<div class="menu-gruppo" data-gruppo><p class="occhiello">{esc(g["titolo"])}</p><ul class="menu-colonne">')
-                corpo.extend(riga_piatto(p, vino=True) for p in g["piatti"])
+                corpo.extend(riga_piatto(p, vino=True, lingua=lingua) for p in g["piatti"])
                 corpo.append("</ul></div>")
         else:
             corpo.append('<ul class="menu-colonne">')
-            corpo.extend(riga_piatto(p) for p in s["piatti"])
+            corpo.extend(riga_piatto(p, lingua=lingua) for p in s["piatti"])
             corpo.append("</ul>")
         corpo.append("</section>")
         sezioni.append("".join(corpo))
-    chip = "".join(f'<button class="chip" type="button" aria-pressed="false" data-allergene="{slug(a)}">{esc(a)}'
+    chip = "".join(f'<button class="chip" type="button" aria-pressed="false" data-allergene="{slug(a)}">{esc(tr(a, lingua))}'
                    f'<svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#x"/></svg></button>'
                    for a in dati["allergeni"])
     # Dati delle sezioni note, usati da menu.js quando il menù arriva dal Foglio
@@ -121,13 +144,14 @@ def blocchi_menu():
             "menu_meta": f'<script type="application/json" id="menu-meta">{meta_json}</script>'}
 
 
-MENU = blocchi_menu()
+MENU = {l: blocchi_menu(l) for l in ("it", "en", "de")}
 
 
 # ---------------------------------------------------------------- SEO e dati strutturati
 
-def url_pagina(nome):
-    return SITO_URL + "/" + ("" if nome == "index.html" else nome)
+def url_pagina(nome, lingua="it"):
+    cartella = "" if lingua == "it" else lingua + "/"
+    return SITO_URL + "/" + cartella + ("" if nome == "index.html" else nome)
 
 
 def json_ld(dati):
@@ -223,28 +247,31 @@ def faq_ld(corpo):
                             "acceptedAnswer": {"@type": "Answer", "text": pulito(r)}} for d, r in voci]}
 
 
-def blocco_seo(nome, meta, corpo):
+def blocco_seo(nome, meta, corpo, lingua="it"):
     indicizzabile = meta.get("robots") != "noindex" and nome != "404.html"
     titolo, descr = esc(meta.get("titolo", "Ristorante Mara")), esc(meta.get("descrizione", ""))
     righe = []
     if indicizzabile:
-        righe.append(f'<link rel="canonical" href="{url_pagina(nome)}">')
+        righe.append(f'<link rel="canonical" href="{url_pagina(nome, lingua)}">')
+        righe += [f'<link rel="alternate" hreflang="{l}" href="{url_pagina(nome, l)}">' for l in LINGUE]
+        righe.append(f'<link rel="alternate" hreflang="x-default" href="{url_pagina(nome)}">')
     righe += [
         '<meta property="og:type" content="restaurant">' if nome == "index.html" else '<meta property="og:type" content="website">',
         '<meta property="og:site_name" content="Ristorante Mara">',
-        '<meta property="og:locale" content="it_IT">',
+        f'<meta property="og:locale" content="{LOCALE[lingua]}">',
+        *[f'<meta property="og:locale:alternate" content="{LOCALE[l]}">' for l in LINGUE if l != lingua],
         f'<meta property="og:title" content="{titolo}">',
         f'<meta property="og:description" content="{descr}">',
-        f'<meta property="og:url" content="{url_pagina(nome)}">',
+        f'<meta property="og:url" content="{url_pagina(nome, lingua)}">',
         '<meta name="twitter:card" content="summary">',
         '<meta name="geo.region" content="IT-VR">',
         '<meta name="geo.placename" content="Valeggio sul Mincio">',
     ]
     if nome in ("index.html", "dove-siamo.html", "prenota.html"):
         righe.append(json_ld(ristorante_ld()))
-    if nome == "menu.html":
+    if nome == "menu.html" and lingua == "it":
         righe.append(json_ld(menu_ld()))
-    faq = faq_ld(corpo)
+    faq = faq_ld(corpo) if lingua == "it" else None
     if faq:
         righe.append(json_ld(faq))
     return "".join("  " + r + "\n" for r in righe)
@@ -253,10 +280,15 @@ def blocco_seo(nome, meta, corpo):
 def scrivi_mappa_sito(pagine):
     oggi = datetime.date.today().isoformat()
     priorita = {"index.html": "1.0", "menu.html": "0.9", "prenota.html": "0.8", "dove-siamo.html": "0.8"}
-    voci = "".join(f"  <url><loc>{url_pagina(n)}</loc><lastmod>{oggi}</lastmod>"
-                   f"<priority>{priorita.get(n, '0.6')}</priority></url>\n" for n in pagine)
+    voci = ""
+    for n in pagine:
+        alternative = "".join(f'<xhtml:link rel="alternate" hreflang="{l}" href="{url_pagina(n, l)}"/>' for l in LINGUE)
+        alternative += f'<xhtml:link rel="alternate" hreflang="x-default" href="{url_pagina(n)}"/>'
+        for l in LINGUE:
+            voci += (f"  <url><loc>{url_pagina(n, l)}</loc><lastmod>{oggi}</lastmod>"
+                     f"<priority>{priorita.get(n, '0.6')}</priority>{alternative}</url>\n")
     (SITO / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
-                                      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                                      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
                                       + voci + "</urlset>\n", encoding="utf-8")
     (SITO / "robots.txt").write_text(
         "# Tutti i motori di ricerca e gli assistenti AI possono leggere il sito\n"
@@ -266,20 +298,21 @@ def scrivi_mappa_sito(pagine):
     (SITO / "llms.txt").write_text(llms, encoding="utf-8")
 
 
-def componi(meta, corpo, nome=""):
+def componi(meta, corpo, nome="", lingua="it"):
     attivo = meta.get("attivo", "")
     valori = {
         "titolo": meta.get("titolo", "Ristorante Mara"),
         "descrizione": meta.get("descrizione", ""),
         "robots": ('<meta name="robots" content="noindex">' if meta.get("robots") == "noindex" else "")
-                  + ('<base href="/">' if meta.get("base") else ""),
+                  + (f'<base href="/{"" if lingua == "it" else lingua + "/"}">' if meta.get("base") else ""),
         "script_extra": "".join(f'<script src="{s.strip()}" defer></script>' for s in meta.get("script", "").split(",") if s.strip()),
+        "script_lingua": f'  <script src="js/lingua-{lingua}.js" defer></script>\n' if lingua != "it" else "",
         "orari": PARTI["orari"],
         "nodo": PARTI["nodo"],
         "mappa": PARTI["mappa"],
-        **MENU,
+        **MENU[lingua],
     }
-    valori["seo"] = blocco_seo(nome, meta, corpo)
+    valori["seo"] = blocco_seo(nome, meta, corpo, lingua)
     for voce in ("menu", "gruppi", "cerimonie", "storia", "dove"):
         valori[f"attivo_{voce}"] = ' aria-current="page"' if voce == attivo else ""
 
@@ -297,10 +330,20 @@ def componi(meta, corpo, nome=""):
         html += sostituisci(PARTI["footer"], valori)
         html += PARTI["cookie"]
     html += "</body>\n</html>\n"
-    return versiona(html)
+    html = selettore_lingue(html, nome, lingua)
+    if nome == "404.html" and lingua == "it":
+        # GitHub Pages mostra sempre il 404 italiano: per gli indirizzi in /en/ e /de/ passiamo alla pagina tradotta
+        html = html.replace("</head>", "  <script>(function (m) { if (m) location.replace('/' + m[1] + '/404.html'); })"
+                            "(location.pathname.match(/^\\/(en|de)\\/(?!404\\.html)/));</script>\n</head>", 1)
+    if lingua != "it":
+        html = traduci(html, lingua, nome)
+        faq = faq_ld(html)
+        if faq:
+            html = html.replace("</head>", "  " + json_ld(faq) + "\n</head>", 1)
+    return versiona(html, "" if lingua == "it" else "../")
 
 
-def versiona(html):
+def versiona(html, radice=""):
     """Aggiunge ?v=<impronta del file> a CSS e JS: a ogni modifica il browser scarica la versione nuova
     invece di usare quella in cache."""
     import hashlib, re as _re
@@ -310,11 +353,107 @@ def versiona(html):
         if not file.exists():
             return m.group(0)
         v = hashlib.sha1(file.read_bytes()).hexdigest()[:8]
-        return f'{attr}="{percorso}?v={v}"'
+        return f'{attr}="{radice}{percorso}?v={v}"'
     return _re.sub(r'(href|src)="((?:css|js)/[\w.-]+\.(?:css|js))"', impronta, html)
 
 
+# ---------------------------------------------------------------- Lingue
+
+def selettore_lingue(html, nome, lingua):
+    """Collega IT · EN · DE alla stessa pagina nelle altre lingue."""
+    def link(l):
+        dest = ("" if lingua == "it" else "../") + ("" if l == "it" else l + "/") + nome
+        corrente = ' aria-current="true"' if l == lingua else ""
+        return f'<a href="{dest}"{corrente} lang="{l}" hreflang="{l}">{l.upper()}</a>'
+    return re.sub(r'<a href="#"[^>]*lang="it"[^>]*>IT</a><a href="#"[^>]*lang="en"[^>]*>EN</a><a href="#"[^>]*lang="de"[^>]*>DE</a>',
+                  lambda m: link("it") + link("en") + link("de"), html)
+
+
+MANCANTI = {"en": {}, "de": {}}
+ATTRIBUTI = ("aria-label", "title", "placeholder", "alt", "content", "aria-valuetext")
+
+
+_GIA = {}
+
+
+def gia_tradotti(i):
+    """Testi già nella lingua di arrivo (inseriti tradotti dalla build del menù o dai FRAMMENTI)."""
+    if i not in _GIA:
+        v = {t[i] for t in testi.TESTI.values()} | {t[i] for t in testi.PIATTI.values()}
+        for f in testi.FRAMMENTI:
+            v |= {re.sub(r"\s+", " ", x).strip() for x in re.split(r"<[^>]+>", f[1 + i])}
+        _GIA[i] = v
+    return _GIA[i]
+
+
+def _traduci_testo(t, i, nome, lingua):
+    chiave = re.sub(r"\s+", " ", t).strip()
+    if (not chiave or len(chiave) < 2 or not re.search(r"[A-Za-zÀ-ÿ]", chiave)
+            or chiave in testi.UGUALI or chiave in testi.NON_TRADURRE):
+        return t
+    gia = gia_tradotti(i)
+    if chiave not in testi.TESTI and (chiave in gia or all(x in gia for x in chiave.split(" · "))):
+        return t
+    v = testi.TESTI.get(chiave)
+    if v is None:
+        MANCANTI[lingua].setdefault(chiave, set()).add(nome)
+        return t
+    inizio = t[: len(t) - len(t.lstrip())]
+    fine = t[len(t.rstrip()):]
+    return inizio + v[i] + fine
+
+
+def traduci(html, lingua, nome):
+    i = LINGUE.index(lingua) - 1
+    html = html.replace('<html lang="it">', f'<html lang="{lingua}" data-radice="../">', 1)
+    for frammento in testi.FRAMMENTI:
+        if frammento[0] in html:
+            html = html.replace(frammento[0], frammento[1 + i])
+    # percorsi: le pagine tradotte stanno in /en/ e /de/
+    html = re.sub(r'(href|src)="(assets/)', r'\1="../\2', html)
+    pezzi = re.split(r"(<[^>]+>)", html)
+    dentro = None
+    for k, pz in enumerate(pezzi):
+        if pz.startswith("<"):
+            m = re.match(r"<(/?)(script|style)\b", pz, re.I)
+            if m:
+                dentro = None if m.group(1) else m.group(2).lower()
+            if pz == "<!--tradotto-->":
+                dentro = "tradotto"
+            elif pz == "<!--/tradotto-->":
+                dentro = None
+            if dentro == "tradotto":
+                continue
+            def attr(mm):
+                return f'{mm.group(1)}="{esc_attr(_traduci_testo(mm.group(2), i, nome, lingua))}"'
+            if not pz.startswith("<!") and not pz.startswith("</"):
+                if not re.match(r"<(meta|link)\b", pz) or re.search(r'(name="description"|property="og:(title|description)")', pz):
+                    pz = re.sub(r'\b(' + "|".join(ATTRIBUTI) + r')="([^"]*)"', attr, pz)
+            pezzi[k] = pz
+        elif dentro is None:
+            pezzi[k] = _traduci_testo(pz, i, nome, lingua)
+    return "".join(pezzi)
+
+
+def esc_attr(t):
+    return t.replace('"', "&quot;")
+
+
+
+def scrivi_traduzioni_js():
+    """js/lingua-en.js e js/lingua-de.js: i testi che servono agli script, presi da testi.py."""
+    for i, lingua in enumerate(("en", "de")):
+        voci = {k: v[i] for k, v in testi.JS.items()}
+        voci.update({k: testi.TESTI[k][i] for k in testi.JS_DA_TESTI})
+        voci.update({"piatto:" + k: v[i] for k, v in testi.PIATTI.items()})
+        corpo = json.dumps(voci, ensure_ascii=False, indent=0, sort_keys=True)
+        (SITO / "js" / f"lingua-{lingua}.js").write_text(
+            "/* Generato da _sorgenti/build.py: non modificare qui, ma in _sorgenti/lingue/testi.py */\n"
+            f"window.MARA_T = {corpo};\n", encoding="utf-8")
+
+
 def main():
+    scrivi_traduzioni_js()
     indicizzabili = []
     for percorso in sorted((RADICE / "pagine").glob("*.html")):
         meta, corpo = leggi_pagina(percorso)
@@ -322,6 +461,20 @@ def main():
         if meta.get("robots") != "noindex" and percorso.name != "404.html":
             indicizzabili.append(percorso.name)
         print("scritta", percorso.name)
+        if percorso.name in testi.SOLO_ITALIANO:
+            continue
+        for lingua in ("en", "de"):
+            (SITO / lingua).mkdir(exist_ok=True)
+            proprio = RADICE / "lingue" / lingua / percorso.name
+            corpo_l = ("<!--tradotto-->" + proprio.read_text(encoding="utf-8") + "<!--/tradotto-->") if proprio.exists() else corpo
+            (SITO / lingua / percorso.name).write_text(componi(meta, corpo_l, percorso.name, lingua), encoding="utf-8")
+    righe = []
+    for lingua, voci in MANCANTI.items():
+        for testo, pagine in sorted(voci.items()):
+            righe.append(f"{lingua}\t{', '.join(sorted(pagine))}\t{testo}")
+    (RADICE / "lingue" / "mancanti.txt").write_text("\n".join(righe) + "\n", encoding="utf-8")
+    if righe:
+        print(f"ATTENZIONE: {len(righe)} testi senza traduzione (vedi _sorgenti/lingue/mancanti.txt)")
     indicizzabili.sort(key=lambda n: (n != "index.html", n))
     scrivi_mappa_sito(indicizzabili)
     print("scritti sitemap.xml, robots.txt, llms.txt")

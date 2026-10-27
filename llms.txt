@@ -12,6 +12,12 @@
 - Allergeni: indicati su ogni piatto del menù, con filtro per escludere i piatti che li contengono
 - Fascia di prezzo: primi da 9 a 16 €, secondi da 9 a 18 € (costata a peso); coperto 2,50 €
 
+## Lingue
+
+- Italiano: https://ristorantemara.github.io/
+- English: https://ristorantemara.github.io/en/
+- Deutsch: https://ristorantemara.github.io/de/
+
 ## Pagine
 
 - [Home](https://ristorantemara.github.io/): presentazione, specialità di casa, orari e indirizzo

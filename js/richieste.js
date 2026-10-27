@@ -2,6 +2,8 @@
 (function () {
   'use strict';
 
+  var L = window.maraL; // lingua della pagina (js/lingua.js)
+  var t = L.t;
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   function valida(campo) {
@@ -62,18 +64,18 @@
       campi.forEach(function (c) { if (!valida(c) && !primoErrato) primoErrato = c; });
       if (primoErrato) { primoErrato.querySelector('.campo__input, input').focus(); return; }
 
-      var dati = { tipo: form.getAttribute('data-form-richiesta') };
+      var dati = { tipo: form.getAttribute('data-form-richiesta'), lingua: L.lingua };
       new FormData(form).forEach(function (v, k) { dati[k] = String(v).trim(); });
 
       bottone.classList.add('is-caricamento');
-      bottone.textContent = 'Invio in corso…';
+      bottone.textContent = t('Invio in corso…');
 
       window.maraInvia(dati).then(function (r) {
-        if (!r.ok) throw new Error(r.errore || 'Qualcosa è andato storto, riprova.');
+        if (!r.ok) throw new Error((L.lingua === 'it' && r.errore) || t('Qualcosa è andato storto, riprova.'));
         window.location.href = form.getAttribute('data-successo');
       }).catch(function (err) {
-        erroreForm.innerHTML = '<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#alert"/></svg><span></span>';
-        erroreForm.querySelector('span').textContent = err.message + ' Oppure chiamaci allo 045 485 7283.';
+        erroreForm.innerHTML = '<svg class="icona" aria-hidden="true"><use href="' + L.icona('alert') + '"/></svg><span></span>';
+        erroreForm.querySelector('span').textContent = err.message + t(' Oppure chiamaci allo 045 485 7283.');
         erroreForm.hidden = false;
         bottone.classList.remove('is-caricamento');
         bottone.innerHTML = testoBottone;

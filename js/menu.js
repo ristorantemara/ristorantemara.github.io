@@ -4,6 +4,8 @@
 (function () {
   'use strict';
 
+  var L = window.maraL; // lingua della pagina (js/lingua.js)
+  var t = L.t;
   var esclusi = [];
   var chip = document.querySelectorAll('[data-allergene]');
   var stato = document.querySelector('[data-filtro-stato]');
@@ -21,15 +23,16 @@
   chip.forEach(function (c) { NOMI[c.dataset.allergene] = c.childNodes[0].textContent.trim(); });
 
   var SINGOLARE = {
-    antipasti: 'Nessun antipasto', primi: 'Nessun primo', secondi: 'Nessun secondo',
-    freddi: 'Nessun piatto freddo', 'contorni-dolci': 'Nessun contorno o dolce',
-    bevande: 'Nessuna bevanda', vini: 'Nessun vino'
+    antipasti: t('Nessun antipasto'), primi: t('Nessun primo'), secondi: t('Nessun secondo'),
+    freddi: t('Nessun piatto freddo'), 'contorni-dolci': t('Nessun contorno o dolce'),
+    bevande: t('Nessuna bevanda'), vini: t('Nessun vino')
   };
   var ARTICOLI = {
-    antipasti: 'gli antipasti', primi: 'i primi', secondi: 'i secondi', freddi: 'i piatti freddi',
-    'contorni-dolci': 'contorni e dolci', bevande: 'le bevande', vini: 'i vini'
+    antipasti: t('gli antipasti'), primi: t('i primi'), secondi: t('i secondi'), freddi: t('i piatti freddi'),
+    'contorni-dolci': t('contorni e dolci'), bevande: t('le bevande'), vini: t('i vini')
   };
-  var VUOTO = 'Avvisaci quando prenoti: la cucina può proporti un’alternativa.';
+  var VUOTO = t('Avvisaci quando prenoti: la cucina può proporti un’alternativa.');
+  var ICONA = function (n) { return '<svg class="icona" aria-hidden="true"><use href="' + L.icona(n) + '"/></svg>'; };
   var ROMANI = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV'];
 
   function sezioni() { return document.querySelectorAll('[data-sezione]'); }
@@ -40,12 +43,14 @@
 
   function rigaPiatto(p, vino) {
     var allergeni = vino ? ['Solfiti'] : (p.allergeni || []);
-    var testo = p.testo_allergeni || allergeni.join(' · ');
+    var testo = t(p.testo_allergeni || '') || allergeni.map(function (a) { return t(a); }).join(' · ');
+    var sotto = p.sotto || (L.lingua !== 'it' ? t('piatto:' + p.nome) : '');
+    if (sotto === 'piatto:' + p.nome) sotto = '';
     return '<li class="piatto" data-allergeni="' + esc(allergeni.map(slug).join(',')) + '">' +
       '<div class="piatto__testa"><h3 class="piatto-nome">' + esc(p.nome) + '</h3>' +
       '<span class="piatto__puntini" aria-hidden="true"></span><p class="prezzo">' + esc(p.prezzo || '') + '</p></div>' +
-      (p.sotto ? '<p class="piatto__sotto">' + esc(p.sotto) + '</p>' : '') +
-      (testo && !vino ? '<p class="piatto__allergeni"><span class="visually-hidden">Allergeni: </span>' + esc(testo) + '</p>' : '') +
+      (sotto ? '<p class="piatto__sotto">' + esc(sotto) + '</p>' : '') +
+      (testo && !vino ? '<p class="piatto__allergeni"><span class="visually-hidden">' + t('Allergeni:') + ' </span>' + esc(testo) + '</p>' : '') +
       '</li>';
   }
 
@@ -60,18 +65,19 @@
       var vino = m.vini || /vin/i.test(s.titolo);
       var totale = s.gruppi.reduce(function (n, g) { return n + g.piatti.length; }, 0);
       var numero = (ROMANI[i] || String(i + 1)) + '.';
-      indice.push('<li><a href="#' + id + '" data-indice="' + id + '"><span>' + esc(s.titolo) + '</span>' +
+      var titolo = t(s.titolo);
+      indice.push('<li><a href="#' + id + '" data-indice="' + id + '"><span>' + esc(titolo) + '</span>' +
         '<span class="menu-indice__conta" data-conta="' + id + '">' + totale + '</span></a></li>');
-      pillole.push('<a class="pillola" href="#' + id + '" data-indice="' + id + '">' + esc(s.titolo) + '</a>');
+      pillole.push('<a class="pillola" href="#' + id + '" data-indice="' + id + '">' + esc(titolo) + '</a>');
       var html = '<section class="menu-sezione" id="' + id + '" data-sezione="' + id + '"' + (vino ? ' data-vini' : '') + ' aria-labelledby="t-' + id + '">' +
-        '<h2 class="menu-sezione__titolo h2" id="t-' + id + '"><span class="accento">' + numero + '</span> ' + esc(s.titolo) + '</h2>';
-      if (s.nota) html += '<p class="testo-s menu-sezione__nota">' + esc(s.nota) + '</p>';
-      html += '<div class="avviso menu-sezione__vuoto" data-vuoto hidden><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg>' +
-        '<div><p class="label" data-vuoto-titolo></p><p class="testo-s">' + esc(m.vuoto || VUOTO) + '</p>' +
-        '<button class="btn btn--testo" type="button" data-mostra-comunque>Mostra comunque<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></button></div></div>';
+        '<h2 class="menu-sezione__titolo h2" id="t-' + id + '"><span class="accento">' + numero + '</span> ' + esc(titolo) + '</h2>';
+      if (s.nota) html += '<p class="testo-s menu-sezione__nota">' + esc(t(s.nota)) + '</p>';
+      html += '<div class="avviso menu-sezione__vuoto" data-vuoto hidden>' + ICONA('info') +
+        '<div><p class="label" data-vuoto-titolo></p><p class="testo-s">' + esc(m.vuoto ? t(m.vuoto) : VUOTO) + '</p>' +
+        '<button class="btn btn--testo" type="button" data-mostra-comunque>' + esc(t('Mostra comunque')) + ICONA('arrow') + '</button></div></div>';
       var conGruppi = s.gruppi.some(function (g) { return g.titolo; });
       s.gruppi.forEach(function (g) {
-        if (conGruppi) html += '<div class="menu-gruppo" data-gruppo>' + (g.titolo ? '<p class="occhiello">' + esc(g.titolo) + '</p>' : '');
+        if (conGruppi) html += '<div class="menu-gruppo" data-gruppo>' + (g.titolo ? '<p class="occhiello">' + esc(t(g.titolo)) + '</p>' : '');
         html += '<ul class="menu-colonne">' + g.piatti.map(function (p) { return rigaPiatto(p, vino); }).join('') + '</ul>';
         if (conGruppi) html += '</div>';
       });
@@ -86,9 +92,9 @@
 
   /* ---------- Filtro allergeni ---------- */
   function elenco(nomi) {
-    nomi = nomi.map(function (n) { return n.toLowerCase(); });
-    if (nomi.length < 2) return nomi.join('');
-    return nomi.slice(0, -1).join(', ') + ' e ' + nomi[nomi.length - 1];
+    // in tedesco i nomi restano maiuscoli
+    if (L.lingua !== 'de') nomi = nomi.map(function (n) { return n.toLowerCase(); });
+    return L.elenco(nomi);
   }
 
   function applica() {
@@ -126,25 +132,25 @@
       vuoto.hidden = !mostraVuoto;
       if (mostraVuoto) {
         vuoto.querySelector('[data-vuoto-titolo]').textContent =
-          (SINGOLARE[s.dataset.sezione] || 'Nessun piatto') + ' della carta è senza ' + elenco(nomiEsclusi);
-        var cosa = s.hasAttribute('data-vini') ? 'i vini' : (ARTICOLI[s.dataset.sezione] || '');
+          t('{s} della carta è senza {x}', { s: SINGOLARE[s.dataset.sezione] || t('Nessun piatto'), x: elenco(nomiEsclusi) });
+        var cosa = s.hasAttribute('data-vini') ? ARTICOLI.vini : (ARTICOLI[s.dataset.sezione] || '');
         vuoto.querySelector('[data-mostra-comunque]').firstChild.textContent =
-          s.classList.contains('mostra-tutto') ? 'Nascondi di nuovo ' : 'Mostra comunque ' + (cosa ? cosa + ' ' : '');
+          (s.classList.contains('mostra-tutto') ? t('Nascondi di nuovo') : cosa ? t('Mostra comunque {c}', { c: cosa }) : t('Mostra comunque')) + ' ';
       }
     });
 
     if (stato) {
       if (!esclusi.length) {
-        stato.textContent = 'Tocca un allergene per nascondere i piatti che lo contengono';
+        stato.textContent = t('Tocca un allergene per nascondere i piatti che lo contengono');
         stato.classList.remove('is-attivo');
       } else {
         stato.classList.add('is-attivo');
         stato.innerHTML = '';
-        stato.appendChild(document.createTextNode('Senza ' + elenco(nomiEsclusi) + ': ' + visibiliCibo + ' piatti su ' + totaliCibo + '  ·  '));
+        stato.appendChild(document.createTextNode(t('Senza {x}: {v} piatti su {n}', { x: elenco(nomiEsclusi), v: visibiliCibo, n: totaliCibo }) + '  ·  '));
         var azzera = document.createElement('button');
         azzera.type = 'button';
         azzera.className = 'link-azzera';
-        azzera.textContent = 'Azzera filtri';
+        azzera.textContent = t('Azzera filtri');
         azzera.addEventListener('click', function () { esclusi = []; applica(); });
         stato.appendChild(azzera);
       }
@@ -157,15 +163,15 @@
         b.type = 'button';
         b.className = 'chip';
         b.setAttribute('aria-pressed', 'true');
-        b.setAttribute('aria-label', 'Togli ' + NOMI[a]);
-        b.innerHTML = NOMI[a] + '<svg class="icona icona--xs" aria-hidden="true"><use href="assets/icons.svg#x"/></svg>';
+        b.setAttribute('aria-label', t('Togli {x}', { x: NOMI[a] }));
+        b.innerHTML = esc(NOMI[a]) + '<svg class="icona icona--xs" aria-hidden="true"><use href="' + L.icona('x') + '"/></svg>';
         b.addEventListener('click', function () { attiva(a); });
         attiviMobile.appendChild(b);
       });
       // su mobile, con un filtro attivo, l'etichetta lascia spazio agli allergeni scelti; su desktop resta uguale
       var suMobile = window.matchMedia && window.matchMedia('(max-width: 1023px)').matches;
-      if (etichettaMobile) etichettaMobile.textContent = esclusi.length && suMobile ? 'Senza:' : 'Nascondi i piatti che contengono';
-      bottoneScegli.textContent = esclusi.length ? 'Modifica' : 'Scegli';
+      if (etichettaMobile) etichettaMobile.textContent = esclusi.length && suMobile ? t('Senza:') : t('Nascondi i piatti che contengono');
+      bottoneScegli.textContent = esclusi.length ? t('Modifica') : t('Scegli');
     }
   }
 

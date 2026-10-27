@@ -6,8 +6,9 @@
 
   var CHIAVE = 'mara-dati';
   var VECCHI_DOPO = 20 * 1000; // a ogni pagina (al massimo ogni 20 secondi) si chiedono i dati aggiornati
-  var GIORNI = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
-  var MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+  var L = window.maraL; // lingua della pagina (js/lingua.js)
+  var GIORNI = L.GIORNI;
+  var MESI = L.MESI;
   var ORDINE = [1, 2, 3, 4, 5, 6, 0];
 
   function orarioStandard(g) { return g === 2 ? { aperto: false } : { aperto: true, dalle: '12:00', alle: '14:00', ultima: '13:30' }; }
@@ -69,10 +70,10 @@
     /** "10 agosto" (con l'anno se diverso da quello di riferimento) */
     data: function (iso, annoRif) {
       var d = daISO(iso);
-      return d.getUTCDate() + ' ' + MESI[d.getUTCMonth()] + (annoRif && String(d.getUTCFullYear()) !== String(annoRif).slice(0, 4) ? ' ' + d.getUTCFullYear() : '');
+      return L.data(d.getUTCDate(), d.getUTCMonth(), annoRif && String(d.getUTCFullYear()) !== String(annoRif).slice(0, 4) ? d.getUTCFullYear() : '');
     },
     /** "lunedì 25 agosto" */
-    giornoData: function (iso) { return GIORNI[giornoSettimana(iso)] + ' ' + O.data(iso); },
+    giornoData: function (iso, annoRif) { return L.giornoData(giornoSettimana(iso), O.data(iso, annoRif)); },
 
     chiusura: function (dati, iso) {
       for (var i = 0; i < dati.chiusure.length; i++) {
@@ -110,7 +111,7 @@
       var righe = [];
       ORDINE.forEach(function (g) {
         var o = dati.orari[g];
-        var testo = o.aperto ? o.dalle + ' – ' + o.alle : 'Chiuso';
+        var testo = o.aperto ? o.dalle + ' – ' + o.alle : L.t('Chiuso');
         var ultima = righe[righe.length - 1];
         if (!separati && ultima && ultima.testo === testo) ultima.giorni.push(g);
         else righe.push({ giorni: [g], testo: testo, chiuso: !o.aperto });
@@ -130,13 +131,13 @@
         if (o.aperto) { aperti.push(g); fasce[O.fascia(o)] = true; } else chiusi.push(g);
       });
       var lista = Object.keys(fasce);
-      var nomiChiusi = chiusi.map(function (g) { return GIORNI[g]; });
-      var elenco = nomiChiusi.length < 2 ? nomiChiusi.join('') : nomiChiusi.slice(0, -1).join(', ') + ' e ' + nomiChiusi[nomiChiusi.length - 1];
+      var elenco = L.elenco(chiusi.map(function (g) { return GIORNI[g]; }));
       return {
         fascia: lista.length === 1 ? lista[0] : '',               // "12:00–14:00"
-        chiusi: elenco ? elenco + (chiusi.length > 1 ? ' chiusi' : ' chiuso') : '', // "martedì chiuso"
+        chiusi: chiusi.length ? L.chiusi(chiusi) : '',            // "martedì chiuso"
         tuttiAperti: !chiusi.length,
         elencoChiusi: elenco,
+        giorniChiusi: chiusi,
         nChiusi: chiusi.length
       };
     },
@@ -152,9 +153,9 @@
     },
     /** "dal 10 al 24 agosto" · "sabato 15 agosto" */
     periodo: function (c, oggi) {
-      if (c.dal === c.al) return GIORNI[giornoSettimana(c.dal)] + ' ' + O.data(c.dal, oggi);
+      if (c.dal === c.al) return O.giornoData(c.dal, oggi);
       var stessoMese = c.dal.slice(0, 7) === c.al.slice(0, 7);
-      return 'dal ' + (stessoMese ? String(daISO(c.dal).getUTCDate()) : O.data(c.dal, c.al)) + ' al ' + O.data(c.al, oggi);
+      return L.t('dal {a} al {b}', { a: stessoMese ? L.numero(daISO(c.dal).getUTCDate()) : O.data(c.dal, c.al), b: O.data(c.al, oggi) });
     }
   };
 

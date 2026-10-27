@@ -4,6 +4,8 @@
 
   /* ---------- Orari, stato di apertura e chiusure (dati dal Foglio, ora di Roma) ---------- */
   var O = window.maraOrari;
+  var L = window.maraL; // lingua della pagina (js/lingua.js)
+  var t = L.t;
 
   function oraRoma() {
     try {
@@ -24,19 +26,19 @@
       var g = O.prossimaApertura(dati, O.piuGiorni(oggi, dopo));
       if (!g) return '';
       var og = O.giorno(dati, g);
-      var nome = g === O.piuGiorni(oggi, 1) ? 'domani' : O.GIORNI[O.giornoSettimana(g)] + (g > O.piuGiorni(oggi, 6) ? ' ' + O.data(g, oggi) : '');
-      return tipo === 'breve' ? nome + ' ' + O.fascia(og) : nome + ' alle ' + og.dalle;
+      var nome = g === O.piuGiorni(oggi, 1) ? t('domani') : (g > O.piuGiorni(oggi, 6) ? O.giornoData(g, oggi) : L.nome(O.giornoSettimana(g)));
+      return tipo === 'breve' ? nome + ' ' + O.fascia(og) : t('{g} alle {o}', { g: nome, o: og.dalle });
     }
 
     if (!o.aperto) {
-      var motivo = o.chiusura ? (o.chiusura.motivo || 'Chiusura straordinaria') : 'Oggi chiuso';
+      var motivo = o.chiusura ? (t(o.chiusura.motivo || '') || t('Chiusura straordinaria')) : t('Oggi chiuso');
       var riapre = quandoRiapre(1);
-      return { chiuso: true, testo: motivo + (riapre ? ' · riapriamo ' + riapre : '') };
+      return { chiuso: true, testo: motivo + (riapre ? ' · ' + t('riapriamo {q}', { q: riapre }) : '') };
     }
-    if (adesso < O.minuti(o.dalle)) return { chiuso: false, testo: tipo === 'breve' ? 'Aperti oggi · ' + O.fascia(o) : 'Aperti oggi dalle ' + o.dalle + ' alle ' + o.alle + coda };
-    if (adesso < O.minuti(o.alle)) return { chiuso: false, testo: 'Aperti ora · fino alle ' + o.alle + coda };
+    if (adesso < O.minuti(o.dalle)) return { chiuso: false, testo: tipo === 'breve' ? t('Aperti oggi · {f}', { f: O.fascia(o) }) : t('Aperti oggi dalle {a} alle {b}', { a: o.dalle, b: o.alle }) + coda };
+    if (adesso < O.minuti(o.alle)) return { chiuso: false, testo: t('Aperti ora · fino alle {b}', { b: o.alle }) + coda };
     var dopo = quandoRiapre(1);
-    return { chiuso: true, testo: 'Chiuso ora' + (dopo ? ' · ' + (tipo === 'breve' ? '' : 'riapriamo ') + dopo : '') };
+    return { chiuso: true, testo: t('Chiuso ora') + (dopo ? ' · ' + (tipo === 'breve' ? dopo : t('riapriamo {q}', { q: dopo })) : '') };
   }
 
   function disegnaOrari(dati) {
@@ -65,9 +67,9 @@
         if (r.giorni.indexOf(giornoOggi) !== -1) {
           riga.classList.add('is-oggi');
           if (r.giorni.length > 1) dt.textContent = O.maiuscola(O.GIORNI[giornoOggi]);
-          dt.textContent += ' · oggi';
+          dt.textContent += t(' · oggi');
           var oggiVero = O.giorno(dati, oggi);
-          if (oggiVero.chiusura) { dd.textContent = 'Chiuso'; dd.className = 'orari__ora orari__ora--chiuso'; }
+          if (oggiVero.chiusura) { dd.textContent = t('Chiuso'); dd.className = 'orari__ora orari__ora--chiuso'; }
         }
         riga.appendChild(dt); riga.appendChild(dd); dl.appendChild(riga);
       });
@@ -75,13 +77,13 @@
 
     // Frasi sugli orari sparse nelle pagine
     var r = O.riassunto(dati);
-    var fascia = r.fascia ? r.fascia : 'a pranzo';
+    var aperti = r.fascia ? t('Aperti {f}', { f: r.fascia }) : t('Aperti a pranzo');
     var dalleAlle = r.fascia ? 'dalle ' + r.fascia.replace('–', ' alle ') : 'a pranzo';
     var frasi = {
-      fascia: r.fascia ? 'Aperti ' + r.fascia : 'Aperti a pranzo',
-      giorni: r.tuttiAperti ? 'Tutti i giorni' : (r.nChiusi === 1 ? 'Tutti i giorni, ' + r.chiusi : r.chiusi.charAt(0).toUpperCase() + r.chiusi.slice(1)),
-      frase: 'Aperti ' + (r.tuttiAperti || r.nChiusi === 1 ? 'tutti i giorni ' : '') + dalleAlle + (r.chiusi ? ', ' + (r.nChiusi === 1 ? 'il ' : '') + r.elencoChiusi + ' siamo chiusi.' : '.'),
-      breve: 'Aperti ' + fascia + (r.chiusi ? ' · ' + r.chiusi : '')
+      fascia: aperti,
+      giorni: r.tuttiAperti ? t('Tutti i giorni') : (r.nChiusi === 1 ? t('Tutti i giorni, {c}', { c: r.chiusi }) : O.maiuscola(r.chiusi)),
+      frase: L.frase(r, dalleAlle),
+      breve: aperti + (r.chiusi ? ' · ' + r.chiusi : '')
     };
     document.querySelectorAll('[data-orari-testo]').forEach(function (el) {
       var t = frasi[el.getAttribute('data-orari-testo')];
@@ -91,17 +93,17 @@
     // Footer (come nel Figma): i giorni con lo stesso orario in una frase sola
     // («Lunedì e da mercoledì a domenica, 12:00–14:00»), poi i giorni di chiusura
     document.querySelectorAll('[data-orari-footer]').forEach(function (box) {
-      var gruppi = [], perOrario = {}, chiusi = [];
+      var gruppi = [], perOrario = {}, chiusi = [], giorniChiusi = [];
       O.righe(dati, false).forEach(function (riga) {
         var nome = function (g) { return O.GIORNI[g]; };
         var pezzo = riga.giorni.length === 1 ? nome(riga.giorni[0])
-          : 'da ' + nome(riga.giorni[0]) + ' a ' + nome(riga.giorni[riga.giorni.length - 1]);
-        if (riga.chiuso) { chiusi.push(pezzo); return; }
+          : t('da {a} a {b}', { a: nome(riga.giorni[0]), b: nome(riga.giorni[riga.giorni.length - 1]) });
+        if (riga.chiuso) { chiusi.push(pezzo); if (giorniChiusi && riga.giorni.length === 1) giorniChiusi.push(riga.giorni[0]); else giorniChiusi = null; return; }
         var orario = riga.testo.replace(' – ', '–');
         if (!perOrario[orario]) { perOrario[orario] = []; gruppi.push(orario); }
         perOrario[orario].push(pezzo);
       });
-      var unisci = function (l) { return l.length < 2 ? l.join('') : l.slice(0, -1).join(', ') + ' e ' + l[l.length - 1]; };
+      var unisci = L.elenco;
       box.innerHTML = '';
       gruppi.forEach(function (orario) {
         var p = document.createElement('p');
@@ -110,7 +112,7 @@
       });
       if (chiusi.length) {
         var p = document.createElement('p');
-        p.textContent = O.maiuscola(unisci(chiusi)) + ' chiuso';
+        p.textContent = L.footerChiusi(chiusi, giorniChiusi);
         box.appendChild(p);
       }
     });
@@ -120,14 +122,14 @@
     document.querySelectorAll('[data-avviso-chiusura]').forEach(function (box) {
       if (!c) { box.hidden = true; return; }
       var inCorso = c.dal <= oggi;
-      var titolo = c.motivo || 'Chiusura straordinaria';
+      var titolo = t(c.motivo || '') || t('Chiusura straordinaria');
       var testo;
       if (inCorso) {
         var riapre = O.prossimaApertura(dati, O.piuGiorni(c.al, 1));
-        testo = (c.dal === c.al ? 'oggi siamo chiusi' : 'siamo chiusi fino a ' + O.giornoData(c.al)) +
-          (riapre ? '. Riapriamo ' + O.giornoData(riapre) + '.' : '.');
+        testo = (c.dal === c.al ? t('oggi siamo chiusi') : t('siamo chiusi fino a {d}', { d: O.giornoData(c.al) })) +
+          (riapre ? t('. Riapriamo {d}.', { d: O.giornoData(riapre) }) : '.');
       } else {
-        testo = 'saremo chiusi ' + O.periodo(c, oggi) + '.';
+        testo = t('saremo chiusi {p}.', { p: O.periodo(c, oggi) });
       }
       box.querySelector('[data-avviso-titolo]').textContent = titolo + ':';
       box.querySelector('[data-avviso-testo]').textContent = ' ' + testo;
@@ -164,8 +166,8 @@
         a.innerHTML = html +
           '<div class="specialita__titolo"><h3 class="h3"></h3><p class="prezzo"></p></div><p class="testo-m"></p>';
         a.querySelector('.h3').textContent = p.titolo;
-        a.querySelector('.prezzo').textContent = p.prezzo || '';
-        a.querySelector('.testo-m').textContent = p.descrizione || '';
+        a.querySelector('.prezzo').textContent = t(p.prezzo || '');
+        a.querySelector('.testo-m').textContent = t(p.descrizione || '');
         if (!p.descrizione) a.querySelector('.testo-m').remove();
         griglia.appendChild(a);
       });
@@ -193,14 +195,6 @@
   if (apri) apri.addEventListener('click', apriMenu);
   if (chiudi) chiudi.addEventListener('click', chiudiMenu);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') chiudiMenu(); });
-
-  /* ---------- Lingue: per ora solo italiano ---------- */
-  document.querySelectorAll('.lingue a').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (a.getAttribute('lang') !== 'it') alert('La versione in ' + (a.lang === 'en' ? 'inglese' : 'tedesco') + ' arriverà presto.');
-    });
-  });
 
   /* ---------- Banner cookie ---------- */
   // La scelta vale 6 mesi (linee guida del Garante), poi il banner ricompare
@@ -247,7 +241,7 @@
       opzioni.hidden = false;
       mappe.checked = mappeConsentite();
       personalizza.hidden = true;
-      accetta.textContent = 'Salva le scelte';
+      accetta.textContent = t('Salva le scelte');
       mappe.focus();
     });
     rifiuta.addEventListener('click', function () { salvaScelta(false); impostaMappe(false); banner.hidden = true; });
@@ -277,7 +271,7 @@
     if (box.querySelector('iframe') || !box.getClientRects().length) return; // già caricata o nascosta (es. home su mobile)
     var f = document.createElement('iframe');
     f.src = box.dataset.src;
-    f.title = 'Mappa: Ristorante Mara, Via Mantovana 1180, Valeggio sul Mincio';
+    f.title = t('Mappa: Ristorante Mara, Via Mantovana 1180, Valeggio sul Mincio');
     f.loading = 'lazy';
     f.referrerPolicy = 'no-referrer-when-downgrade';
     f.allowFullscreen = true;

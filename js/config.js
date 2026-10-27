@@ -10,10 +10,10 @@ window.maraInvia = function (dati) {
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(dati)
   }).then(function (r) { return r.text(); }, function () {
-    var e = new Error('Connessione non riuscita: controlla la rete e riprova.'); e.rete = true; throw e;
+    var e = new Error(window.maraL ? window.maraL.t('Connessione non riuscita: controlla la rete e riprova.') : 'Connessione non riuscita: controlla la rete e riprova.'); e.rete = true; throw e;
   }).then(function (testo) {
     try { return JSON.parse(testo); } catch (err) {
-      var e = new Error('Qualcosa è andato storto, riprova tra poco.'); e.tecnico = true; throw e;
+      var e = new Error(window.maraL ? window.maraL.t('Qualcosa è andato storto, riprova tra poco.') : 'Qualcosa è andato storto, riprova tra poco.'); e.tecnico = true; throw e;
     }
   });
 };
