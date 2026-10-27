@@ -297,7 +297,21 @@ def componi(meta, corpo, nome=""):
         html += sostituisci(PARTI["footer"], valori)
         html += PARTI["cookie"]
     html += "</body>\n</html>\n"
-    return html
+    return versiona(html)
+
+
+def versiona(html):
+    """Aggiunge ?v=<impronta del file> a CSS e JS: a ogni modifica il browser scarica la versione nuova
+    invece di usare quella in cache."""
+    import hashlib, re as _re
+    def impronta(m):
+        attr, percorso = m.group(1), m.group(2)
+        file = SITO / percorso
+        if not file.exists():
+            return m.group(0)
+        v = hashlib.sha1(file.read_bytes()).hexdigest()[:8]
+        return f'{attr}="{percorso}?v={v}"'
+    return _re.sub(r'(href|src)="((?:css|js)/[\w.-]+\.(?:css|js))"', impronta, html)
 
 
 def main():
