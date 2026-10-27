@@ -1,0 +1,7 @@
+# Tutti i motori di ricerca e gli assistenti AI possono leggere il sito
+User-agent: *
+Allow: /
+Disallow: /gestisci.html
+Disallow: /disdici.html
+
+Sitemap: https://ristorantemara.github.io/sitemap.xml

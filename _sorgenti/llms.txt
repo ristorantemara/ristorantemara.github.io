@@ -1,0 +1,23 @@
+# Ristorante Mara
+
+> Ristorante di famiglia dal 1967 a Valeggio sul Mincio (Verona), a due passi da Borghetto e dal Parco Giardino Sigurtà, a 15 minuti dal Lago di Garda. Specialità: il tortellino di Valeggio «nodo d’amore» tirato a mano, pasta fresca all’uovo, carni alla griglia e vini del territorio (Custoza, Bardolino, Lugana, Valpolicella). Aperto solo a pranzo. Ampio parcheggio anche per pullman: pranzi per gruppi, gite e cerimonie.
+
+## Informazioni essenziali
+
+- Indirizzo: Via Mantovana 1180, 37067 Valeggio sul Mincio (VR), Italia
+- Telefono: +39 045 485 7283
+- Email: info@ristorantemara.com
+- Orari: a pranzo dalle 12:00 alle 14:00, chiuso il martedì (eventuali ferie e chiusure straordinarie sono indicate sul sito)
+- Prenotazioni: online dal sito, fino a 12 persone, conferma via email; per gruppi più numerosi si richiede un preventivo
+- Allergeni: indicati su ogni piatto del menù, con filtro per escludere i piatti che li contengono
+- Fascia di prezzo: primi da 9 a 16 €, secondi da 9 a 18 € (costata a peso); coperto 2,50 €
+
+## Pagine
+
+- [Home]({{sito}}/): presentazione, specialità di casa, orari e indirizzo
+- [Menù alla carta]({{sito}}/menu.html): antipasti, primi, secondi alla griglia, piatti freddi, dolci, bevande e carta dei vini, con prezzi e allergeni
+- [Prenota un tavolo]({{sito}}/prenota.html): prenotazione in tre passi
+- [Gruppi e gite]({{sito}}/gruppi.html): pranzi per gruppi, parrocchie, aziende e pullman, con preventivo
+- [Cerimonie]({{sito}}/cerimonie.html): battesimi, comunioni, cresime, compleanni e anniversari
+- [La nostra storia]({{sito}}/storia.html): la famiglia e il ristorante dal 1967
+- [Dove siamo]({{sito}}/dove-siamo.html): indirizzo, mappa, orari e contatti
