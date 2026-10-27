@@ -154,6 +154,8 @@ def ristorante_ld():
         "address": {"@type": "PostalAddress", "streetAddress": r["via"], "postalCode": r["cap"],
                     "addressLocality": r["citta"], "addressRegion": r["provincia"], "addressCountry": "IT"},
         "hasMap": r["mappa"],
+        "sameAs": ["https://www.facebook.com/ristorantealbergomara/",
+                   "https://www.tripadvisor.it/Restaurant_Review-g1060110-d3532185-Reviews-Ristorante_Albergo_Mara-Valeggio_Sul_Mincio_Province_of_Verona_Veneto.html"],
         "areaServed": ["Valeggio sul Mincio", "Borghetto", "Lago di Garda", "Verona"],
         "servesCuisine": ["Italiana", "Veneta", "Veronese", "Tortellini di Valeggio", "Carne alla griglia"],
         "priceRange": "€€",
