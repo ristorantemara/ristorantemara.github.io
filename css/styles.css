@@ -1041,3 +1041,28 @@ select.campo__input {
 /* Il <legend> di un fieldset non è un flex item, quindi ignora il gap:
    con float diventa un figlio normale e prende la stessa spaziatura del resto. */
 .orari-arrivo > legend { float: left; width: 100%; padding: 0; }
+
+/* Testi legali: indice, tabelle, elenchi */
+.indice-legale { margin: 24px 0 8px; padding: 20px 24px; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
+.indice-legale ol { margin: 10px 0 0; padding-left: 20px; columns: 2; column-gap: 40px; }
+.indice-legale li { margin-bottom: 6px; break-inside: avoid; }
+.indice-legale li { font-size: 15px; }
+.tabella-legale { margin: 8px 0 16px; overflow-x: auto; border: 1px solid var(--bordo); border-radius: 6px; background: var(--farina); }
+.tabella-legale table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.5; min-width: 620px; }
+.tabella-legale th, .tabella-legale td { padding: 12px 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--bordo); }
+.tabella-legale thead th { border-top: 0; background: var(--sfoglia); font-weight: 600; }
+.tabella-legale tbody th { font-weight: 600; width: 22%; }
+.tabella-legale code { font-size: 13px; background: var(--panna); padding: 1px 6px; border-radius: 4px; }
+.elenco-legale { padding-left: 20px; display: grid; gap: 10px; }
+.testo-legale h3.label { margin-top: 12px; }
+@media (max-width: 767px) { .indice-legale ol { columns: 1; } }
+@media (max-width: 767px) {
+  /* tabelle legali come schede impilate */
+  .tabella-legale { overflow: visible; border: 0; background: none; }
+  .tabella-legale table, .tabella-legale tbody, .tabella-legale tr, .tabella-legale th, .tabella-legale td { display: block; min-width: 0; width: auto; }
+  .tabella-legale thead { display: none; }
+  .tabella-legale tr { background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; margin-bottom: 12px; padding: 4px 16px; }
+  .tabella-legale th, .tabella-legale td { padding: 10px 0; border-top: 1px solid var(--bordo); }
+  .tabella-legale tbody th { border-top: 0; font-size: 16px; width: auto; }
+  .tabella-legale td::before { content: attr(data-etichetta); display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--terra); margin-bottom: 2px; }
+}

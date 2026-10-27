@@ -186,15 +186,23 @@
   });
 
   /* ---------- Banner cookie ---------- */
+  // La scelta vale 6 mesi (linee guida del Garante), poi il banner ricompare
   var CHIAVE = 'mara-cookie';
+  var SEI_MESI = 182 * 24 * 60 * 60 * 1000;
   var banner = document.querySelector('[data-cookie]');
-  function leggi() { try { return localStorage.getItem(CHIAVE); } catch (e) { return 'n/d'; } }
-  function salva(v) { try { localStorage.setItem(CHIAVE, v); } catch (e) { /* storage non disponibile */ } }
+  function leggiScelta() {
+    try {
+      var v = JSON.parse(localStorage.getItem(CHIAVE) || 'null');
+      return v && v.t && Date.now() - v.t < SEI_MESI ? v : null;
+    } catch (e) { return null; }
+  }
+  function salvaScelta(mappeSi) {
+    try { localStorage.setItem(CHIAVE, JSON.stringify({ mappe: mappeSi, t: Date.now() })); } catch (e) { /* storage non disponibile */ }
+  }
 
   if (banner) {
-    if (!leggi()) banner.hidden = false;
+    if (!leggiScelta()) banner.hidden = false;
     var opzioni = banner.querySelector('[data-cookie-opzioni]');
-    var statistici = banner.querySelector('[data-cookie-statistici]');
     var personalizza = banner.querySelector('[data-cookie-personalizza]');
     var rifiuta = banner.querySelector('[data-cookie-scelta="rifiuta"]');
     var accetta = banner.querySelector('[data-cookie-scelta="accetta"]');
@@ -202,16 +210,16 @@
     var mappe = banner.querySelector('[data-cookie-mappe]');
     personalizza.addEventListener('click', function () {
       opzioni.hidden = false;
-      statistici.checked = leggi() === 'accetta';
       mappe.checked = mappeConsentite();
       personalizza.hidden = true;
       accetta.textContent = 'Salva le scelte';
-      statistici.focus();
+      mappe.focus();
     });
-    rifiuta.addEventListener('click', function () { salva('rifiuta'); impostaMappe(false); banner.hidden = true; });
+    rifiuta.addEventListener('click', function () { salvaScelta(false); impostaMappe(false); banner.hidden = true; });
     accetta.addEventListener('click', function () {
-      salva(opzioni.hidden || statistici.checked ? 'accetta' : 'rifiuta');
-      impostaMappe(opzioni.hidden || mappe.checked);
+      var si = opzioni.hidden || mappe.checked;
+      salvaScelta(si);
+      impostaMappe(si);
       banner.hidden = true;
     });
     document.querySelectorAll('[data-preferenze-cookie]').forEach(function (a) {
@@ -224,7 +232,12 @@
   }
 
   /* ---------- Mappa di Google: si carica solo con il consenso ---------- */
-  function mappeConsentite() { try { return localStorage.getItem('mara-mappe') === 'si'; } catch (e) { return false; } }
+  function mappeConsentite() {
+    try {
+      var v = JSON.parse(localStorage.getItem('mara-mappe') || 'null');
+      return Boolean(v && v.si && Date.now() - v.t < 182 * 24 * 60 * 60 * 1000);
+    } catch (e) { return false; }
+  }
   function caricaMappa(box) {
     if (box.querySelector('iframe') || !box.getClientRects().length) return; // già caricata o nascosta (es. home su mobile)
     var f = document.createElement('iframe');
@@ -242,7 +255,7 @@
     box.classList.remove('is-caricata');
   }
   function impostaMappe(si) {
-    try { localStorage.setItem('mara-mappe', si ? 'si' : 'no'); } catch (e) { /* storage non disponibile */ }
+    try { localStorage.setItem('mara-mappe', JSON.stringify({ si: si, t: Date.now() })); } catch (e) { /* storage non disponibile */ }
     document.querySelectorAll('[data-mappa]').forEach(function (b) { if (si) caricaMappa(b); else togliMappa(b); });
   }
   document.querySelectorAll('[data-mappa]').forEach(function (box) {
