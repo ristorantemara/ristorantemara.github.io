@@ -41,6 +41,21 @@ FRAMMENTI = [
 ]
 
 TESTI = {
+    # testi alternativi delle foto
+    'Tortellini nodo d’amore al burro e salvia': ('Love-knot tortellini with butter and sage', 'Liebesknoten-Tortellini mit Butter und Salbei'),
+    'La sala del ristorante': ('The restaurant’s dining room', 'Der Speisesaal des Restaurants'),
+    'Tortellini e tagliatelle fatti a mano': ('Handmade tortellini and tagliatelle', 'Handgemachte Tortellini und Tagliatelle'),
+    'Un piatto di tagliatelle fatte in casa': ('A plate of homemade tagliatelle', 'Ein Teller hausgemachte Tagliatelle'),
+    'Arrosto e carni cotte sulla brace': ('Roast and meats cooked over the embers', 'Braten und Fleisch von der Glut'),
+    'Una lunga tavolata apparecchiata nella nostra sala': ('A long table laid in our dining room', 'Eine lange gedeckte Tafel in unserem Speisesaal'),
+    'Tavola apparecchiata per una festa, con fiori e tovaglia ricamata': ('A table laid for a celebration, with flowers and an embroidered tablecloth', 'Festlich gedeckter Tisch mit Blumen und bestickter Tischdecke'),
+    'In cucina, davanti al pentolone': ('In the kitchen, at the big pot', 'In der Küche am großen Topf'),
+    'Mani che chiudono i tortellini': ('Hands folding tortellini', 'Hände, die Tortellini falten'),
+    'La famiglia oggi, al bancone del bar': ('The family today, at the bar counter', 'Die Familie heute an der Bartheke'),
+    'Tavola apparecchiata per un battesimo, con i confetti': ('A table laid for a baptism, with sugared almonds', 'Gedeckter Tisch zur Taufe mit Zuckermandeln'),
+    'Torta bianca a due piani per la comunione': ('A white two-tier communion cake', 'Weiße zweistöckige Kommuniontorte'),
+    'Brindisi con le bollicine per un anniversario': ('A sparkling toast for an anniversary', 'Anstoßen mit Sekt zum Jubiläum'),
+    'Un piatto vuoto con la forchetta e una foglia di salvia': ('An empty plate with a fork and a sage leaf', 'Ein leerer Teller mit Gabel und Salbeiblatt'),
     # ------------------------------------------------------------ comuni (testa, header, footer, cookie)
     "Vai al contenuto": ("Skip to content", "Zum Inhalt springen"),
     "Principale": ("Main", "Hauptnavigation"),
