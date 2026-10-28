@@ -3,5 +3,7 @@ User-agent: *
 Allow: /
 Disallow: /gestisci.html
 Disallow: /disdici.html
+Disallow: /en/disdici.html
+Disallow: /de/disdici.html
 
 Sitemap: https://ristorantemara.github.io/sitemap.xml

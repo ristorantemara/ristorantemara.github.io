@@ -71,7 +71,7 @@
       bottone.textContent = t('Invio in corso…');
 
       window.maraInvia(dati).then(function (r) {
-        if (!r.ok) throw new Error((L.lingua === 'it' && r.errore) || t('Qualcosa è andato storto, riprova.'));
+        if (!r.ok) throw new Error(r.errore || t('Qualcosa è andato storto, riprova.'));
         window.location.href = form.getAttribute('data-successo');
       }).catch(function (err) {
         erroreForm.innerHTML = '<svg class="icona" aria-hidden="true"><use href="' + L.icona('alert') + '"/></svg><span></span>';

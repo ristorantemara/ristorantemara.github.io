@@ -292,7 +292,8 @@ def scrivi_mappa_sito(pagine):
                                       + voci + "</urlset>\n", encoding="utf-8")
     (SITO / "robots.txt").write_text(
         "# Tutti i motori di ricerca e gli assistenti AI possono leggere il sito\n"
-        "User-agent: *\nAllow: /\nDisallow: /gestisci.html\nDisallow: /disdici.html\n\n"
+        "User-agent: *\nAllow: /\nDisallow: /gestisci.html\nDisallow: /disdici.html\n"
+        "Disallow: /en/disdici.html\nDisallow: /de/disdici.html\n\n"
         f"Sitemap: {SITO_URL}/sitemap.xml\n", encoding="utf-8")
     llms = (RADICE / "llms.txt").read_text(encoding="utf-8").replace("{{sito}}", SITO_URL)
     (SITO / "llms.txt").write_text(llms, encoding="utf-8")

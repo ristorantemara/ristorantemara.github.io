@@ -397,7 +397,7 @@
       lingua: L.lingua,
       consenso: form.querySelector('[name="consenso"]').checked
     }).then(function (r) {
-      if (!r.ok) throw new Error((L.lingua === 'it' && r.errore) || t('Qualcosa è andato storto, riprova.'));
+      if (!r.ok) throw new Error(r.errore || t('Qualcosa è andato storto, riprova.'));
       mostraInviata();
     }).catch(function (err) {
       erroreInvio.innerHTML = '<svg class="icona" aria-hidden="true"><use href="' + L.icona('alert') + '"/></svg><span></span>';

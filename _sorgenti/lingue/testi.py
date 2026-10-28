@@ -12,7 +12,7 @@ Dopo una modifica: python3 _sorgenti/build.py — i testi nuovi senza traduzione
 Il tedesco usa il «Sie» di cortesia.
 """
 
-SOLO_ITALIANO = {"gestisci.html", "disdici.html"}
+SOLO_ITALIANO = {"gestisci.html"}  # area del ristorante
 
 UGUALI = {
     "Mara", "Ristorante Mara", "IT", "EN", "DE", "Facebook", "TripAdvisor", "info@ristorantemara.com",
@@ -477,6 +477,15 @@ TESTI = {
     "È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.":
         ("This is a request: we’ll confirm your table by email. If we’re fully booked that day, we’ll suggest an alternative.", "Dies ist eine Anfrage: Wir bestätigen Ihren Tisch per E-Mail. Sind wir an dem Tag ausgebucht, schlagen wir Ihnen eine Alternative vor."),
 
+    # ------------------------------------------------------------ disdetta (link nella mail di conferma)
+    "Disdici prenotazione · Ristorante Mara": ("Cancel booking · Ristorante Mara", "Reservierung stornieren · Ristorante Mara"),
+    "Disdici la tua prenotazione al Ristorante Mara.": ("Cancel your booking at Ristorante Mara.", "Stornieren Sie Ihre Reservierung im Ristorante Mara."),
+    "Carico la prenotazione…": ("Loading your booking…", "Reservierung wird geladen …"),
+    "Disdici la prenotazione": ("Cancel the booking", "Reservierung stornieren"),
+    "La tengo, ci vediamo": ("Keep it, see you soon", "Behalten, bis bald"),
+    "Prenota un’altra data": ("Book another date", "Anderes Datum reservieren"),
+    "Torna al sito": ("Back to the website", "Zurück zur Website"),
+    "Vuoi cambiare giorno, orario o numero di persone? Chiamaci al": ("Want to change the day, time or number of people? Call us on", "Möchten Sie Tag, Uhrzeit oder Personenzahl ändern? Rufen Sie uns an:"),
     # ------------------------------------------------------------ 404
     "Foto: piatto vuoto con forchetta": ("Photo: an empty plate with a fork", "Foto: leerer Teller mit Gabel"),
     "Pagina non trovata · Ristorante Mara": ("Page not found · Ristorante Mara", "Seite nicht gefunden · Ristorante Mara"),
@@ -600,6 +609,27 @@ JS = {
     "Pranzo al Ristorante Mara ({n} pers.)": ("Lunch at Ristorante Mara ({n} people)", "Mittagessen im Ristorante Mara ({n} Pers.)"),
     "Richiesta di prenotazione: attendi la mail di conferma. Tel. 045 485 7283": ("Booking request: please wait for the confirmation email. Tel. +39 045 485 7283", "Reservierungsanfrage: Bitte warten Sie auf die Bestätigungs-E-Mail. Tel. +39 045 485 7283"),
     "{P} siamo chiusi{m}.": ("We are closed {p}{m}.", "Wir haben {p} geschlossen{m}."),
+    # disdetta (disdici.js)
+    "Per qualsiasi cosa chiamaci al {tel}.": ("For anything else, call us on {tel}.", "Für alles Weitere rufen Sie uns an: {tel}."),
+    "Prenotazione <span class=\"accento\">disdetta</span>": ("Booking <span class=\"accento\">cancelled</span>", "Reservierung <span class=\"accento\">storniert</span>"),
+    "Grazie di averci avvisato: il tavolo torna libero per altri.": ("Thank you for letting us know: the table is free again for someone else.", "Vielen Dank für Ihre Nachricht: Der Tisch ist wieder frei für andere Gäste."),
+    "Fatto. Ti abbiamo mandato una mail di conferma.": ("Done. We’ve sent you a confirmation email.", "Erledigt. Wir haben Ihnen eine Bestätigung per E-Mail gesendet."),
+    "Questa prenotazione è già stata disdetta. Non serve fare altro.": ("This booking has already been cancelled. There’s nothing else to do.", "Diese Reservierung wurde bereits storniert. Sie müssen nichts weiter tun."),
+    "Non sono riuscito a disdire. Controlla la connessione e riprova, oppure chiamaci al 045 485 7283.": ("I couldn’t cancel the booking. Check your connection and try again, or call us on +39 045 485 7283.", "Die Stornierung hat nicht geklappt. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut, oder rufen Sie uns an: +39 045 485 7283."),
+    "Link non valido": ("Invalid link", "Ungültiger Link"),
+    "Apri di nuovo il pulsante “Disdici la prenotazione” dalla mail di conferma.": ("Open the “Cancel the booking” button in the confirmation email again.", "Öffnen Sie erneut die Schaltfläche „Reservierung stornieren“ in der Bestätigungs-E-Mail."),
+    "Giorno": ("Day", "Tag"),
+    "Orario": ("Time", "Uhrzeit"),
+    "Persone": ("People", "Personen"),
+    "A nome di": ("Name", "Auf den Namen"),
+    "Prenotazione <span class=\"accento\">non confermata</span>": ("Booking <span class=\"accento\">not confirmed</span>", "Reservierung <span class=\"accento\">nicht bestätigt</span>"),
+    "Questa richiesta non era stata confermata, quindi non serve disdirla.": ("This request had not been confirmed, so there’s no need to cancel it.", "Diese Anfrage war nicht bestätigt worden, Sie müssen sie also nicht stornieren."),
+    "Prenotazione <span class=\"accento\">passata</span>": ("Booking <span class=\"accento\">in the past</span>", "Reservierung <span class=\"accento\">vergangen</span>"),
+    "L’orario di questa prenotazione è già passato.": ("The time of this booking has already passed.", "Der Zeitpunkt dieser Reservierung ist bereits vorbei."),
+    "Vuoi disdire <span class=\"accento\">la prenotazione?</span>": ("Do you want to <span class=\"accento\">cancel your booking?</span>", "Möchten Sie <span class=\"accento\">die Reservierung stornieren?</span>"),
+    "Ciao {nome}, se non riesci più a venire disdici qui: il tavolo torna libero e ti mandiamo una mail di conferma.": ("Hi {nome}, if you can no longer make it, cancel here: the table becomes free again and we’ll send you a confirmation email.", "Hallo {nome}, wenn Sie nicht kommen können, stornieren Sie hier: Der Tisch wird wieder frei und wir senden Ihnen eine Bestätigung per E-Mail."),
+    "Non riesco ad aprire la prenotazione": ("I can’t open the booking", "Die Reservierung lässt sich nicht öffnen"),
+    "Connessione non riuscita, ricarica la pagina.": ("Connection failed, please reload the page.", "Verbindung fehlgeschlagen, bitte laden Sie die Seite neu."),
     # menù (menu.js)
     "Nessun antipasto": ("None of our starters", "Keine unserer Vorspeisen"),
     "Nessun primo": ("None of our first courses", "Keiner unserer ersten Gänge"),
