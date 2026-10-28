@@ -2,8 +2,8 @@
 
 TESTI: testo italiano (com'è nella pagina, spazi compressi) -> (inglese, tedesco).
 FRAMMENTI: pezzi di HTML da sostituire interi, quando l'ordine delle parole cambia.
-PIATTI: nome italiano del piatto -> (inglese, tedesco), riga di traduzione sotto il nome
-        (il nome del piatto resta in italiano, come sulla carta del ristorante).
+PIATTI: nome italiano del piatto -> (inglese, tedesco): nelle pagine straniere il nome è tradotto
+        (vini e produttori restano come sono).
 UGUALI: testi che restano identici in tutte le lingue.
 SOLO_ITALIANO: pagine che non hanno versione inglese/tedesca (area ristorante e disdetta dalla mail).
 Le pagine con un file in lingue/en o lingue/de (es. privacy.html) usano quel testo intero.
@@ -17,9 +17,7 @@ SOLO_ITALIANO = {"gestisci.html"}  # area del ristorante
 UGUALI = {
     "Mara", "Ristorante Mara", "IT", "EN", "DE", "Facebook", "TripAdvisor", "info@ristorantemara.com",
     "Via Mantovana 1180", "Via Mantovana 1180, Valeggio sul Mincio", "37067 Valeggio sul Mincio (VR)",
-    "I.", "II.", "III.", "IV.", "V.", "VI.", "VII.", "4,50 €/hg",
-    # piatti in evidenza in home: il nome resta italiano come sulla carta
-    "Tortellini nodo d’amore", "Fettuccine al coniglio e funghi", "Le carni alla griglia",
+    "I.", "II.", "III.", "IV.", "V.", "VI.", "VII.", "4,50 €/100 g",
 }
 
 # Riempito dalla build con i nomi dei piatti e dei produttori di menu.json
@@ -133,6 +131,9 @@ TESTI = {
     "Pasta all’uovo tirata a mano e ragù bianco cotto piano.": ("Hand-rolled egg pasta with a slow-cooked white ragù.", "Handgerollte Eiernudeln mit langsam gegartem weißem Ragù."),
     "Costata, tagliata con rucola e grana, costolette d’agnello.": ("Rib steak, sliced beef with rocket and Grana, lamb chops.", "Rinderkotelett, Tagliata mit Rucola und Grana, Lammkoteletts."),
     "da 9,00 €": ("from 9,00 €", "ab 9,00 €"),
+    "Tortellini nodo d’amore": ("Love-knot tortellini", "Liebesknoten-Tortellini"),
+    "Fettuccine al coniglio e funghi": ("Fettuccine with rabbit and mushrooms", "Fettuccine mit Kaninchen und Pilzen"),
+    "Le carni alla griglia": ("Grilled meats", "Fleisch vom Grill"),
     "Foto: tavolata per un gruppo": ("Photo: a long table for a group", "Foto: lange Tafel für eine Gruppe"),
     "Gruppi, gite e pullman": ("Groups, tours and coaches", "Gruppen, Ausflüge und Reisebusse"),
     "Gruppi numerosi a tavola,": ("Large groups at the table,", "Große Gruppen am Tisch,"),
@@ -502,7 +503,7 @@ TESTI = {
 }
 
 PIATTI = {
-    "Salumi misti con verdure sott’olio": ("Mixed cured meats with vegetables in oil", "Gemischter Aufschnitt mit eingelegtem Gemüse"),
+    "Salumi misti con verdure sott’olio": ("Mixed cured meats with vegetables in oil", "Gemischter Aufschnitt mit in Öl eingelegtem Gemüse"),
     "Salumi misti per due": ("Mixed cured meats for two", "Gemischter Aufschnitt für zwei"),
     "Tortellini al burro e salvia": ("Love-knot tortellini with butter and sage", "Liebesknoten-Tortellini mit Butter und Salbei"),
     "Tortellini in brodo": ("Love-knot tortellini in broth", "Liebesknoten-Tortellini in Brühe"),
@@ -511,19 +512,19 @@ PIATTI = {
     "Fettuccine al ragù o al pomodoro": ("Fettuccine with meat sauce or tomato sauce", "Fettuccine mit Ragù oder Tomatensauce"),
     "Maccheroncini radicchio e speck": ("Maccheroncini with radicchio and speck", "Maccheroncini mit Radicchio und Speck"),
     "Lasagne al forno": ("Baked lasagne", "Lasagne aus dem Ofen"),
-    "Tris di primi": ("Tasting of three pasta dishes", "Drei Nudelgerichte zum Probieren"),
-    "Bis di primi": ("Tasting of two pasta dishes", "Zwei Nudelgerichte zum Probieren"),
+    "Tris di primi": ("Trio of pasta dishes", "Trio aus Nudelgerichten"),
+    "Bis di primi": ("Duo of pasta dishes", "Duo aus Nudelgerichten"),
     "Bistecca di cavallo o di manzo": ("Horse or beef steak", "Pferde- oder Rindersteak"),
     "Tagliata con rucola e grana": ("Sliced beef steak with rocket and Grana", "Tagliata mit Rucola und Grana"),
-    "Costata di manzo alla griglia": ("Grilled rib steak, priced per 100 g", "Rinderkotelett vom Grill, Preis pro 100 g"),
+    "Costata di manzo alla griglia": ("Grilled rib steak", "Rinderkotelett vom Grill"),
     "Costolette di agnello": ("Lamb chops", "Lammkoteletts"),
     "Pollo alla griglia": ("Grilled chicken", "Hähnchen vom Grill"),
     "Braciola di maiale": ("Pork chop", "Schweinekotelett"),
     "Arrosto di vitello": ("Roast veal", "Kalbsbraten"),
     "Cotoletta di maiale": ("Breaded pork cutlet", "Paniertes Schweineschnitzel"),
-    "Vitello tonnato": ("Cold veal with tuna sauce", "Kaltes Kalbfleisch mit Thunfischsauce"),
+    "Vitello tonnato": ("Vitello tonnato (cold veal with tuna sauce)", "Vitello tonnato (kaltes Kalbfleisch mit Thunfischsauce)"),
     "Prosciutto e melone": ("Cured ham and melon", "Rohschinken mit Melone"),
-    "Carne salada cruda": ("Cured raw beef (Trentino speciality)", "Gepökeltes rohes Rindfleisch (Spezialität aus dem Trentino)"),
+    "Carne salada cruda": ("Carne salada (thinly sliced cured raw beef)", "Carne salada (dünn geschnittenes gepökeltes Rindfleisch)"),
     "Bresaola, rucola e grana": ("Bresaola with rocket and Grana", "Bresaola mit Rucola und Grana"),
     "Contorno singolo": ("Side dish", "Beilage"),
     "Contorni misti": ("Mixed side dishes", "Gemischte Beilagen"),
@@ -670,4 +671,5 @@ JS_DA_TESTI = [
     "Il tortellino di Valeggio, sottile come un fazzoletto: al burro e salvia o in brodo.",
     "Pasta all’uovo tirata a mano e ragù bianco cotto piano.",
     "Costata, tagliata con rucola e grana, costolette d’agnello.", "da 9,00 €",
+    "Tortellini nodo d’amore", "Fettuccine al coniglio e funghi", "Le carni alla griglia",
 ]

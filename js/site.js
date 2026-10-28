@@ -157,15 +157,15 @@
       griglia.innerHTML = '';
       griglia.setAttribute('data-quanti', dati.evidenza.length);
       var usate = {};
-      dati.evidenza.forEach(function (p) { if (fotoPerTitolo[p.titolo.toLowerCase()]) usate[p.titolo.toLowerCase()] = true; });
+      dati.evidenza.forEach(function (p) { var k = t(p.titolo).toLowerCase(); if (fotoPerTitolo[k]) usate[k] = true; });
       fotoLibere = Object.keys(fotoPerTitolo).filter(function (t) { return !usate[t]; }).map(function (t) { return fotoPerTitolo[t]; });
       dati.evidenza.forEach(function (p) {
         var a = document.createElement('article');
         a.className = 'specialita__piatto';
-        var html = fotoPerTitolo[p.titolo.toLowerCase()] || fotoLibere.shift() || '';
+        var html = fotoPerTitolo[t(p.titolo).toLowerCase()] || fotoLibere.shift() || '';
         a.innerHTML = html +
           '<div class="specialita__titolo"><h3 class="h3"></h3><p class="prezzo"></p></div><p class="testo-m"></p>';
-        a.querySelector('.h3').textContent = p.titolo;
+        a.querySelector('.h3').textContent = t(p.titolo);
         a.querySelector('.prezzo').textContent = t(p.prezzo || '');
         a.querySelector('.testo-m').textContent = t(p.descrizione || '');
         if (!p.descrizione) a.querySelector('.testo-m').remove();

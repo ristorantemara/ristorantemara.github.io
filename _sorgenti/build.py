@@ -77,16 +77,20 @@ def slug(t):
 
 
 def riga_piatto(p, vino=False, lingua="it"):
+    # nelle lingue straniere il nome del piatto è tradotto; vini e produttori restano come sono
+    nome, prezzo = p["nome"], p["prezzo"]
+    if lingua != "it":
+        if nome in testi.PIATTI:
+            nome = testi.PIATTI[nome][LINGUE.index(lingua) - 1]
+        prezzo = re.sub(r"/hg$", "/100 g", prezzo)
     allergeni = ["Solfiti"] if vino else p.get("allergeni", [])
     testo_all = tr(p.get("testo_allergeni"), lingua) or " · ".join(tr(a, lingua) for a in allergeni)
     html = [f'<li class="piatto" data-allergeni="{esc(",".join(slug(a) for a in allergeni))}">',
             '<div class="piatto__testa">',
-            f'<h3 class="piatto-nome">{esc(p["nome"])}</h3>',
+            f'<h3 class="piatto-nome">{esc(nome)}</h3>',
             '<span class="piatto__puntini" aria-hidden="true"></span>',
-            f'<p class="prezzo">{esc(p["prezzo"])}</p></div>']
+            f'<p class="prezzo">{esc(prezzo)}</p></div>']
     sotto = p.get("sotto")
-    if not sotto and lingua != "it" and p["nome"] in testi.PIATTI:
-        sotto = testi.PIATTI[p["nome"]][LINGUE.index(lingua) - 1]
     if sotto:
         html.append(f'<p class="piatto__sotto">{esc(sotto)}</p>')
     if testo_all and not vino:
@@ -390,7 +394,7 @@ def gia_tradotti(i):
 def _traduci_testo(t, i, nome, lingua):
     chiave = re.sub(r"\s+", " ", t).strip()
     if (not chiave or len(chiave) < 2 or not re.search(r"[A-Za-zÀ-ÿ]", chiave)
-            or chiave in testi.UGUALI or chiave in testi.NON_TRADURRE):
+            or chiave in testi.UGUALI or (chiave in testi.NON_TRADURRE and chiave not in testi.TESTI)):
         return t
     gia = gia_tradotti(i)
     if chiave not in testi.TESTI and (chiave in gia or all(x in gia for x in chiave.split(" · "))):

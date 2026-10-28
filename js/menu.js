@@ -44,11 +44,14 @@
   function rigaPiatto(p, vino) {
     var allergeni = vino ? ['Solfiti'] : (p.allergeni || []);
     var testo = t(p.testo_allergeni || '') || allergeni.map(function (a) { return t(a); }).join(' · ');
-    var sotto = p.sotto || (L.lingua !== 'it' ? t('piatto:' + p.nome) : '');
-    if (sotto === 'piatto:' + p.nome) sotto = '';
+    // nelle lingue straniere il nome del piatto è tradotto (i vini e i produttori restano come sono)
+    var nome = L.lingua !== 'it' ? t('piatto:' + p.nome) : p.nome;
+    if (nome === 'piatto:' + p.nome) nome = p.nome;
+    var sotto = p.sotto ? t(p.sotto) : '';
+    var prezzo = L.lingua !== 'it' ? String(p.prezzo || '').replace(/\/hg$/, '/100 g') : (p.prezzo || '');
     return '<li class="piatto" data-allergeni="' + esc(allergeni.map(slug).join(',')) + '">' +
-      '<div class="piatto__testa"><h3 class="piatto-nome">' + esc(p.nome) + '</h3>' +
-      '<span class="piatto__puntini" aria-hidden="true"></span><p class="prezzo">' + esc(p.prezzo || '') + '</p></div>' +
+      '<div class="piatto__testa"><h3 class="piatto-nome">' + esc(nome) + '</h3>' +
+      '<span class="piatto__puntini" aria-hidden="true"></span><p class="prezzo">' + esc(prezzo) + '</p></div>' +
       (sotto ? '<p class="piatto__sotto">' + esc(sotto) + '</p>' : '') +
       (testo && !vino ? '<p class="piatto__allergeni"><span class="visually-hidden">' + t('Allergeni:') + ' </span>' + esc(testo) + '</p>' : '') +
       '</li>';
