@@ -24,9 +24,9 @@ UGUALI = {
 NON_TRADURRE = set()
 
 FRAMMENTI = [
-    ('<p class="testo-s menu-tipi__rimando">Dal lunedì al venerdì c’è il <a href="pausa-pranzo.html">menù pausa pranzo a 15 €</a>.</p>',
-     '<p class="testo-s menu-tipi__rimando">Monday to Friday we serve the <a href="pausa-pranzo.html">15 € lunch-break menu</a>.</p>',
-     '<p class="testo-s menu-tipi__rimando">Montag bis Freitag gibt es das <a href="pausa-pranzo.html">Mittagsmenü für 15 €</a>.</p>'),
+    ('<p class="testo-s menu-tipi__rimando">Dal lunedì al venerdì c’è il <a href="pausa-pranzo.html">menù pausa pranzo a <span data-pranzo-prezzo>15 €</span></a>.</p>',
+     '<p class="testo-s menu-tipi__rimando">Monday to Friday we serve the <a href="pausa-pranzo.html"><span data-pranzo-prezzo>15 €</span> lunch-break menu</a>.</p>',
+     '<p class="testo-s menu-tipi__rimando">Montag bis Freitag gibt es das <a href="pausa-pranzo.html">Mittagsmenü für <span data-pranzo-prezzo>15 €</span></a>.</p>'),
     ('<h1 class="display-xl titolo-menu">Il menù <span class="accento">pausa pranzo</span></h1>',
      '<h1 class="display-xl titolo-menu">The <span class="accento">lunch-break</span> menu</h1>',
      '<h1 class="display-xl titolo-menu">Das <span class="accento">Mittagsmenü</span></h1>'),
@@ -722,6 +722,7 @@ JS = {
 JS_DA_TESTI = [
     "Mostra comunque", "Tocca un allergene per nascondere i piatti che lo contengono", "Nascondi i piatti che contengono",
     "Modifica", "Scegli", "Allergeni:", "Avvisaci quando prenoti: la cucina può proporti un’alternativa.",
+    "Contorni", "Glutine · Uova · Latte (ai formaggi) · Sedano (al ragù)", "Glutine · Pesce (con acciughe)",
     "Antipasti", "Primi", "Secondi", "Piatti freddi", "Contorni e dolci", "Bevande e caffè", "Carta dei vini",
     "Vini bianchi", "Vini rossi", "Spumanti", "Fine pasto",
     "La nostra pasta è all’uovo e di grano. Avvisaci quando prenoti: la cucina può proporti un’alternativa.",

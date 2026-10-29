@@ -158,7 +158,7 @@ def blocchi_pranzo(lingua="it"):
                        f'<h2 class="menu-sezione__titolo h3" id="t-{s["id"]}"><span class="accento">{s["numero"]}</span> {esc(s["titolo"])}</h2>'
                        '<ul class="pranzo-piatti">' + "".join(riga_piatto(p, lingua=lingua) for p in s["piatti"]) + "</ul></section>")
     prezzo = pranzo["prezzo"]
-    return {"pranzo_sezioni": "".join(colonne), "pranzo_prezzo": esc(re.sub(r",00(?= €)", "", prezzo))}
+    return {"pranzo_sezioni": "".join(colonne), "pranzo_prezzo": f'<span data-pranzo-prezzo>{esc(re.sub(r",00(?= €)", "", prezzo))}</span>'}
 
 
 MENU = {l: {**blocchi_menu(l), **blocchi_pranzo(l)} for l in ("it", "en", "de")}

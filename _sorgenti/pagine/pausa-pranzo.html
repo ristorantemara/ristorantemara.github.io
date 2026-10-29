@@ -2,6 +2,7 @@
 titolo: Menù pausa pranzo · Ristorante Mara, Valeggio sul Mincio
 descrizione: Il menù pausa pranzo del Ristorante Mara a Valeggio sul Mincio: primo, secondo e contorno a scelta a prezzo fisso dal lunedì al venerdì, bevande escluse. Piatti della tradizione che cambiano spesso.
 attivo: menu
+script: js/pranzo.js
 ---
 <main id="contenuto">
   <section class="intro-pagina intro-menu intro-pranzo">
@@ -27,7 +28,7 @@ attivo: menu
   <div class="tenda" aria-hidden="true"></div>
 
   <div class="contenitore pranzo-corpo">
-    <div class="pranzo-colonne">{{pranzo_sezioni}}</div>
+    <div class="pranzo-colonne" data-pranzo-colonne>{{pranzo_sezioni}}</div>
 
     <div class="avviso">
       <svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg>
