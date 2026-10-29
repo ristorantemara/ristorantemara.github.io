@@ -43,11 +43,11 @@
 
   function rigaPiatto(p, vino) {
     var allergeni = vino ? ['Solfiti'] : (p.allergeni || []);
-    var testo = t(p.testo_allergeni || '') || allergeni.map(function (a) { return t(a); }).join(' · ');
-    // nelle lingue straniere il nome del piatto è tradotto (i vini e i produttori restano come sono)
-    var nome = L.lingua !== 'it' ? t('piatto:' + p.nome) : p.nome;
-    if (nome === 'piatto:' + p.nome) nome = p.nome;
-    var sotto = p.sotto ? t(p.sotto) : '';
+    var testo = L.dalFoglio(p, 'testo_allergeni') || allergeni.map(function (a) { return t(a); }).join(' · ');
+    // nelle lingue straniere il nome del piatto è tradotto (dal Foglio o dal dizionario del sito);
+    // i vini e i produttori restano come sono
+    var nome = vino ? p.nome : L.dalFoglio(p, 'nome', 'piatto:');
+    var sotto = L.dalFoglio(p, 'sotto');
     var prezzo = L.lingua !== 'it' ? String(p.prezzo || '').replace(/\/hg$/, '/100 g') : (p.prezzo || '');
     return '<li class="piatto" data-allergeni="' + esc(allergeni.map(slug).join(',')) + '">' +
       '<div class="piatto__testa"><h3 class="piatto-nome">' + esc(nome) + '</h3>' +
@@ -68,19 +68,19 @@
       var vino = m.vini || /vin/i.test(s.titolo);
       var totale = s.gruppi.reduce(function (n, g) { return n + g.piatti.length; }, 0);
       var numero = (ROMANI[i] || String(i + 1)) + '.';
-      var titolo = t(s.titolo);
+      var titolo = L.dalFoglio(s, 'titolo');
       indice.push('<li><a href="#' + id + '" data-indice="' + id + '"><span>' + esc(titolo) + '</span>' +
         '<span class="menu-indice__conta" data-conta="' + id + '">' + totale + '</span></a></li>');
       pillole.push('<a class="pillola" href="#' + id + '" data-indice="' + id + '">' + esc(titolo) + '</a>');
       var html = '<section class="menu-sezione" id="' + id + '" data-sezione="' + id + '"' + (vino ? ' data-vini' : '') + ' aria-labelledby="t-' + id + '">' +
         '<h2 class="menu-sezione__titolo h2" id="t-' + id + '"><span class="accento">' + numero + '</span> ' + esc(titolo) + '</h2>';
-      if (s.nota) html += '<p class="testo-s menu-sezione__nota">' + esc(t(s.nota)) + '</p>';
+      if (s.nota) html += '<p class="testo-s menu-sezione__nota">' + esc(L.dalFoglio(s, 'nota')) + '</p>';
       html += '<div class="avviso menu-sezione__vuoto" data-vuoto hidden>' + ICONA('info') +
         '<div><p class="label" data-vuoto-titolo></p><p class="testo-s">' + esc(m.vuoto ? t(m.vuoto) : VUOTO) + '</p>' +
         '<button class="btn btn--testo" type="button" data-mostra-comunque>' + esc(t('Mostra comunque')) + ICONA('arrow') + '</button></div></div>';
       var conGruppi = s.gruppi.some(function (g) { return g.titolo; });
       s.gruppi.forEach(function (g) {
-        if (conGruppi) html += '<div class="menu-gruppo" data-gruppo>' + (g.titolo ? '<p class="occhiello">' + esc(t(g.titolo)) + '</p>' : '');
+        if (conGruppi) html += '<div class="menu-gruppo" data-gruppo>' + (g.titolo ? '<p class="occhiello">' + esc(L.dalFoglio(g, 'titolo')) + '</p>' : '');
         html += '<ul class="menu-colonne">' + g.piatti.map(function (p) { return rigaPiatto(p, vino); }).join('') + '</ul>';
         if (conGruppi) html += '</div>';
       });

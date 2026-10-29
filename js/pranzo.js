@@ -1,6 +1,8 @@
 /* Menù pausa pranzo: il menù scritto nella pagina è quello di partenza; se il Foglio del ristorante
    (scheda «Pausa pranzo») ha piatti o prezzo diversi, la pagina viene ridisegnata con i dati del Foglio.
-   Dati attesi da …/exec?dati=sito:  pranzo: { prezzo: "15,00 €", sezioni: [{ titolo, piatti: [{ nome, allergeni: [], testo_allergeni }] }] } */
+   Dati attesi da …/exec?dati=sito:  pranzo: { prezzo: "15,00 €", sezioni: [{ titolo, titolo_en, titolo_de,
+   piatti: [{ nome, nome_en, nome_de, allergeni: [], testo_allergeni, testo_allergeni_en, testo_allergeni_de }] }] }
+   Le traduzioni _en/_de arrivano dal Foglio (colonne Inglese/Tedesco); se mancano si usa il dizionario del sito. */
 (function () {
   'use strict';
 
@@ -22,9 +24,8 @@
 
   function rigaPiatto(p) {
     var allergeni = p.allergeni || [];
-    var testo = t(p.testo_allergeni || '') || allergeni.map(function (a) { return t(a); }).join(' · ');
-    var nome = L.lingua !== 'it' ? t('piatto:' + p.nome) : p.nome;
-    if (nome === 'piatto:' + p.nome) nome = p.nome;
+    var testo = L.dalFoglio(p, 'testo_allergeni') || allergeni.map(function (a) { return t(a); }).join(' · ');
+    var nome = L.dalFoglio(p, 'nome', 'piatto:');
     return '<li class="piatto" data-allergeni="' + esc(allergeni.map(slug).join(',')) + '">' +
       '<div class="piatto__testa"><h3 class="piatto-nome">' + esc(nome) + '</h3></div>' +
       (testo ? '<p class="piatto__allergeni"><span class="visually-hidden">' + t('Allergeni:') + ' </span>' + esc(testo) + '</p>' : '') +
@@ -37,7 +38,7 @@
         var id = 'pranzo-' + (slug(s.titolo) || 'sezione-' + (i + 1));
         var piatti = s.piatti || [].concat.apply([], (s.gruppi || []).map(function (g) { return g.piatti || []; }));
         return '<section class="pranzo-sezione" id="' + id + '" aria-labelledby="t-' + id + '">' +
-          '<h2 class="menu-sezione__titolo h3" id="t-' + id + '"><span class="accento">' + (ROMANI[i] || i + 1) + '.</span> ' + esc(t(s.titolo)) + '</h2>' +
+          '<h2 class="menu-sezione__titolo h3" id="t-' + id + '"><span class="accento">' + (ROMANI[i] || i + 1) + '.</span> ' + esc(L.dalFoglio(s, 'titolo')) + '</h2>' +
           '<ul class="pranzo-piatti">' + piatti.map(rigaPiatto).join('') + '</ul></section>';
       }).join('');
     }

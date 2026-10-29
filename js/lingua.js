@@ -100,5 +100,16 @@
   L.maiuscola = maiuscola;
   /** Percorso di un'icona dello sprite, valido anche dalle pagine in /en/ e /de/ */
   L.icona = function (nome) { return radice + 'assets/icons.svg#' + nome; };
+  /** Testo arrivato dal Foglio: usa la traduzione del Foglio (es. nome_en) se c'è,
+      altrimenti il dizionario del sito (chiave), altrimenti l'italiano */
+  L.dalFoglio = function (o, campo, chiave) {
+    var it = o[campo] || '';
+    if (lingua === 'it' || !it) return it;
+    var proprio = o[campo + '_' + lingua];
+    if (proprio) return proprio;
+    var k = (chiave || '') + it;
+    var v = t(k);
+    return v === k ? it : v;
+  };
   window.maraL = L;
 })();
