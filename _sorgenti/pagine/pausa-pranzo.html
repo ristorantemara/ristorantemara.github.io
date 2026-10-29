@@ -1,0 +1,48 @@
+---
+titolo: Menù pausa pranzo · Ristorante Mara, Valeggio sul Mincio
+descrizione: Il menù pausa pranzo del Ristorante Mara a Valeggio sul Mincio: primo, secondo e contorno a scelta a prezzo fisso dal lunedì al venerdì, bevande escluse. Piatti della tradizione che cambiano spesso.
+attivo: menu
+---
+<main id="contenuto">
+  <section class="intro-pagina intro-menu intro-pranzo">
+    <div class="contenitore">
+      <nav class="menu-tipi" aria-label="Tipo di menù">
+        <a href="menu.html">Alla carta<span class="menu-tipi__giorni">Sab e dom</span></a>
+        <a href="pausa-pranzo.html" aria-current="page">Pausa pranzo<span class="menu-tipi__giorni">Lun–ven</span></a>
+      </nav>
+      <div class="intro-pranzo__riga">
+        <div class="intro-pranzo__testo">
+          <h1 class="display-xl titolo-menu">Il menù <span class="accento">pausa pranzo</span></h1>
+          <p class="testo-l">Dal lunedì al venerdì, un pranzo completo a prezzo fisso con i piatti di casa che cambiano spesso. Scegli dalle proposte qui sotto.</p>
+        </div>
+        <div class="prezzo-fisso" role="group" aria-label="Prezzo del menù pausa pranzo">
+          <p class="prezzo-fisso__cifra">{{pranzo_prezzo}}</p>
+          <p class="prezzo-fisso__cosa">Primo, secondo e contorno a scelta</p>
+          <p class="prezzo-fisso__nota">Dal lunedì al venerdì · bevande escluse</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tenda" aria-hidden="true"></div>
+
+  <div class="contenitore pranzo-corpo">
+    <div class="pranzo-colonne">{{pranzo_sezioni}}</div>
+
+    <div class="avviso">
+      <svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg>
+      <div><p class="label">Allergie o intolleranze?</p><p class="testo-s">Sotto ogni piatto trovi gli allergeni (Reg. UE 1169/2011). Le proposte possono cambiare di giorno in giorno: per qualsiasi dubbio chiedici prima di ordinare.</p></div>
+    </div>
+
+    <aside class="menu-cta su-scuro">
+      <div>
+        <h2 class="h2">Ti è venuta fame?</h2>
+        <p class="testo-m" data-orari-testo="frase">Aperti tutti i giorni dalle 12:00 alle 14:00, il martedì siamo chiusi.</p>
+      </div>
+      <div class="menu-cta__azioni">
+        <a class="btn btn--su-scuro" href="prenota.html">Prenota un tavolo<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></a>
+        <a class="btn btn--testo menu-cta__carta" href="menu.html">Il menù alla carta, sabato e domenica<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+      </div>
+    </aside>
+  </div>
+</main>

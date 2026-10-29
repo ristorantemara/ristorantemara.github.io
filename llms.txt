@@ -10,6 +10,7 @@
 - Orari: a pranzo dalle 12:00 alle 14:00, chiuso il martedì (eventuali ferie e chiusure straordinarie sono indicate sul sito)
 - Prenotazioni: online dal sito, fino a 12 persone, conferma via email; per gruppi più numerosi si richiede un preventivo
 - Allergeni: indicati su ogni piatto del menù, con filtro per escludere i piatti che li contengono
+- Menù: dal lunedì al venerdì menù pausa pranzo a 15 € (primo, secondo e contorno a scelta, bevande escluse); il sabato e la domenica menù alla carta
 - Fascia di prezzo: primi da 9 a 16 €, secondi da 9 a 18 € (costata a peso); coperto 2,50 €
 
 ## Lingue
@@ -21,7 +22,8 @@
 ## Pagine
 
 - [Home](https://ristorantemara.github.io/): presentazione, specialità di casa, orari e indirizzo
-- [Menù alla carta](https://ristorantemara.github.io/menu.html): antipasti, primi, secondi alla griglia, piatti freddi, dolci, bevande e carta dei vini, con prezzi e allergeni
+- [Menù alla carta](https://ristorantemara.github.io/menu.html): il sabato e la domenica; antipasti, primi, secondi alla griglia, piatti freddi, dolci, bevande e carta dei vini, con prezzi e allergeni
+- [Menù pausa pranzo](https://ristorantemara.github.io/pausa-pranzo.html): dal lunedì al venerdì, pranzo a prezzo fisso (15 €, bevande escluse) con primo, secondo e contorno a scelta tra proposte che cambiano spesso, con allergeni
 - [Prenota un tavolo](https://ristorantemara.github.io/prenota.html): prenotazione in tre passi
 - [Gruppi e gite](https://ristorantemara.github.io/gruppi.html): pranzi per gruppi, parrocchie, aziende e pullman, con preventivo
 - [Cerimonie](https://ristorantemara.github.io/cerimonie.html): battesimi, comunioni, cresime, compleanni e anniversari

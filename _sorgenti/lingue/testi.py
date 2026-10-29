@@ -24,6 +24,12 @@ UGUALI = {
 NON_TRADURRE = set()
 
 FRAMMENTI = [
+    ('<p class="testo-s menu-tipi__rimando">Dal lunedì al venerdì c’è il <a href="pausa-pranzo.html">menù pausa pranzo a 15 €</a>.</p>',
+     '<p class="testo-s menu-tipi__rimando">Monday to Friday we serve the <a href="pausa-pranzo.html">15 € lunch-break menu</a>.</p>',
+     '<p class="testo-s menu-tipi__rimando">Montag bis Freitag gibt es das <a href="pausa-pranzo.html">Mittagsmenü für 15 €</a>.</p>'),
+    ('<h1 class="display-xl titolo-menu">Il menù <span class="accento">pausa pranzo</span></h1>',
+     '<h1 class="display-xl titolo-menu">The <span class="accento">lunch-break</span> menu</h1>',
+     '<h1 class="display-xl titolo-menu">Das <span class="accento">Mittagsmenü</span></h1>'),
     # titoli in più righe: l'ordine delle parole cambia
     ('<h1 class="hero__titolo display-xxl"><span>Il tortellino</span> <span class="accento">nodo d’amore</span> <span>dal 1967.</span></h1>',
      '<h1 class="hero__titolo display-xxl"><span>Valeggio’s</span> <span class="accento">love-knot tortellini</span> <span>since 1967.</span></h1>',
@@ -41,6 +47,34 @@ FRAMMENTI = [
 ]
 
 TESTI = {
+    # ------------------------------------------------------------ menù pausa pranzo
+    "Menù pausa pranzo · Ristorante Mara, Valeggio sul Mincio": ("Lunch-break menu · Ristorante Mara, Valeggio sul Mincio", "Mittagsmenü · Ristorante Mara, Valeggio sul Mincio"),
+    "Il menù pausa pranzo del Ristorante Mara a Valeggio sul Mincio: primo, secondo e contorno a scelta a prezzo fisso dal lunedì al venerdì, bevande escluse. Piatti della tradizione che cambiano spesso.":
+        ("The lunch-break menu at Ristorante Mara in Valeggio sul Mincio: a first course, a main course and a side dish of your choice at a fixed price, Monday to Friday, drinks not included. Traditional dishes that change often.",
+         "Das Mittagsmenü im Ristorante Mara in Valeggio sul Mincio: ein erster Gang, ein Hauptgericht und eine Beilage nach Wahl zum Festpreis, Montag bis Freitag, Getränke nicht inbegriffen. Traditionelle Gerichte, die oft wechseln."),
+    "Tipo di menù": ("Type of menu", "Art der Speisekarte"),
+    "Alla carta": ("À la carte", "À la carte"),
+    "Pausa pranzo": ("Lunch break", "Mittagsmenü"),
+    "Dal lunedì al venerdì, un pranzo completo a prezzo fisso con i piatti di casa che cambiano spesso. Scegli dalle proposte qui sotto.":
+        ("Monday to Friday, a complete lunch at a fixed price, with home-style dishes that change often. Choose from the dishes below.",
+         "Montag bis Freitag ein komplettes Mittagessen zum Festpreis, mit hausgemachten Gerichten, die oft wechseln. Wählen Sie aus den Gerichten unten."),
+    "Sab e dom": ("Sat & Sun", "Sa & So"),
+    "Lun–ven": ("Mon–Fri", "Mo–Fr"),
+    "Dal lunedì al venerdì · bevande escluse": ("Monday to Friday · drinks not included", "Montag bis Freitag · Getränke nicht inbegriffen"),
+    "Il menù alla carta, sabato e domenica": ("À la carte menu, Saturday and Sunday", "Speisekarte, Samstag und Sonntag"),
+    "Il sabato e la domenica: pasta fresca fatta in casa, carni alla griglia e piatti freddi della tradizione. Prezzi in euro, coperto 2,50 €.":
+        ("On Saturdays and Sundays: fresh homemade pasta, grilled meats and traditional cold dishes. Prices in euros, cover charge 2,50 €.",
+         "Samstags und sonntags: hausgemachte frische Pasta, Fleisch vom Grill und traditionelle kalte Gerichte. Preise in Euro, Gedeck 2,50 €."),
+    "Prezzo del menù pausa pranzo": ("Price of the lunch-break menu", "Preis des Mittagsmenüs"),
+    "Primo, secondo e contorno a scelta": ("First course, main course and side dish of your choice", "Erster Gang, Hauptgericht und Beilage nach Wahl"),
+    "Bevande escluse": ("Drinks not included", "Getränke nicht inbegriffen"),
+    "Contorni": ("Side dishes", "Beilagen"),
+    "Sotto ogni piatto trovi gli allergeni (Reg. UE 1169/2011). Le proposte possono cambiare di giorno in giorno: per qualsiasi dubbio chiedici prima di ordinare.":
+        ("Allergens are listed under each dish (EU Reg. 1169/2011). The dishes may change from day to day: if in doubt, please ask us before ordering.",
+         "Die Allergene stehen unter jedem Gericht (EU-Verordnung 1169/2011). Die Gerichte können täglich wechseln: Fragen Sie uns im Zweifel bitte vor der Bestellung."),
+    "Vedi il menù alla carta": ("See the à la carte menu", "Zur Speisekarte"),
+    "Glutine · Uova · Latte (ai formaggi) · Sedano (al ragù)": ("Gluten · Eggs · Milk (with cheese) · Celery (with meat sauce)", "Gluten · Eier · Milch (mit Käse) · Sellerie (mit Ragù)"),
+    "Glutine · Pesce (con acciughe)": ("Gluten · Fish (with anchovies)", "Gluten · Fisch (mit Sardellen)"),
     # testi alternativi delle foto
     'Tortellini nodo d’amore al burro e salvia': ('Love-knot tortellini with butter and sage', 'Liebesknoten-Tortellini mit Butter und Salbei'),
     'La sala del ristorante': ('The restaurant’s dining room', 'Der Speisesaal des Restaurants'),
@@ -174,9 +208,9 @@ TESTI = {
 
     # ------------------------------------------------------------ menù
     "Menù alla carta · Ristorante Mara, Valeggio sul Mincio": ("À la carte menu · Ristorante Mara, Valeggio sul Mincio", "Speisekarte · Ristorante Mara, Valeggio sul Mincio"),
-    "Il menù del Ristorante Mara: tortellini nodo d’amore, pasta fresca fatta in casa, carni alla griglia, piatti freddi e carta dei vini del territorio. Allergeni indicati su ogni piatto.":
-        ("The menu of Ristorante Mara: love-knot tortellini, home-made fresh pasta, grilled meats, cold dishes and a list of local wines. Allergens listed for every dish.",
-         "Die Speisekarte des Ristorante Mara: Liebesknoten-Tortellini, hausgemachte frische Pasta, Fleisch vom Grill, kalte Gerichte und Weine aus der Region. Allergene bei jedem Gericht angegeben."),
+    "Il menù alla carta del Ristorante Mara, il sabato e la domenica: tortellini nodo d’amore, pasta fresca fatta in casa, carni alla griglia, piatti freddi e carta dei vini del territorio. Allergeni indicati su ogni piatto.":
+        ("The à la carte menu of Ristorante Mara, on Saturdays and Sundays: love-knot tortellini, home-made fresh pasta, grilled meats, cold dishes and a list of local wines. Allergens listed for every dish.",
+         "Die Speisekarte des Ristorante Mara, samstags und sonntags: Liebesknoten-Tortellini, hausgemachte frische Pasta, Fleisch vom Grill, kalte Gerichte und Weine aus der Region. Allergene bei jedem Gericht angegeben."),
     "Il menù": ("The menu", "Die Speisekarte"),
     "alla carta": ("à la carte", "à la carte"),
     "Pasta fresca fatta in casa, carni alla griglia e piatti freddi della tradizione. Prezzi in euro, coperto 2,50 €.":
@@ -518,6 +552,19 @@ TESTI = {
 }
 
 PIATTI = {
+    # menù pausa pranzo
+    "Gnocchi al ragù, al pomodoro o ai formaggi": ("Gnocchi with meat sauce, tomato sauce or cheese sauce", "Gnocchi mit Ragù, Tomatensauce oder Käsesauce"),
+    "Spaghetti con salsiccia e verdure o con acciughe": ("Spaghetti with sausage and vegetables, or with anchovies", "Spaghetti mit Wurst und Gemüse oder mit Sardellen"),
+    "Penne all’arrabbiata con pancetta": ("Penne arrabbiata (spicy tomato) with pancetta", "Penne all’arrabbiata (scharfe Tomatensauce) mit Pancetta"),
+    "Tagliatelle al ragù o al pomodoro": ("Tagliatelle with meat sauce or tomato sauce", "Tagliatelle mit Ragù oder Tomatensauce"),
+    "Coniglio arrosto": ("Roast rabbit", "Kaninchenbraten"),
+    "Bistecca di manzo": ("Beef steak", "Rindersteak"),
+    "Insalata mista": ("Mixed salad", "Gemischter Salat"),
+    "Patate lesse": ("Boiled potatoes", "Salzkartoffeln"),
+    "Zucchine trifolate": ("Sautéed courgettes with garlic and parsley", "Zucchini mit Knoblauch und Petersilie"),
+    "Cipolle di Tropea in agrodolce": ("Sweet and sour Tropea onions", "Süßsaure Tropea-Zwiebeln"),
+    "Cavolfiori": ("Cauliflower", "Blumenkohl"),
+    "Fagioli bianchi, con o senza cipolla": ("White beans, with or without onion", "Weiße Bohnen, mit oder ohne Zwiebeln"),
     "Salumi misti con verdure sott’olio": ("Mixed cured meats with vegetables in oil", "Gemischter Aufschnitt mit in Öl eingelegtem Gemüse"),
     "Salumi misti per due": ("Mixed cured meats for two", "Gemischter Aufschnitt für zwei"),
     "Tortellini al burro e salvia": ("Love-knot tortellini with butter and sage", "Liebesknoten-Tortellini mit Butter und Salbei"),

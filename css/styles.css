@@ -606,6 +606,66 @@ body.menu-aperto { overflow: hidden; }
   .menu-cta { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
 }
 
+/* Scelta del tipo di menù: alla carta / pausa pranzo */
+.menu-tipi {
+  display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 8px;
+  background: var(--farina); border: 1px solid var(--bordo); border-radius: 999px;
+}
+.menu-tipi a {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 20px;
+  border-radius: 999px; font: 600 15px/1.2 var(--testo); white-space: nowrap; color: var(--inchiostro);
+}
+.menu-tipi a:hover { color: var(--pomodoro); }
+.menu-tipi a[aria-current="page"] { background: var(--pomodoro); color: var(--su-pomodoro); }
+.menu-tipi__giorni {
+  padding: 2px 8px; border-radius: 999px; background: #fbe7c6; color: var(--inchiostro);
+  font: 600 12px/1.3 var(--testo);
+}
+.menu-tipi a[aria-current="page"] .menu-tipi__giorni { background: rgba(255,255,255,.2); color: var(--su-pomodoro); }
+
+/* Rimando all'altro menù sotto l'intro */
+.menu-tipi__rimando a { color: var(--pomodoro); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.menu-tipi__rimando a:hover { color: var(--brace); }
+
+/* Menù pausa pranzo */
+.intro-pranzo__riga { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; width: 100%; }
+.intro-pranzo__testo { display: flex; flex-direction: column; gap: 20px; }
+.prezzo-fisso {
+  flex: none; display: flex; flex-direction: column; gap: 6px; min-width: 300px; padding: 28px 32px;
+  background: var(--inchiostro); color: var(--su-scuro); border-radius: 6px;
+}
+.prezzo-fisso__cifra { font: 500 72px/1 var(--display); letter-spacing: -0.03em; color: var(--zucca); }
+.prezzo-fisso__cosa { margin-top: 8px; font: 600 17px/1.35 var(--testo); }
+.prezzo-fisso__nota { font-size: 14px; line-height: 1.5; color: var(--su-scuro-tenue); }
+
+.pranzo-corpo { display: flex; flex-direction: column; gap: 56px; padding-top: 72px; padding-bottom: var(--sezione); }
+.pranzo-colonne { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 56px; }
+.pranzo-sezione { display: flex; flex-direction: column; gap: 8px; scroll-margin-top: 120px; }
+.pranzo-sezione + .pranzo-sezione { border-left: 1px solid var(--bordo); padding-left: 56px; margin-left: -56px; }
+.pranzo-sezione .menu-sezione__titolo { padding-bottom: 8px; }
+.pranzo-piatti .piatto { border-top: 1px solid var(--bordo); }
+.pranzo-piatti .piatto-nome { font-size: 20px; }
+.menu-cta__azioni { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+
+@media (max-width: 1023px) {
+  .intro-pranzo__riga { flex-direction: column; align-items: stretch; gap: 24px; }
+  .pranzo-colonne { grid-template-columns: 1fr; gap: 40px; }
+  .pranzo-sezione + .pranzo-sezione { border-left: 0; padding-left: 0; margin-left: 0; }
+  .pranzo-corpo { padding-top: 40px; gap: 40px; }
+  .menu-cta__azioni { width: 100%; }
+  .menu-cta__azioni .btn--su-scuro { width: 100%; }
+}
+@media (max-width: 767px) {
+  .menu-tipi { display: flex; width: 100%; }
+  .menu-tipi a { flex: 1 1 0; min-width: 0; flex-direction: column; justify-content: center; gap: 3px; padding: 8px 10px; border-radius: 22px; }
+  .menu-tipi__giorni { padding: 1px 8px; }
+  .prezzo-fisso { min-width: 0; padding: 22px 24px; display: grid; grid-template-columns: auto 1fr; column-gap: 20px; align-items: center; }
+  .prezzo-fisso__cifra { grid-row: span 2; font-size: 56px; }
+  .prezzo-fisso__cosa { margin-top: 0; font-size: 16px; align-self: end; }
+  .prezzo-fisso__nota { align-self: start; }
+  .pranzo-piatti .piatto-nome { font-size: 19px; }
+}
+
 /* --------------------------------------------------------------------------
    Sezioni delle pagine interne
    -------------------------------------------------------------------------- */

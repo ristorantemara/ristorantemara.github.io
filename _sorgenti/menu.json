@@ -109,5 +109,39 @@
       ]
     }
   ],
+  "pranzo": {
+    "_nota": "Menù pausa pranzo a prezzo fisso: i piatti non hanno prezzo. Cambia spesso: aggiornare qui e rilanciare la build.",
+    "prezzo": "15,00 €",
+    "sezioni": [
+      {"id": "pranzo-primi", "numero": "I.", "titolo": "Primi",
+        "piatti": [
+          {"nome": "Gnocchi al ragù, al pomodoro o ai formaggi", "allergeni": ["Glutine", "Uova", "Latte", "Sedano"], "testo_allergeni": "Glutine · Uova · Latte (ai formaggi) · Sedano (al ragù)"},
+          {"nome": "Spaghetti con salsiccia e verdure o con acciughe", "allergeni": ["Glutine", "Pesce"], "testo_allergeni": "Glutine · Pesce (con acciughe)"},
+          {"nome": "Penne all’arrabbiata con pancetta", "allergeni": ["Glutine"]},
+          {"nome": "Tagliatelle al ragù o al pomodoro", "allergeni": ["Glutine", "Uova", "Sedano"]}
+        ]
+      },
+      {"id": "pranzo-secondi", "numero": "II.", "titolo": "Secondi",
+        "piatti": [
+          {"nome": "Coniglio arrosto", "allergeni": ["Sedano", "Solfiti"]},
+          {"nome": "Braciola di maiale", "allergeni": []},
+          {"nome": "Bistecca di manzo", "allergeni": []},
+          {"nome": "Bresaola, rucola e grana", "allergeni": ["Latte"]},
+          {"nome": "Carne salada cruda", "allergeni": []},
+          {"nome": "Vitello tonnato", "allergeni": ["Pesce", "Uova", "Senape"]}
+        ]
+      },
+      {"id": "pranzo-contorni", "numero": "III.", "titolo": "Contorni",
+        "piatti": [
+          {"nome": "Insalata mista", "allergeni": []},
+          {"nome": "Patate lesse", "allergeni": []},
+          {"nome": "Zucchine trifolate", "allergeni": []},
+          {"nome": "Cipolle di Tropea in agrodolce", "allergeni": ["Solfiti"]},
+          {"nome": "Cavolfiori", "allergeni": []},
+          {"nome": "Fagioli bianchi, con o senza cipolla", "allergeni": []}
+        ]
+      }
+    ]
+  },
   "allergeni": ["Glutine", "Latte", "Uova", "Frutta a guscio", "Arachidi", "Pesce", "Crostacei", "Molluschi", "Soia", "Sedano", "Senape", "Sesamo", "Lupini", "Solfiti"]
 }

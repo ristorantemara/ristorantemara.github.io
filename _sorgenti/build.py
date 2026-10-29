@@ -78,7 +78,7 @@ def slug(t):
 
 def riga_piatto(p, vino=False, lingua="it"):
     # nelle lingue straniere il nome del piatto è tradotto; vini e produttori restano come sono
-    nome, prezzo = p["nome"], p["prezzo"]
+    nome, prezzo = p["nome"], p.get("prezzo", "")
     if lingua != "it":
         if nome in testi.PIATTI:
             nome = testi.PIATTI[nome][LINGUE.index(lingua) - 1]
@@ -87,9 +87,10 @@ def riga_piatto(p, vino=False, lingua="it"):
     testo_all = tr(p.get("testo_allergeni"), lingua) or " · ".join(tr(a, lingua) for a in allergeni)
     html = [f'<li class="piatto" data-allergeni="{esc(",".join(slug(a) for a in allergeni))}">',
             '<div class="piatto__testa">',
-            f'<h3 class="piatto-nome">{esc(nome)}</h3>',
-            '<span class="piatto__puntini" aria-hidden="true"></span>',
-            f'<p class="prezzo">{esc(prezzo)}</p></div>']
+            f'<h3 class="piatto-nome">{esc(nome)}</h3>']
+    if prezzo:  # nel menù pausa pranzo (prezzo fisso) i piatti non hanno prezzo
+        html += ['<span class="piatto__puntini" aria-hidden="true"></span>', f'<p class="prezzo">{esc(prezzo)}</p>']
+    html.append('</div>')
     sotto = p.get("sotto")
     if sotto:
         html.append(f'<p class="piatto__sotto">{esc(sotto)}</p>')
@@ -102,7 +103,7 @@ def riga_piatto(p, vino=False, lingua="it"):
 def blocchi_menu(lingua="it"):
     dati = json.loads((RADICE / "menu.json").read_text(encoding="utf-8"))
     # nomi dei piatti, dei vini e dei produttori restano in italiano
-    for s_ in dati["sezioni"]:
+    for s_ in dati["sezioni"] + dati.get("pranzo", {}).get("sezioni", []):
         for p_ in s_.get("piatti", []) + [q for g in s_.get("gruppi", []) for q in g["piatti"]]:
             testi.NON_TRADURRE.add(p_["nome"])
             if p_.get("sotto"):
@@ -148,7 +149,19 @@ def blocchi_menu(lingua="it"):
             "menu_meta": f'<script type="application/json" id="menu-meta">{meta_json}</script>'}
 
 
-MENU = {l: blocchi_menu(l) for l in ("it", "en", "de")}
+def blocchi_pranzo(lingua="it"):
+    """Menù pausa pranzo: prezzo fisso, sezioni affiancate come sulla lavagna, piatti senza prezzo."""
+    pranzo = json.loads((RADICE / "menu.json").read_text(encoding="utf-8"))["pranzo"]
+    colonne = []
+    for s in pranzo["sezioni"]:
+        colonne.append(f'<section class="pranzo-sezione" id="{s["id"]}" aria-labelledby="t-{s["id"]}">'
+                       f'<h2 class="menu-sezione__titolo h3" id="t-{s["id"]}"><span class="accento">{s["numero"]}</span> {esc(s["titolo"])}</h2>'
+                       '<ul class="pranzo-piatti">' + "".join(riga_piatto(p, lingua=lingua) for p in s["piatti"]) + "</ul></section>")
+    prezzo = pranzo["prezzo"]
+    return {"pranzo_sezioni": "".join(colonne), "pranzo_prezzo": esc(re.sub(r",00(?= €)", "", prezzo))}
+
+
+MENU = {l: {**blocchi_menu(l), **blocchi_pranzo(l)} for l in ("it", "en", "de")}
 
 
 # ---------------------------------------------------------------- SEO e dati strutturati
@@ -189,7 +202,7 @@ def ristorante_ld():
         "priceRange": "€€",
         "currenciesAccepted": "EUR",
         "acceptsReservations": True,
-        "hasMenu": SITO_URL + "/menu.html",
+        "hasMenu": [SITO_URL + "/menu.html", SITO_URL + "/pausa-pranzo.html"],
         "menu": SITO_URL + "/menu.html",
         "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": giorni,
                                        "opens": "12:00", "closes": "14:00"}],
@@ -237,7 +250,20 @@ def menu_ld():
         sezioni.append(sezione)
     return {"@context": "https://schema.org", "@type": "Menu", "@id": SITO_URL + "/menu.html#menu",
             "name": "Menù alla carta del Ristorante Mara", "inLanguage": "it",
+            "description": "Servito il sabato e la domenica.",
             "url": SITO_URL + "/menu.html", "hasMenuSection": sezioni,
+            "isPartOf": {"@id": SITO_URL + "/#ristorante"}}
+
+
+def pranzo_ld():
+    pranzo = json.loads((RADICE / "menu.json").read_text(encoding="utf-8"))["pranzo"]
+    return {"@context": "https://schema.org", "@type": "Menu", "@id": SITO_URL + "/pausa-pranzo.html#menu",
+            "name": "Menù pausa pranzo del Ristorante Mara", "inLanguage": "it",
+            "description": "Menù a prezzo fisso dal lunedì al venerdì: primo, secondo e contorno a scelta, bevande escluse.",
+            "url": SITO_URL + "/pausa-pranzo.html", "offers": prezzo_ld(pranzo["prezzo"]),
+            "hasMenuSection": [{"@type": "MenuSection", "name": s["titolo"],
+                                "hasMenuItem": [{"@type": "MenuItem", "name": p["nome"]} for p in s["piatti"]]}
+                               for s in pranzo["sezioni"]],
             "isPartOf": {"@id": SITO_URL + "/#ristorante"}}
 
 
@@ -275,6 +301,8 @@ def blocco_seo(nome, meta, corpo, lingua="it"):
         righe.append(json_ld(ristorante_ld()))
     if nome == "menu.html" and lingua == "it":
         righe.append(json_ld(menu_ld()))
+    if nome == "pausa-pranzo.html" and lingua == "it":
+        righe.append(json_ld(pranzo_ld()))
     faq = faq_ld(corpo) if lingua == "it" else None
     if faq:
         righe.append(json_ld(faq))
@@ -283,7 +311,7 @@ def blocco_seo(nome, meta, corpo, lingua="it"):
 
 def scrivi_mappa_sito(pagine):
     oggi = datetime.date.today().isoformat()
-    priorita = {"index.html": "1.0", "menu.html": "0.9", "prenota.html": "0.8", "dove-siamo.html": "0.8"}
+    priorita = {"index.html": "1.0", "menu.html": "0.9", "pausa-pranzo.html": "0.9", "prenota.html": "0.8", "dove-siamo.html": "0.8"}
     voci = ""
     for n in pagine:
         alternative = "".join(f'<xhtml:link rel="alternate" hreflang="{l}" href="{url_pagina(n, l)}"/>' for l in LINGUE)

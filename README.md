@@ -8,7 +8,8 @@ Sito statico pubblicato con GitHub Pages su **https://ristorantemara.github.io**
 | File | Pagina |
 | --- | --- |
 | `index.html` | Home |
-| `menu.html` | Menù alla carta con filtro allergeni |
+| `menu.html` | Menù alla carta (sabato e domenica) con filtro allergeni |
+| `pausa-pranzo.html` | Menù pausa pranzo a prezzo fisso (dal lunedì al venerdì) |
 | `gruppi.html` · `gruppi-grazie.html` | Gruppi e gite, preventivo e conferma di invio |
 | `cerimonie.html` · `cerimonie-grazie.html` | Cerimonie, richiesta e conferma di invio |
 | `storia.html` | La nostra storia |
@@ -25,7 +26,7 @@ Le pagine **non vanno modificate direttamente**: si generano dai sorgenti in `_s
 
 - `_sorgenti/pagine/` — il contenuto di ogni pagina
 - `_sorgenti/parti/` — parti comuni (header, footer, banner cookie, orari)
-- `_sorgenti/menu.json` — piatti, prezzi e allergeni del menù
+- `_sorgenti/menu.json` — piatti, prezzi e allergeni del menù alla carta; nella voce `pranzo` il menù pausa pranzo (prezzo fisso e piatti)
 
 Dopo una modifica:
 
