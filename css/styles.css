@@ -549,7 +549,7 @@ body.menu-aperto { overflow: hidden; }
 .menu-sezioni { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 72px; }
 .menu-sezione { display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 170px; }
 .menu-sezione__titolo { line-height: 1.09; } /* Figma: titolo sezione alto 48px */
-.menu-sezione__titolo .accento { margin-right: 6px; }
+.menu-sezione__titolo .accento { margin-right: 6px; text-transform: lowercase; } /* Figma: i. ii. iii. */
 .menu-colonne { columns: 2; column-gap: 56px; }
 .menu-colonne .piatto { break-inside: avoid; }
 .menu-gruppo { padding-top: 20px; display: flex; flex-direction: column; gap: 4px; }
@@ -639,10 +639,11 @@ body.menu-aperto { overflow: hidden; }
 .prezzo-fisso__nota { font-size: 14px; line-height: 1.5; color: var(--su-scuro-tenue); }
 
 .pranzo-corpo { display: flex; flex-direction: column; gap: 56px; padding-top: 72px; padding-bottom: var(--sezione); }
-.pranzo-colonne { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 56px; }
+.pranzo-colonne { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 48px; }
 .pranzo-sezione { display: flex; flex-direction: column; gap: 8px; scroll-margin-top: 120px; }
-.pranzo-sezione + .pranzo-sezione { border-left: 1px solid var(--bordo); padding-left: 56px; margin-left: -56px; }
-.pranzo-sezione .menu-sezione__titolo { padding-bottom: 8px; }
+.pranzo-sezione + .pranzo-sezione { border-left: 1px solid var(--bordo); padding-left: 48px; margin-left: -48px; }
+.pranzo-sezione { gap: 0; }
+.pranzo-sezione .menu-sezione__titolo { padding-bottom: 16px; }
 .pranzo-piatti .piatto { border-top: 1px solid var(--bordo); }
 .pranzo-piatti .piatto-nome { font-size: 20px; }
 .menu-cta__azioni { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
@@ -664,6 +665,11 @@ body.menu-aperto { overflow: hidden; }
   .prezzo-fisso__cosa { margin-top: 0; font-size: 16px; align-self: end; }
   .prezzo-fisso__nota { align-self: start; }
   .pranzo-piatti .piatto-nome { font-size: 19px; }
+  /* Figma M04b: righe senza filetto, sezioni 24px sopra e sotto, niente riquadro «Ti è venuta fame?» (c'è la barra Chiama/Prenota) */
+  .pranzo-piatti .piatto { border-top: 0; }
+  .pranzo-colonne { gap: 48px; }
+  .pranzo-corpo { padding-top: 24px; gap: 8px; padding-bottom: 40px; }
+  .pranzo-corpo .menu-cta { display: none; }
 }
 
 /* --------------------------------------------------------------------------
