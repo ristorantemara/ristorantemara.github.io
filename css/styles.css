@@ -613,7 +613,7 @@ body.menu-aperto { overflow: hidden; }
 }
 .menu-tipi a {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 20px;
-  border-radius: 999px; font: 600 15px/1.2 var(--testo); white-space: nowrap; color: var(--inchiostro);
+  border-radius: 999px; font: 600 14px/1.25 var(--testo); white-space: nowrap; color: var(--inchiostro);
 }
 .menu-tipi a:hover { color: var(--pomodoro); }
 .menu-tipi a[aria-current="page"] { background: var(--pomodoro); color: var(--su-pomodoro); }
@@ -631,7 +631,7 @@ body.menu-aperto { overflow: hidden; }
 .intro-pranzo__riga { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; width: 100%; }
 .intro-pranzo__testo { display: flex; flex-direction: column; gap: 20px; }
 .prezzo-fisso {
-  flex: none; display: flex; flex-direction: column; gap: 6px; min-width: 300px; padding: 28px 32px;
+  flex: none; display: flex; flex-direction: column; gap: 6px; width: 380px; padding: 28px 32px;
   background: var(--inchiostro); color: var(--su-scuro); border-radius: 6px;
 }
 .prezzo-fisso__cifra { font: 500 72px/1 var(--display); letter-spacing: -0.03em; color: var(--zucca); }
@@ -659,7 +659,7 @@ body.menu-aperto { overflow: hidden; }
   .menu-tipi { display: flex; width: 100%; }
   .menu-tipi a { flex: 1 1 0; min-width: 0; flex-direction: column; justify-content: center; gap: 3px; padding: 8px 10px; border-radius: 22px; }
   .menu-tipi__giorni { padding: 1px 8px; }
-  .prezzo-fisso { min-width: 0; padding: 22px 24px; display: grid; grid-template-columns: auto 1fr; column-gap: 20px; align-items: center; }
+  .prezzo-fisso { width: auto; padding: 22px 24px; display: grid; grid-template-columns: auto 1fr; column-gap: 20px; align-items: center; }
   .prezzo-fisso__cifra { grid-row: span 2; font-size: 56px; }
   .prezzo-fisso__cosa { margin-top: 0; font-size: 16px; align-self: end; }
   .prezzo-fisso__nota { align-self: start; }
