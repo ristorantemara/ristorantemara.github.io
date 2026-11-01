@@ -657,7 +657,7 @@ body.menu-aperto { overflow: hidden; }
   .menu-cta__azioni .btn--su-scuro { width: 100%; }
 }
 @media (max-width: 767px) {
-  .menu-tipi { display: flex; width: 100%; }
+  .menu-tipi { display: flex; width: 100%; border-radius: 26px; } /* Figma: contenitore 26, voci 22 (4px di bordo interno) */
   .menu-tipi a { flex: 1 1 0; min-width: 0; flex-direction: column; justify-content: center; gap: 3px; padding: 8px 10px; border-radius: 22px; }
   .menu-tipi__giorni { padding: 1px 8px; }
   .prezzo-fisso { width: auto; padding: 22px 24px; display: grid; grid-template-columns: auto 1fr; column-gap: 20px; align-items: center; }
