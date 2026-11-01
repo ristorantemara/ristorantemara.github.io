@@ -71,7 +71,7 @@
       var titolo = L.dalFoglio(s, 'titolo');
       indice.push('<li><a href="#' + id + '" data-indice="' + id + '"><span>' + esc(titolo) + '</span>' +
         '<span class="menu-indice__conta" data-conta="' + id + '">' + totale + '</span></a></li>');
-      pillole.push('<a class="pillola" href="#' + id + '" data-indice="' + id + '">' + esc(titolo) + '</a>');
+      pillole.push('<a class="pillola" href="#' + id + '" data-indice="' + id + '">' + esc(m.breve ? t(m.breve) : titolo) + '</a>');
       var html = '<section class="menu-sezione" id="' + id + '" data-sezione="' + id + '"' + (vino ? ' data-vini' : '') + ' aria-labelledby="t-' + id + '">' +
         '<h2 class="menu-sezione__titolo h2" id="t-' + id + '"><span class="accento">' + numero + '</span> ' + esc(titolo) + '</h2>';
       if (s.nota) html += '<p class="testo-s menu-sezione__nota">' + esc(L.dalFoglio(s, 'nota')) + '</p>';
@@ -173,7 +173,7 @@
       });
       // su mobile, con un filtro attivo, l'etichetta lascia spazio agli allergeni scelti; su desktop resta uguale
       var suMobile = window.matchMedia && window.matchMedia('(max-width: 1023px)').matches;
-      if (etichettaMobile) etichettaMobile.textContent = esclusi.length && suMobile ? t('Senza:') : t('Nascondi i piatti che contengono');
+      if (etichettaMobile) etichettaMobile.textContent = suMobile ? (esclusi.length ? t('Senza:') : t('Escludi allergeni')) : t('Nascondi i piatti che contengono');
       bottoneScegli.textContent = esclusi.length ? t('Modifica') : t('Scegli');
     }
   }

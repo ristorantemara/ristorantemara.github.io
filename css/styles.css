@@ -608,7 +608,7 @@ body.menu-aperto { overflow: hidden; }
 
 /* Scelta del tipo di menù: alla carta / pausa pranzo */
 .menu-tipi {
-  display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 8px;
+  display: inline-flex; gap: 4px; padding: 4px;
   background: var(--farina); border: 1px solid var(--bordo); border-radius: 999px;
 }
 .menu-tipi a {
@@ -1391,7 +1391,15 @@ body.is-inviata .flusso__tenda { display: block; }
   .menu-sezione { padding: 24px 0; gap: 0; }
   .menu-sezione__titolo { font-size: 30px; line-height: 1.08; padding-bottom: 6px; }
   .menu-sezione__titolo .accento { color: inherit; margin-right: 0; }
-  .menu-cta { margin-bottom: 32px; }
+  /* Figma M04: nell'avviso dell'intro solo il testo, senza titoletto */
+  .avviso--intro .label { display: none; }
+  /* Figma M04: niente riquadro «Ti è venuta fame?» (c'è la barra Chiama/Prenota); il coperto va in fondo */
+  .menu-cta { display: none; }
+  .menu-sezione[data-sezione="bevande"] .menu-sezione__nota { display: none; }
+  .menu-coperto { padding: 20px 0; }
+  .menu-corpo { padding-bottom: 0; }
+  /* Figma M05: sezione vuota per il filtro, con «Mostra comunque i primi» */
+  .menu-sezione__vuoto [data-mostra-comunque] { display: inline-flex; }
 }
 
 /* Prenota (mobile, Figma MF01–MF04) */

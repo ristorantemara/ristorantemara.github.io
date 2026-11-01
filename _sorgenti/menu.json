@@ -47,7 +47,7 @@
       ]
     },
     {
-      "id": "contorni-dolci", "numero": "V.", "titolo": "Contorni e dolci", "breve": "Contorni e dolci",
+      "id": "contorni-dolci", "numero": "V.", "titolo": "Contorni e dolci", "breve": "Dolci",
       "piatti": [
         {"nome": "Contorno singolo", "prezzo": "3,00 €", "allergeni": []},
         {"nome": "Contorni misti", "prezzo": "6,00 €", "allergeni": []},

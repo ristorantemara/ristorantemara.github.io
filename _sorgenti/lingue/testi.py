@@ -251,6 +251,10 @@ TESTI = {
         ("Our pasta is made with egg and wheat. Let us know when you book: the kitchen can suggest an alternative.", "Unsere Pasta wird mit Ei und Weizen hergestellt. Sagen Sie es uns bei der Reservierung: Die Küche kann Ihnen eine Alternative vorschlagen."),
     "Le carni alla griglia non contengono allergeni principali: chiedi per salse e contorni.":
         ("The grilled meats contain none of the main allergens: please ask about sauces and sides.", "Das Grillfleisch enthält keine der Hauptallergene: Fragen Sie bitte nach Saucen und Beilagen."),
+    "Freddi": ("Cold", "Kalt"),
+    "Dolci": ("Desserts", "Desserts"),
+    "Bevande": ("Drinks", "Getränke"),
+    "Vini": ("Wines", "Weine"),
     "Coperto 2,50 €": ("Cover charge 2,50 €", "Gedeck 2,50 €"),
     "Vini del territorio tra Custoza, Bardolino, Lugana e Valpolicella. Prezzi a bottiglia. Tutti i vini contengono solfiti.":
         ("Local wines from Custoza, Bardolino, Lugana and Valpolicella. Prices per bottle. All wines contain sulphites.", "Weine aus der Region zwischen Custoza, Bardolino, Lugana und Valpolicella. Preise pro Flasche. Alle Weine enthalten Sulfite."),
@@ -716,10 +720,12 @@ JS = {
     "Azzera filtri": ("Reset filters", "Filter zurücksetzen"),
     "Togli {x}": ("Remove {x}", "{x} entfernen"),
     "Senza:": ("Without:", "Ohne:"),
+    "Escludi allergeni": ("Exclude allergens", "Allergene ausschließen"),
 }
 
 # Testi della pagina che servono anche agli script (menù ridisegnato dal Foglio, specialità della home)
 JS_DA_TESTI = [
+    "Freddi", "Dolci", "Bevande", "Vini",
     "Mostra comunque", "Tocca un allergene per nascondere i piatti che lo contengono", "Nascondi i piatti che contengono",
     "Modifica", "Scegli", "Allergeni:", "Avvisaci quando prenoti: la cucina può proporti un’alternativa.",
     "Contorni", "Glutine · Uova · Latte (ai formaggi) · Sedano (al ragù)", "Glutine · Pesce (con acciughe)",
