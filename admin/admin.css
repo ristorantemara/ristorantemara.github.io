@@ -1,21 +1,23 @@
 /* ==========================================================================
-   Area ristorante (/admin) — costruita sul design system 2.0 del sito
-   (colori di cucina, Bricolage Grotesque + Instrument Sans, campi, bottoni,
-   chip, pillole e foglio dal basso di css/styles.css)
+   Area ristorante (/admin) — dal file Figma, pagina «06 · Area ristorante (admin)»
+   Telefono: A01–A12 · Computer: AD01–AD03 · Componenti: Admin/*
+   Usa i token e i componenti del design system 2.0 (css/styles.css).
    ========================================================================== */
 
 body.admin { background: var(--panna); min-height: 100vh; }
 
-/* ---------- Barra in alto ---------- */
+/* ---------- Testata (Admin/Testata/Mobile · Admin/Testata/Desktop) ---------- */
 .admin-barra { position: sticky; top: 0; z-index: 40; background: var(--panna); border-bottom: 1px solid var(--bordo); }
 .admin-barra__interno {
-  max-width: 1120px; margin: 0 auto; padding: 14px var(--gutter);
+  max-width: 1440px; margin: 0 auto; padding: 0 160px; min-height: 76px;
   display: flex; align-items: center; gap: 24px;
 }
 .admin-barra .logo__sotto { white-space: nowrap; }
-.admin-esci { margin-left: auto; color: var(--inchiostro); }
+.admin-esci { margin-left: auto; min-height: 44px; padding: 0 8px; border: 0; background: none; font: 600 14px/1.25 var(--testo); color: var(--inchiostro); cursor: pointer; border-radius: 8px; }
+.admin-esci:hover { color: var(--pomodoro); }
+.admin-nav + .admin-esci { margin-left: 0; }
 
-/* Navigazione: pillole in alto su computer, barra in basso su telefono */
+/* Sezioni: pillole su computer, barra in basso su telefono (Admin/Barra schede) */
 .admin-nav {
   display: inline-flex; gap: 4px; padding: 4px; margin-left: auto;
   background: var(--farina); border: 1px solid var(--bordo); border-radius: 999px;
@@ -28,107 +30,145 @@ body.admin { background: var(--panna); min-height: 100vh; }
 .admin-nav a[aria-current="page"] { background: var(--pomodoro); color: var(--su-pomodoro); }
 .admin-nav .icona { width: 18px; height: 18px; }
 .admin-nav__conta {
-  min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; display: inline-grid; place-items: center;
+  min-width: 22px; height: 22px; padding: 0 7px; border-radius: 999px; display: inline-grid; place-items: center;
   background: var(--zucca); color: var(--inchiostro); font: 700 12px/1 var(--testo);
 }
-.admin-nav + .admin-esci { margin-left: 0; }
 
 /* ---------- Corpo ---------- */
-.admin-corpo { max-width: 1120px; margin: 0 auto; padding: 48px var(--gutter) 96px; }
+.admin-corpo { max-width: 1440px; margin: 0 auto; padding: 48px 160px 96px; }
 .admin-vista { display: flex; flex-direction: column; gap: 32px; }
 
-.admin-testa { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-.admin-testa__testo { display: flex; flex-direction: column; gap: 8px; }
-.admin-testa h1 { font: 500 clamp(34px, 4.2vw, 52px)/1.08 var(--display); letter-spacing: -0.025em; outline: none; }
+.admin-testa { display: flex; flex-direction: column; gap: 8px; }
+.admin-testa h1 { font: 500 52px/1.08 var(--display); letter-spacing: -0.025em; outline: none; }
+.admin-testa .testo-m { max-width: 720px; }
 .admin-sottotitolo { display: flex; flex-direction: column; gap: 4px; }
-.admin-sottotitolo h2 { font: 500 clamp(24px, 2.1vw, 30px)/1.25 var(--display); letter-spacing: -0.01em; }
+.admin-sottotitolo h2 { font: 500 26px/1.2 var(--display); letter-spacing: -0.01em; }
 
-/* Accesso */
-.admin-accesso { max-width: 480px; margin: 40px auto 0; display: flex; flex-direction: column; gap: 16px; }
-.admin-accesso__form { display: flex; flex-direction: column; gap: 20px; margin-top: 16px; padding: 32px; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
+/* Colonne su computer: elenco + «Oggi» (AD01), settimana + chiusure (AD03) */
+.admin-colonne { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 40px; align-items: start; }
+.admin-colonne > .admin-oggi { grid-column: 2; grid-row: 1; position: sticky; top: 108px; }
+.admin-colonne > .admin-principale { grid-column: 1; grid-row: 1; }
+.admin-colonne--orari { grid-template-columns: minmax(0, 1fr) 440px; }
+.admin-principale, .admin-blocco { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 
-/* Stato di caricamento */
-.admin-stato { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 80px 0; color: var(--terra); }
+/* Accesso (A01) */
+.admin-accesso { max-width: 480px; margin: 24px auto 0; display: flex; flex-direction: column; gap: 16px; }
+.admin-accesso__titolo { font: 500 clamp(36px, 4.2vw, 52px)/1.08 var(--display); letter-spacing: -0.025em; }
+.admin-accesso__form { display: flex; flex-direction: column; gap: 20px; margin: 8px 0; padding: 24px 20px; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
+
+/* Caricamento */
+.admin-stato { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 80px 0; color: var(--terra); flex-wrap: wrap; }
 .admin-stato[hidden] { display: none; }
 .admin-rotella { width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid var(--bordo); border-top-color: var(--pomodoro); animation: admin-gira .8s linear infinite; }
 @keyframes admin-gira { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .admin-rotella { animation-duration: 2.4s; } }
 
-/* Filtri a pillole (riusano .menu-tipi del sito) */
-.admin-filtri { display: flex; gap: 8px; flex-wrap: wrap; }
+/* ---------- Filtri a pillole (Admin/Segmento) ---------- */
+.admin-filtri { display: flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.admin-filtri::-webkit-scrollbar { display: none; }
+.admin-filtri .menu-tipi { flex: none; }
 .admin-filtri .menu-tipi button {
-  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 20px; border: 0; background: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 10px 12px; border: 0; background: none;
   border-radius: 999px; font: 600 14px/1.25 var(--testo); white-space: nowrap; color: var(--inchiostro); cursor: pointer;
 }
 .admin-filtri .menu-tipi button:hover { color: var(--pomodoro); }
 .admin-filtri .menu-tipi button[aria-pressed="true"] { background: var(--pomodoro); color: var(--su-pomodoro); }
 .admin-filtri .menu-tipi button[aria-pressed="true"] .menu-tipi__giorni { background: rgba(255,255,255,.2); color: var(--su-pomodoro); }
 
-/* ---------- Schede (card) ---------- */
+/* ---------- Oggi (scuro) ---------- */
+.admin-oggi { display: flex; flex-direction: column; gap: 14px; padding: 24px; border-radius: 6px; background: var(--inchiostro); color: var(--su-scuro); }
+.admin-oggi .occhiello { color: var(--zucca); }
+.admin-oggi__numeri { display: flex; gap: 32px; }
+.admin-oggi__numeri p { display: flex; flex-direction: column; }
+.admin-oggi__numero { font: 500 40px/1.08 var(--display); letter-spacing: -0.025em; color: var(--su-scuro); }
+.admin-oggi .testo-s { color: var(--su-scuro-tenue); }
+.admin-oggi__tavoli li { display: flex; align-items: baseline; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(255,255,255,.12); }
+.admin-oggi__ora { font: 600 14px/1.25 var(--testo); color: var(--zucca); min-width: 42px; }
+.admin-oggi__nome { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.admin-oggi__aggiorna { border: 0; padding: 0; background: none; font: 600 14px/1.5 var(--testo); color: var(--zucca); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; min-height: 24px; }
+.admin-oggi__aggiorna:hover { color: var(--su-scuro); }
+
+/* ---------- Elenchi e schede (Admin/Prenotazione · Admin/Richiesta) ---------- */
 .admin-elenco { display: flex; flex-direction: column; gap: 12px; }
+.admin-elenco--griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; align-items: start; }
 .admin-giorno { display: flex; flex-direction: column; gap: 12px; }
-.admin-giorno + .admin-giorno { margin-top: 20px; }
-.admin-giorno__titolo { font: 600 12px/1.2 var(--testo); letter-spacing: 2.2px; text-transform: uppercase; color: var(--pomodoro); }
+.admin-giorno + .admin-giorno { margin-top: 12px; }
 
 .admin-card {
-  display: flex; flex-direction: column; gap: 14px; padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 14px; padding: 20px;
   background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px;
 }
-.admin-card.is-attesa { border-left: 4px solid var(--zucca); }
-.admin-card.is-spenta { opacity: .62; }
-.admin-card__testa { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-.admin-card__titolo { font: 500 22px/1.25 var(--display); letter-spacing: -0.01em; overflow-wrap: anywhere; }
-.admin-card__meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--terra); }
+.admin-card.is-attesa { border-color: var(--zucca); border-left-width: 4px; }
+.admin-card.is-spenta { opacity: .65; }
+.admin-card__testa { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.admin-card__titolo { font: 600 22px/1.25 var(--display); letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.admin-card__meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 16px; color: var(--inchiostro); }
 .admin-card__meta span { display: inline-flex; align-items: center; gap: 6px; }
-.admin-card__meta .icona { width: 16px; height: 16px; color: var(--inchiostro); }
-.admin-card__note { padding: 12px 14px; border-radius: 6px; background: var(--panna); font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
-.admin-card__contatti { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin-card__meta .icona { width: 16px; height: 16px; }
+.admin-card__tenue { color: var(--terra); }
+.admin-card__note { padding: 12px 14px; border-radius: 6px; background: var(--panna); font-size: 16px; line-height: 1.55; overflow-wrap: anywhere; }
+.admin-card__dati { display: flex; flex-direction: column; gap: 2px; }
 .admin-card__azioni { display: flex; gap: 10px; flex-wrap: wrap; }
-.admin-card__azioni .btn { min-height: 48px; padding: 12px 22px; }
-.admin-card dl { display: grid; grid-template-columns: minmax(110px, max-content) 1fr; gap: 8px 20px; font-size: 15px; }
-.admin-card dt { color: var(--terra); }
-.admin-card dd { overflow-wrap: anywhere; }
 
-/* Etichette di stato */
+/* Contatti: link con icona pomodoro (si toccano per chiamare o scrivere) */
+.admin-contatti { display: flex; flex-direction: column; gap: 2px; }
+.admin-link { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; align-self: flex-start; font: 600 15px/1.25 var(--testo); color: var(--inchiostro); border-radius: 6px; }
+.admin-link span { text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.admin-link .icona { width: 18px; height: 18px; color: var(--pomodoro); }
+.admin-link:hover { color: var(--pomodoro); }
+
+/* Stato (Admin/Stato): colore + testo, mai solo colore */
 .admin-stato-pill {
   flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px;
-  font: 600 13px/1.2 var(--testo); background: var(--sfoglia); color: var(--inchiostro); white-space: nowrap;
+  font: 600 13px/1.25 var(--testo); background: var(--sfoglia); color: var(--inchiostro); white-space: nowrap;
 }
 .admin-stato-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
 .admin-stato-pill--attesa { background: #fbe7c6; }
 .admin-stato-pill--attesa::before { background: var(--zucca); }
 .admin-stato-pill--ok { background: #dfe8d9; color: var(--successo); }
 .admin-stato-pill--no { background: #f6dcd6; color: var(--errore); }
+.admin-stato-pill--spenta { color: var(--terra); }
 
-/* Link contatto (telefono, mail) come chip */
-.admin-contatto { text-decoration: none; }
-.admin-contatto .icona { display: block; width: 16px; height: 16px; }
+/* ---------- Sezioni e righe (Admin/Riga) ---------- */
+.admin-sezione { display: flex; flex-direction: column; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; overflow: hidden; }
+.admin-sezione__testa { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--bordo); }
+.admin-sezione__titoli { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; min-width: 0; }
+.admin-sezione__testa--colonna .admin-sezione__titoli, .admin-sezione__titoli--colonna { flex-direction: column; align-items: flex-start; gap: 2px; }
+.admin-sezione__titolo { font: 500 24px/1.25 var(--display); letter-spacing: -0.01em; }
+.admin-sezione__conta { font-size: 14px; line-height: 1.5; color: var(--terra); }
+.admin-gruppo { padding: 14px 24px 2px; font: 600 12px/1.2 var(--testo); letter-spacing: 2.2px; text-transform: uppercase; color: var(--pomodoro); }
 
-/* ---------- Righe del menù ---------- */
-.admin-sezione { display: flex; flex-direction: column; gap: 0; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
-.admin-sezione__testa { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 24px; border-bottom: 1px solid var(--bordo); }
-.admin-sezione__titolo { font: 500 24px/1.2 var(--display); letter-spacing: -0.01em; }
-.admin-sezione__titolo .accento { font-family: var(--testo); font-size: 14px; font-weight: 600; margin-left: 8px; color: var(--terra); }
-.admin-gruppo { padding: 14px 24px 0; font: 600 12px/1.2 var(--testo); letter-spacing: 2.2px; text-transform: uppercase; color: var(--pomodoro); }
-
-.admin-riga {
-  display: flex; align-items: center; gap: 16px; padding: 14px 24px; border-bottom: 1px solid var(--bordo);
-}
-.admin-riga:last-child { border-bottom: 0; }
+.admin-riga { display: flex; align-items: center; gap: 16px; padding: 14px 24px; border-bottom: 1px solid var(--bordo); }
+.admin-riga--vuota { color: var(--terra); font-size: 15px; }
 .admin-riga__apri {
   flex: 1; min-width: 0; display: flex; align-items: center; gap: 16px; padding: 4px 0; text-align: left;
   border: 0; background: none; cursor: pointer; border-radius: 6px;
 }
 .admin-riga__apri:hover .admin-riga__nome { color: var(--pomodoro); }
 .admin-riga__testo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.admin-riga__nome { font: 500 18px/1.3 var(--display); overflow-wrap: anywhere; }
-.admin-riga__sotto { font-size: 14px; line-height: 1.45; color: var(--terra); overflow-wrap: anywhere; }
-.admin-riga__prezzo { font: 500 16px/1.2 var(--testo); white-space: nowrap; }
-.admin-riga.is-spenta .admin-riga__testo, .admin-riga.is-spenta .admin-riga__prezzo { opacity: .5; }
-.admin-riga.is-spenta .admin-riga__nome { text-decoration: line-through; text-decoration-thickness: 1px; }
-.admin-aggiungi { align-self: flex-start; margin: 6px 24px 10px; }
+.admin-riga__nome { font: 600 18px/1.25 var(--display); letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.admin-riga__sotto { font-size: 14px; line-height: 1.5; color: var(--terra); overflow-wrap: anywhere; }
+.admin-riga__prezzo { font: 500 17px/1.2 var(--testo); white-space: nowrap; }
+.admin-riga.is-spenta .admin-riga__nome { color: var(--terra); text-decoration: line-through; text-decoration-thickness: 1px; }
+.admin-riga.is-spenta .admin-riga__testo, .admin-riga.is-spenta .admin-riga__prezzo { opacity: .7; }
 
-/* Interruttore Visibile / Aperto */
+/* Riga «Aggiungi …» in fondo alla sezione */
+.admin-aggiungi {
+  display: flex; align-items: center; gap: 8px; width: 100%; min-height: 52px; padding: 0 24px;
+  border: 0; border-bottom: 1px solid var(--bordo); background: none; text-align: left; cursor: pointer;
+  font: 600 14px/1.25 var(--testo); color: var(--pomodoro);
+}
+.admin-aggiungi:last-child { border-bottom: 0; }
+.admin-aggiungi:hover { background: var(--panna); color: var(--brace); }
+.admin-aggiungi .icona { width: 16px; height: 16px; }
+.admin-azioni { display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center; }
+
+/* Prezzo della pausa pranzo (A08) */
+.admin-prezzo { padding: 18px 24px; }
+.admin-prezzo__riga { display: flex; align-items: flex-end; gap: 10px; }
+.admin-prezzo__riga .campo { flex: 1; }
+
+/* ---------- Interruttore (Admin/Interruttore) ---------- */
 .interruttore { position: relative; flex: none; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; min-height: 44px; font-size: 14px; color: var(--terra); }
 .interruttore input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .interruttore__binario {
@@ -143,44 +183,63 @@ body.admin { background: var(--panna); min-height: 100vh; }
 .interruttore input:checked + .interruttore__binario::after { transform: translateX(18px); }
 .interruttore input:focus-visible + .interruttore__binario { outline: 3px solid var(--inchiostro); outline-offset: 2px; }
 .interruttore input:disabled + .interruttore__binario { opacity: .5; }
+@media (prefers-reduced-motion: reduce) { .interruttore__binario, .interruttore__binario::after { transition: none; } }
 
-/* ---------- Orari ---------- */
-.admin-orari { display: flex; flex-direction: column; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
-.admin-orario { display: grid; grid-template-columns: 140px auto 1fr; align-items: center; gap: 16px 24px; padding: 14px 24px; border-bottom: 1px solid var(--bordo); }
+/* Interruttore con l'etichetta sotto (A09: «Sul sito» / «Spento») */
+.admin-interruttore-verticale { position: relative; flex: none; display: inline-flex; flex-direction: column; align-items: center; gap: 4px; min-width: 56px; cursor: pointer; font: 600 12px/1.25 var(--testo); color: var(--terra); }
+.admin-interruttore-verticale.is-acceso { color: var(--successo); }
+.admin-interruttore-verticale input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.admin-interruttore-verticale input:checked + .interruttore__binario { background: var(--successo); }
+.admin-interruttore-verticale input:checked + .interruttore__binario::after { transform: translateX(18px); }
+.admin-interruttore-verticale input:focus-visible + .interruttore__binario { outline: 3px solid var(--inchiostro); outline-offset: 2px; }
+
+/* ---------- Orari (Admin/Riga orario) ---------- */
+.admin-orari { display: flex; flex-direction: column; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; overflow: hidden; }
+.admin-orario { display: flex; flex-direction: column; gap: 12px; padding: 14px 24px; border-bottom: 1px solid var(--bordo); }
 .admin-orario:last-child { border-bottom: 0; }
-.admin-orario__giorno { font: 600 16px/1.3 var(--testo); }
-.admin-orario__ore { display: flex; gap: 12px; flex-wrap: wrap; }
-.admin-orario__ore .campo { width: auto; gap: 4px; }
-.admin-orario__ore .campo__etichetta { font-size: 12px; font-weight: 600; color: var(--terra); }
-.admin-orario__ore .campo__input { width: 120px; min-height: 44px; padding: 9px 12px; }
-.admin-orario__ore .campo__input:focus { padding: 8px 11px; }
-.admin-orario__ore select.campo__input { padding-right: 34px; background-position: right 8px center; }
-.admin-orario__ore select.campo__input:focus { padding-right: 33px; }
+.admin-orario__testa { display: flex; align-items: center; gap: 10px; }
+.admin-orario__giorno { flex: 1; font: 600 16px/1.25 var(--testo); }
+.admin-orario__stato { font-size: 14px; color: var(--terra); }
+.admin-orario__ore { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.admin-orario__ore .campo { gap: 4px; }
+.admin-orario__ore .campo__etichetta { font-size: 12px; color: var(--terra); }
+.admin-orario__ore .campo__input { min-height: 44px; padding: 9px 34px 9px 12px; background-position: right 8px center; }
+.admin-orario__ore .campo__input:focus { padding: 8px 33px 8px 11px; }
 .admin-orario.is-chiuso .admin-orario__ore { display: none; }
-.admin-orario__chiuso { display: none; color: var(--terra); font-size: 15px; }
+.admin-orario__chiuso { display: none; color: var(--terra); font-size: 14px; }
 .admin-orario.is-chiuso .admin-orario__chiuso { display: block; }
 
-/* Barra di salvataggio che compare quando ci sono modifiche */
+/* Barra di salvataggio scura (compare con modifiche non salvate) */
 .admin-salva {
-  position: sticky; bottom: 16px; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 12px 12px 12px 22px; border-radius: 999px; background: var(--inchiostro); color: var(--su-scuro);
+  position: sticky; bottom: 16px; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 6px 6px 6px 20px; border-radius: 999px; background: var(--inchiostro); color: var(--su-scuro);
   box-shadow: 0 8px 24px rgba(35,26,20,.25);
 }
 .admin-salva[hidden] { display: none; }
-.admin-salva .btn--testo { color: var(--su-scuro-tenue); }
-.admin-salva .btn--testo:hover { color: var(--su-scuro); }
-.admin-salva__azioni { display: flex; gap: 8px; align-items: center; }
+.admin-salva__azioni { display: flex; gap: 4px; align-items: center; }
+.admin-salva__annulla { min-height: 44px; padding: 0 10px; border: 0; background: none; font: 600 14px/1.25 var(--testo); color: var(--su-scuro-tenue); cursor: pointer; border-radius: 999px; }
+.admin-salva__annulla:hover { color: var(--su-scuro); }
 
-/* ---------- Pannello di modifica ---------- */
+.admin-passate summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font: 600 14px/1.25 var(--testo); color: var(--terra); }
+.admin-passate .admin-sezione { margin-top: 8px; }
+
+/* ---------- Foglio dal basso / finestra (A03, A07, A12, AD02) ---------- */
+.admin-pannello { gap: 20px; padding: 12px 20px calc(24px + env(safe-area-inset-bottom)); }
+.admin-pannello .foglio__titolo { font: 500 24px/1.25 var(--display); }
 .admin-pannello__form { display: flex; flex-direction: column; gap: 20px; }
-.admin-pannello__azioni { display: flex; gap: 10px; flex-wrap: wrap; padding-top: 4px; }
-.admin-pannello__azioni .btn--primario { flex: 1; }
+.admin-pannello__form .riga-campi { gap: 16px; }
+.admin-pannello__azioni { display: flex; gap: 10px; }
+.admin-pannello__azioni .btn--primario, .admin-pannello__azioni .btn--rifiuta { flex: 1; }
+.admin-pannello__azioni--colonna { flex-direction: column; }
 .admin-pannello__secondarie { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--bordo); padding-top: 12px; }
-.admin-pannello__sposta { display: flex; gap: 4px; }
+.admin-pannello__sposta { display: flex; gap: 12px; }
 .admin-elimina { color: var(--errore); }
 .admin-elimina:hover { color: var(--brace); }
+.admin-riepilogo { display: flex; flex-direction: column; gap: 2px; padding: 14px 16px; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
 .admin-chip-scelta { display: flex; flex-wrap: wrap; gap: 8px; }
-.admin-campo-riga { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.admin-chip .icona { display: none; }
+.admin-chip[aria-pressed="true"] .icona { display: block; }
+.campo.admin-campo-riga { flex-direction: row; align-items: center; justify-content: space-between; gap: 16px; }
 
 @media (min-width: 768px) {
   .admin-pannello {
@@ -190,22 +249,37 @@ body.admin { background: var(--panna); min-height: 100vh; }
   .admin-pannello .foglio__maniglia { display: none; }
 }
 
-/* ---------- Messaggio breve ---------- */
+/* ---------- Avviso breve (Admin/Avviso breve) ---------- */
 .admin-toast {
   position: fixed; left: 50%; bottom: 28px; z-index: 90; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 14px 20px;
-  border-radius: 999px; background: var(--inchiostro); color: var(--su-scuro); font: 600 14px/1.35 var(--testo);
+  display: flex; align-items: center; gap: 12px; width: min(420px, calc(100vw - 32px)); min-height: 52px; padding: 8px 8px 8px 18px;
+  border-radius: 14px; background: var(--inchiostro); color: var(--su-scuro); font: 600 14px/1.35 var(--testo);
   box-shadow: 0 8px 24px rgba(35,26,20,.25);
 }
 .admin-toast.is-errore { background: var(--errore); color: #fff; }
-.admin-toast .icona { width: 18px; height: 18px; }
+.admin-toast .icona { width: 18px; height: 18px; flex: none; }
+.admin-toast__testo { flex: 1; min-width: 0; padding: 8px 0; }
+.admin-toast__azione { flex: none; min-height: 36px; padding: 0 12px; border: 0; border-radius: 999px; background: none; font: 600 14px/1.25 var(--testo); color: var(--zucca); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.admin-toast.is-errore .admin-toast__azione { color: #fff; }
+.admin-toast__azione:hover { background: rgba(255,255,255,.1); }
 
 .admin-vuoto { padding: 40px 24px; text-align: center; color: var(--terra); background: var(--farina); border: 1px dashed var(--bordo); border-radius: 6px; }
 .admin-nota { font-size: 14px; color: var(--terra); }
 
-/* ---------- Telefono ---------- */
+/* ---------- Tablet ---------- */
+@media (max-width: 1279px) {
+  .admin-barra__interno { padding: 0 var(--gutter); }
+  .admin-corpo { padding-left: var(--gutter); padding-right: var(--gutter); }
+}
+@media (max-width: 1023px) {
+  .admin-colonne, .admin-colonne--orari { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .admin-colonne > .admin-oggi, .admin-colonne > .admin-principale { grid-column: 1; grid-row: auto; position: static; }
+  .admin-oggi__tavoli { display: none; }
+}
+
+/* ---------- Telefono (A01–A12) ---------- */
 @media (max-width: 767px) {
-  .admin-barra__interno { padding: 10px 16px; min-height: 64px; }
+  .admin-barra__interno { padding: 0 8px 0 16px; min-height: 64px; }
   .admin-nav {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; margin: 0;
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
@@ -215,27 +289,19 @@ body.admin { background: var(--panna); min-height: 100vh; }
   .admin-nav a { flex-direction: column; gap: 4px; min-height: 56px; padding: 6px 4px; border-radius: 14px; font-size: 12px; }
   .admin-nav a[aria-current="page"] { background: var(--sfoglia); color: var(--pomodoro); }
   .admin-nav .icona { width: 22px; height: 22px; }
-  .admin-nav__conta { position: absolute; top: 2px; left: calc(50% + 6px); min-width: 20px; height: 20px; font-size: 11px; }
-  .admin-esci, .admin-nav + .admin-esci { margin-left: auto; }
-  .admin-corpo { padding: 24px 16px calc(112px + env(safe-area-inset-bottom)); }
+  .admin-nav__conta { position: absolute; top: 2px; left: calc(50% + 4px); min-width: 20px; height: 20px; padding: 0 6px; font-size: 11px; }
+  .admin-esci, .admin-nav + .admin-esci { margin-left: auto; padding: 0 12px; }
+
+  .admin-corpo { padding: 24px 16px calc(100px + env(safe-area-inset-bottom)); }
   .admin-vista { gap: 24px; }
-  .admin-accesso { margin-top: 8px; }
-  .admin-accesso__form { padding: 20px; }
-  .admin-filtri { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px; scrollbar-width: none; }
-  .admin-filtri::-webkit-scrollbar { display: none; }
-  .admin-filtri .menu-tipi { flex: 1 0 auto; }
-  .admin-filtri .menu-tipi button { flex: 1 0 auto; justify-content: center; padding: 10px 10px; }
-  .admin-card { padding: 18px; }
+  .admin-testa h1 { font-size: 36px; }
+  .admin-testa .testo-m { font-size: 16px; }
+  .admin-oggi { padding: 18px 20px; gap: 8px; }
+  .admin-oggi__numeri { gap: 28px; }
   .admin-card__azioni .btn { flex: 1; }
-  .admin-card dl { grid-template-columns: 1fr; gap: 2px; }
-  .admin-card dd { margin-bottom: 8px; }
-  .admin-sezione__testa, .admin-riga { padding-left: 16px; padding-right: 16px; }
-  .admin-gruppo { padding-left: 16px; padding-right: 16px; }
-  .admin-aggiungi { margin-left: 16px; }
-  .admin-orario { grid-template-columns: 1fr auto; padding: 14px 16px; }
-  .admin-orario__ore, .admin-orario__chiuso { grid-column: 1 / -1; }
-  .admin-orario__ore .campo { flex: 1; }
-  .admin-orario__ore .campo__input { width: 100%; }
+  .admin-elenco--griglia { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .admin-sezione__testa, .admin-riga, .admin-gruppo, .admin-aggiungi, .admin-orario { padding-left: 16px; padding-right: 16px; }
+  .admin-prezzo { padding: 18px 16px; }
   .admin-salva { bottom: calc(84px + env(safe-area-inset-bottom)); }
-  .admin-toast { bottom: calc(92px + env(safe-area-inset-bottom)); border-radius: 14px; }
+  .admin-toast { bottom: calc(84px + env(safe-area-inset-bottom)); width: calc(100vw - 32px); }
 }

@@ -80,14 +80,21 @@
 
   /* ---------- Messaggio breve ---------- */
   var timerToast;
-  function toast(testo, errore) {
+  /* Figma Admin/Avviso breve: con «Annulla» dopo le azioni rapide (interruttori, elimina) */
+  function toast(testo, errore, azione) {
     var t = $('#toast');
     t.className = 'admin-toast' + (errore ? ' is-errore' : '');
-    t.innerHTML = icona(errore ? 'alert' : 'check') + '<span></span>';
-    t.querySelector('span').textContent = testo;
+    t.innerHTML = icona(errore ? 'alert' : 'check') + '<span class="admin-toast__testo"></span>' +
+      (azione ? '<button class="admin-toast__azione" type="button"></button>' : '');
+    t.querySelector('.admin-toast__testo').textContent = testo;
+    if (azione) {
+      var b = t.querySelector('button');
+      b.textContent = azione.etichetta;
+      b.addEventListener('click', function () { t.hidden = true; clearTimeout(timerToast); azione.fn(); });
+    }
     t.hidden = false;
     clearTimeout(timerToast);
-    timerToast = setTimeout(function () { t.hidden = true; }, errore ? 6000 : 3200);
+    timerToast = setTimeout(function () { t.hidden = true; }, azione ? 6000 : errore ? 6000 : 3200);
   }
 
   /* ==========================================================================
@@ -147,7 +154,7 @@
     return chiama('carica')
       .then(function (r) {
         if (!r.ok) throw new Error(r.errore);
-        S.dati = r;
+        S.dati = r; ultimoAggiornamento = new Date();
         $('#stato').hidden = true;
         $('#nav').hidden = false;
         $('#esci').hidden = false;
@@ -200,34 +207,45 @@
     ({ prenotazioni: vistaPrenotazioni, richieste: vistaRichieste, menu: vistaMenu, orari: vistaOrari })[S.vista](v);
   }
 
-  /* Intestazione di una vista con titolo, sottotitolo e (facoltativo) pulsante Aggiorna */
-  function testa(titolo, accento, sotto, aggiorna) {
-    var html = '<div class="admin-testa"><div class="admin-testa__testo"><h1 tabindex="-1">' + esc(titolo) +
+  /* Intestazione di una vista (Figma A02–A12: titolo Display, sottotitolo facoltativo) */
+  function testa(titolo, accento, sotto) {
+    return '<div class="admin-testa"><h1 tabindex="-1">' + esc(titolo) +
       (accento ? ' <span class="accento">' + esc(accento) + '</span>' : '') + '</h1>' +
-      (sotto ? '<p class="testo-m">' + esc(sotto) + '</p>' : '') + '</div>' +
-      (aggiorna ? '<button class="btn btn--secondario" type="button" data-aggiorna>Aggiorna</button>' : '') + '</div>';
-    return html;
+      (sotto ? '<p class="testo-m">' + esc(sotto) + '</p>' : '') + '</div>';
   }
+  /* Filtri a pillole (Figma Admin/Segmento) */
   function filtri(voci, attivo, attr) {
     return '<div class="admin-filtri"><div class="menu-tipi" role="group">' + voci.map(function (v) {
       return '<button type="button" ' + attr + '="' + v[0] + '" aria-pressed="' + (v[0] === attivo) + '">' + esc(v[1]) +
         (v[2] != null ? ' <span class="menu-tipi__giorni">' + v[2] + '</span>' : '') + '</button>';
     }).join('') + '</div></div>';
   }
+  var ultimoAggiornamento = null;
+  function oraAdesso() {
+    try { return new Intl.DateTimeFormat('it-IT', { timeZone: 'Europe/Rome', hour: '2-digit', minute: '2-digit' }).format(ultimoAggiornamento || new Date()); } catch (e) { return ''; }
+  }
   function collegaAggiorna(v) {
-    var b = $('[data-aggiorna]', v);
-    if (b) b.addEventListener('click', function () {
-      b.classList.add('is-caricamento'); b.textContent = 'Aggiorno…';
-      carica(true).then(function () { toast('Dati aggiornati.'); });
+    $$('[data-aggiorna]', v).forEach(function (b) {
+      b.addEventListener('click', function () {
+        b.disabled = true; b.textContent = 'Aggiorno…';
+        carica(true).then(function () { toast('Dati aggiornati.'); });
+      });
     });
+  }
+  /* Link di contatto (telefono, mail) con icona pomodoro: si toccano per chiamare o scrivere */
+  function contatti(o) {
+    return '<div class="admin-contatti">' +
+      (o.telefono ? '<a class="admin-link" href="' + esc(telefonoLink(o.telefono)) + '">' + icona('phone') + '<span>' + esc(o.telefono) + '</span></a>' : '') +
+      (o.email ? '<a class="admin-link" href="mailto:' + esc(o.email) + '">' + icona('mail') + '<span>' + esc(o.email) + '</span></a>' : '') +
+    '</div>';
   }
 
   /* ==========================================================================
-     Prenotazioni
+     Prenotazioni (Figma A02–A04, AD01)
      ========================================================================== */
-  function pillStato(stato) {
-    var cls = stato === 'In attesa' ? 'attesa' : stato === 'Confermata' ? 'ok' : 'no';
-    return '<span class="admin-stato-pill admin-stato-pill--' + cls + '">' + esc(stato === 'In attesa' ? 'Da confermare' : stato) + '</span>';
+  function pillStato(stato, testo) {
+    var cls = { 'In attesa': 'attesa', 'Confermata': 'ok', 'Rifiutata': 'no', 'Disdetta': 'spenta' }[stato] || 'neutro';
+    return '<span class="admin-stato-pill admin-stato-pill--' + cls + '">' + esc(testo || (stato === 'In attesa' ? 'Da confermare' : stato)) + '</span>';
   }
 
   function vistaPrenotazioni(v) {
@@ -241,32 +259,47 @@
       var k = (a.data + a.ora).localeCompare(b.data + b.ora);
       return S.filtroPren === 'altre' ? -k : k;
     });
-
     var coperti = function (iso) {
       return arrivo.filter(function (p) { return p.data === iso; }).reduce(function (n, p) { return n + (p.persone || 0); }, 0);
     };
+    var diOggi = arrivo.filter(function (p) { return p.data === o; }).sort(function (a, b) { return a.ora.localeCompare(b.ora); });
 
     var html = testa('Prenotazioni', '', attesa.length
       ? (attesa.length === 1 ? 'C’è 1 richiesta da confermare.' : 'Ci sono ' + attesa.length + ' richieste da confermare.')
-      : 'Nessuna richiesta da confermare.', true);
-    html += filtri([['attesa', 'Da confermare', attesa.length], ['arrivo', 'In arrivo', arrivo.length], ['altre', 'Archivio', null]], S.filtroPren, 'data-filtro');
+      : 'Nessuna richiesta da confermare.');
+    html += '<div class="admin-colonne">';
 
+    // Oggi (scuro): coperti e tavoli confermati, elenco dei tavoli su computer
+    html += '<aside class="admin-oggi su-scuro" aria-label="Oggi">' +
+      '<p class="occhiello">Oggi · ' + esc(giornoData(o)) + '</p>' +
+      '<div class="admin-oggi__numeri">' +
+        '<p><span class="admin-oggi__numero">' + coperti(o) + '</span><span class="testo-s">coperti confermati</span></p>' +
+        '<p><span class="admin-oggi__numero">' + diOggi.length + '</span><span class="testo-s">' + (diOggi.length === 1 ? 'tavolo' : 'tavoli') + '</span></p>' +
+      '</div>' +
+      (diOggi.length ? '<ul class="admin-oggi__tavoli">' + diOggi.map(function (p) {
+        return '<li><span class="admin-oggi__ora">' + esc(p.ora) + '</span><span class="admin-oggi__nome">' + esc(p.nome) + '</span><span class="testo-s">' + esc(p.persone) + ' pers.</span></li>';
+      }).join('') + '</ul>' : '') +
+      '<p class="testo-s admin-oggi__aggiornato">Aggiornato alle ' + esc(oraAdesso()) + ' · <button class="admin-oggi__aggiorna" type="button" data-aggiorna>Aggiorna ora</button></p>' +
+    '</aside>';
+
+    html += '<div class="admin-principale">';
+    html += filtri([['attesa', 'Da confermare', attesa.length], ['arrivo', 'In arrivo', arrivo.length], ['altre', 'Archivio', null]], S.filtroPren, 'data-filtro');
     if (!lista.length) {
       html += '<p class="admin-vuoto">' + ({ attesa: 'Tutto fatto: nessuna prenotazione aspetta una risposta.', arrivo: 'Nessuna prenotazione confermata nei prossimi giorni.', altre: 'Ancora niente qui.' })[S.filtroPren] + '</p>';
     } else {
-      html += '<div class="admin-elenco">';
       var giorno = null;
       lista.forEach(function (p) {
         if (p.data !== giorno) {
-          if (giorno !== null) html += '</div>';
+          if (giorno !== null) html += '</section>';
           giorno = p.data;
           var tot = S.filtroPren === 'arrivo' ? coperti(p.data) : 0;
-          html += '<div class="admin-giorno"><h2 class="admin-giorno__titolo">' + esc(quandoGiorno(p.data)) + (tot ? ' · ' + tot + ' coperti' : '') + '</h2>';
+          html += '<section class="admin-giorno"><h2 class="occhiello">' + esc(quandoGiorno(p.data)) + (tot ? ' · ' + tot + ' coperti' : '') + '</h2>';
         }
         html += cardPrenotazione(p);
       });
-      html += '</div></div>';
+      html += '</section>';
     }
+    html += '</div></div>';
     v.innerHTML = html;
 
     $$('[data-filtro]', v).forEach(function (b) {
@@ -281,6 +314,7 @@
     collegaAggiorna(v);
   }
 
+  /* Figma Admin/Prenotazione */
   function cardPrenotazione(p) {
     var attesa = p.stato === 'In attesa';
     return '<article class="admin-card' + (attesa ? ' is-attesa' : '') + (p.stato === 'Rifiutata' || p.stato === 'Disdetta' ? ' is-spenta' : '') + '">' +
@@ -288,14 +322,10 @@
       '<p class="admin-card__meta">' +
         '<span>' + icona('clock') + 'Ore ' + esc(p.ora) + '</span>' +
         '<span>' + icona('users') + esc(p.persone) + (p.persone === 1 ? ' persona' : ' persone') + '</span>' +
-        (LINGUE[p.lingua] ? '<span>' + icona('globe') + esc(LINGUE[p.lingua]) + '</span>' : '') +
-        (p.creata ? '<span>Arrivata ' + esc(oraDa(p.creata)) + '</span>' : '') +
+        (LINGUE[p.lingua] ? '<span class="admin-card__tenue">' + icona('globe') + esc(LINGUE[p.lingua]) + '</span>' : '') +
       '</p>' +
       (p.note ? '<p class="admin-card__note">' + esc(p.note) + '</p>' : '') +
-      '<div class="admin-card__contatti">' +
-        (p.telefono ? '<a class="chip admin-contatto" href="' + esc(telefonoLink(p.telefono)) + '">' + icona('phone') + esc(p.telefono) + '</a>' : '') +
-        (p.email ? '<a class="chip admin-contatto" href="mailto:' + esc(p.email) + '">' + icona('mail') + esc(p.email) + '</a>' : '') +
-      '</div>' +
+      contatti(p) +
       (attesa ? '<div class="admin-card__azioni">' +
         '<button class="btn btn--primario" type="button" data-decidi="conferma" data-id="' + esc(p.id) + '">Conferma' + icona('check') + '</button>' +
         '<button class="btn btn--secondario" type="button" data-decidi="rifiuta" data-id="' + esc(p.id) + '">Rifiuta</button>' +
@@ -324,14 +354,16 @@
       });
   }
 
+  /* Figma A03: foglio di conferma del rifiuto */
   function confermaRifiuto(p) {
+    var lingua = { en: ' in inglese', de: ' in tedesco' }[p.lingua] || '';
     apriPannello('Rifiutare la prenotazione?', function (form) {
       form.innerHTML =
-        '<p class="testo-m"><strong>' + esc(p.nome) + '</strong>, ' + esc(giornoData(p.data)) + ' ore ' + esc(p.ora) + ', ' + esc(p.persone) + ' pers.</p>' +
-        '<p class="testo-s">Il cliente riceverà una mail che lo invita a chiamarvi per scegliere un’altra data.</p>' +
-        '<div class="admin-pannello__azioni">' +
-          '<button class="btn btn--rifiuta" type="submit">Rifiuta e avvisa il cliente' + icona('x') + '</button>' +
-          '<button class="btn btn--secondario" type="button" data-chiudi>Annulla</button>' +
+        '<div class="admin-riepilogo"><p class="label">' + esc(p.nome) + '</p><p class="testo-s">' + esc(maiuscola(giornoData(p.data))) + ', ore ' + esc(p.ora) + ' · ' + esc(p.persone) + (p.persone === 1 ? ' persona' : ' persone') + '</p></div>' +
+        '<p class="testo-m">Riceverà una mail' + lingua + ' che lo invita a chiamarvi per scegliere un’altra data.</p>' +
+        '<div class="admin-pannello__azioni admin-pannello__azioni--colonna">' +
+          '<button class="btn btn--rifiuta btn--blocco" type="submit">Rifiuta e avvisa il cliente</button>' +
+          '<button class="btn btn--secondario btn--blocco" type="button" data-chiudi>Annulla</button>' +
         '</div>';
       form.onsubmit = function (ev) {
         ev.preventDefault();
@@ -342,7 +374,7 @@
   }
 
   /* ==========================================================================
-     Richieste (gruppi e cerimonie)
+     Richieste: gruppi e cerimonie (Figma A05, Admin/Richiesta)
      ========================================================================== */
   function vistaRichieste(v) {
     var o = oggi();
@@ -351,34 +383,30 @@
     var passate = tutte.filter(function (r) { return r.data && r.data < o; }).sort(function (a, b) { return String(b.data).localeCompare(String(a.data)); });
     var lista = S.filtroRich === 'prossime' ? prossime : passate;
 
-    var html = testa('Richieste', '', 'Preventivi per gruppi e cerimonie arrivati dal sito. Rispondete per telefono o per mail.', true);
+    var html = testa('Richieste', '', 'Preventivi per gruppi e cerimonie arrivati dal sito.');
     html += filtri([['prossime', 'Prossime', prossime.length], ['passate', 'Passate', null]], S.filtroRich, 'data-filtro');
     if (!lista.length) {
       html += '<p class="admin-vuoto">' + (S.filtroRich === 'prossime' ? 'Nessuna richiesta per le prossime date.' : 'Ancora niente qui.') + '</p>';
     } else {
-      html += '<div class="admin-elenco">' + lista.map(function (r) {
+      html += '<div class="admin-elenco admin-elenco--griglia">' + lista.map(function (r) {
         var righe = [];
-        if (r.referente) righe.push(['Referente', r.referente]);
-        if (r.occasione) righe.push(['Occasione', r.occasione]);
-        if (LINGUE[r.lingua]) righe.push(['Lingua', LINGUE[r.lingua] + ' — se potete rispondete in ' + LINGUE[r.lingua].toLowerCase()]);
-        if (r.ricevuta) righe.push(['Ricevuta', oraDa(r.ricevuta)]);
+        if (r.referente) righe.push('Referente: ' + r.referente);
+        if (r.occasione) righe.push('Occasione: ' + r.occasione);
+        if (LINGUE[r.lingua]) righe.push('Lingua: ' + LINGUE[r.lingua].toLowerCase() + ' (se potete rispondete in ' + LINGUE[r.lingua].toLowerCase() + ')');
+        if (r.ricevuta) righe.push('Arrivata ' + oraDa(r.ricevuta));
         return '<article class="admin-card">' +
-          '<div class="admin-card__testa"><h3 class="admin-card__titolo">' + esc(r.nome) + '</h3><span class="admin-stato-pill">' + esc(r.tipo) + '</span></div>' +
+          '<div class="admin-card__testa"><h3 class="admin-card__titolo">' + esc(r.nome) + '</h3>' + pillStato('', r.tipo) + '</div>' +
           '<p class="admin-card__meta"><span>' + icona('calendar') + esc(maiuscola(giornoData(r.data))) + '</span>' +
           (r.persone ? '<span>' + icona('users') + esc(r.persone) + ' persone</span>' : '') + '</p>' +
           (r.note ? '<p class="admin-card__note">' + esc(r.note) + '</p>' : '') +
-          (righe.length ? '<dl>' + righe.map(function (x) { return '<dt>' + esc(x[0]) + '</dt><dd>' + esc(x[1]) + '</dd>'; }).join('') + '</dl>' : '') +
-          '<div class="admin-card__contatti">' +
-            (r.telefono ? '<a class="chip admin-contatto" href="' + esc(telefonoLink(r.telefono)) + '">' + icona('phone') + esc(r.telefono) + '</a>' : '') +
-            (r.email ? '<a class="chip admin-contatto" href="mailto:' + esc(r.email) + '">' + icona('mail') + esc(r.email) + '</a>' : '') +
-          '</div></article>';
+          (righe.length ? '<div class="admin-card__dati">' + righe.map(function (x) { return '<p class="testo-s">' + esc(x) + '</p>'; }).join('') + '</div>' : '') +
+          contatti(r) + '</article>';
       }).join('') + '</div>';
     }
     v.innerHTML = html;
     $$('[data-filtro]', v).forEach(function (b) {
       b.addEventListener('click', function () { S.filtroRich = b.getAttribute('data-filtro'); disegna(); });
     });
-    collegaAggiorna(v);
   }
 
   /* ==========================================================================
@@ -387,9 +415,12 @@
   function scheda(k) { return S.dati.schede[k]; }
 
   /** modifiche: { menu: righeNuove, ... } · extra: { pranzo: { prezzo } } */
-  function salva(modifiche, extra) {
-    var schede = {};
+  /** modifiche: { menu: righeNuove, ... } · extra: { pranzo: { prezzo } } · opz: { messaggio, annullabile } */
+  function salva(modifiche, extra, opz) {
+    opz = opz || {};
+    var schede = {}, prima = {};
     Object.keys(modifiche).forEach(function (k) {
+      prima[k] = scheda(k).righe;
       schede[k] = Object.assign({ versione: scheda(k).versione, righe: modifiche[k] }, (extra && extra[k]) || {});
     });
     S.occupato = true;
@@ -397,7 +428,10 @@
       .then(function (r) {
         if (r.ok) {
           Object.keys(r.schede).forEach(function (k) { S.dati.schede[k] = r.schede[k]; });
-          toast('Salvato: sul sito tra pochi secondi.');
+          var annulla = opz.annullabile ? { etichetta: 'Annulla', fn: function () {
+            salva(prima, null, { messaggio: 'Annullato.' }).then(function () { disegna(); });
+          } } : null;
+          toast(opz.messaggio || 'Salvato: sul sito tra pochi secondi.', false, annulla);
           return true;
         }
         if (r.conflitto) {
@@ -409,6 +443,7 @@
       .catch(function (e) { if (!e.accesso) toast(testoErrore(e), true); return false; })
       .then(function (ok) { S.occupato = false; return ok; });
   }
+
 
   /* ==========================================================================
      Pannello di modifica
@@ -475,6 +510,18 @@
     return '<div class="campo" data-campo="' + c.k + '">' + etichetta + input + aiuto + errore + '</div>';
   }
 
+  /* Campi affiancati (Figma AD02: Sezione e Prezzo sulla stessa riga) */
+  function campiHtml(campi, riga) {
+    var html = '', i = 0;
+    while (i < campi.length) {
+      if (campi[i].affianca && campi[i + 1] && campi[i + 1].affianca) {
+        html += '<div class="riga-campi">' + campo(campi[i], riga[campi[i].k]) + campo(campi[i + 1], riga[campi[i + 1].k]) + '</div>';
+        i += 2;
+      } else { html += campo(campi[i], riga[campi[i].k]); i++; }
+    }
+    return html;
+  }
+
   function interruttore(acceso, testo, attr) {
     return '<label class="interruttore"><input type="checkbox" role="switch"' + (acceso ? ' checked' : '') + ' ' + (attr || '') + '>' +
       '<span class="interruttore__binario" aria-hidden="true"></span>' + (testo ? '<span>' + esc(testo) + '</span>' : '') + '</label>';
@@ -489,7 +536,7 @@
     var altro = parti.filter(function (p) { return elenco.indexOf(p) === -1; }).join(', ');
     return '<fieldset class="campo" data-campo="' + c.k + '" data-allergeni><legend class="campo__etichetta">' + esc(c.etichetta) + ' <span class="opz">(facoltativo)</span></legend>' +
       '<div class="admin-chip-scelta">' + elenco.map(function (a) {
-        return '<button type="button" class="chip" data-allergene="' + esc(a) + '" aria-pressed="' + (scelti.indexOf(a) !== -1) + '">' + icona('check', 'icona--xs') + esc(a) + '</button>';
+        return '<button type="button" class="chip admin-chip" data-allergene="' + esc(a) + '" aria-pressed="' + (scelti.indexOf(a) !== -1) + '">' + esc(a) + icona('x', 'icona--xs') + '</button>';
       }).join('') + '</div>' +
       '<label class="campo__etichetta" for="' + id + '">Precisazioni <span class="opz">(facoltativo)</span></label>' +
       '<input class="campo__input" id="' + id + '" type="text" value="' + esc(altro) + '" placeholder="Es. Latte (ai formaggi), Chiedi al personale" autocomplete="off">' +
@@ -542,7 +589,7 @@
     apriPannello(o.titolo, function (form) {
       var vicini = !nuova && o.gruppo ? righe.map(function (r, i) { return i; }).filter(function (i) { return o.gruppo(righe[i]) === o.gruppo(riga); }) : [];
       var pos = vicini.indexOf(o.indice);
-      form.innerHTML = o.campi.map(function (c) { return campo(c, riga[c.k]); }).join('') +
+      form.innerHTML = campiHtml(o.campi, riga) +
         '<div class="admin-pannello__azioni">' +
           '<button class="btn btn--primario" type="submit">' + (nuova ? 'Aggiungi' : 'Salva') + '</button>' +
           '<button class="btn btn--secondario" type="button" data-chiudi>Annulla</button>' +
@@ -554,12 +601,12 @@
           '<button class="btn btn--testo admin-elimina" type="button" data-elimina>Elimina</button></div>');
       collegaCampi(form);
 
-      function invia(nuoveRighe, b) {
+      function invia(nuoveRighe, b, opz) {
         if (S.occupato) return;
         $$('button', form).forEach(function (x) { x.disabled = true; });
         if (b) b.classList.add('is-caricamento');
         var mod = o.dopo ? o.dopo(nuoveRighe, riga) : (function () { var m = {}; m[o.k] = nuoveRighe; return m; })();
-        salva(mod).then(function (ok) {
+        salva(mod, null, opz).then(function (ok) {
           if (ok) { chiudiPannello(); disegna(); } else { $$('button', form).forEach(function (x) { x.disabled = false; }); if (b) b.classList.remove('is-caricamento'); }
         });
       }
@@ -571,7 +618,7 @@
         var copiaRighe = righe.slice();
         if (nuova) copiaRighe.splice(o.posizione == null ? copiaRighe.length : o.posizione, 0, r);
         else copiaRighe[o.indice] = r;
-        invia(copiaRighe, $('[type="submit"]', form));
+        invia(copiaRighe, $('[type="submit"]', form), { messaggio: nuova ? 'Aggiunto: sul sito tra pochi secondi.' : 'Salvato: sul sito tra pochi secondi.' });
       };
       $$('[data-sposta]', form).forEach(function (b) {
         b.addEventListener('click', function () {
@@ -584,8 +631,9 @@
       var el = $('[data-elimina]', form);
       if (el) el.addEventListener('click', function () {
         if (el.getAttribute('data-sicuro') !== '1') { el.setAttribute('data-sicuro', '1'); el.textContent = 'Tocca di nuovo per eliminare'; return; }
+        // conferma con un secondo tocco; dopo si può comunque annullare dall'avviso in basso
         var copiaRighe = righe.slice(); copiaRighe.splice(o.indice, 1);
-        invia(copiaRighe, el);
+        invia(copiaRighe, el, { messaggio: 'Eliminato.', annullabile: true });
       });
     });
   }
@@ -599,7 +647,10 @@
         righe[i] = Object.assign({}, righe[i]); righe[i][campoK || 'visibile'] = inp.checked;
         inp.disabled = true;
         var m = {}; m[k] = righe;
-        salva(m).then(function () { disegna(); });
+        var r = righe[i];
+        var nome = r.piatto || r.menu || r.titolo || 'Riga';
+        if (!r.piatto && r.dettaglio && k === 'menu') nome = 'La nota';
+        salva(m, null, { messaggio: nome + (inp.checked ? ' di nuovo sul sito.' : ' nascosto dal sito.'), annullabile: true }).then(function () { disegna(); });
       });
     });
   }
@@ -608,7 +659,7 @@
      Menù
      ========================================================================== */
   function vistaMenu(v) {
-    var sotto = { carta: 'Alla carta', pranzo: 'Pausa pranzo', feste: 'Feste', evidenza: 'In evidenza' };
+    var sotto = { carta: 'Alla carta', pranzo: 'Pranzo', feste: 'Feste', evidenza: 'In evidenza' };
     var html = testa('Menù', '', 'Le modifiche arrivano sul sito in pochi secondi. Inglese e tedesco si traducono da soli.');
     html += '<div class="admin-filtri"><div class="menu-tipi" role="group">' + Object.keys(sotto).map(function (k) {
       return '<button type="button" data-sotto="' + k + '" aria-pressed="' + (k === S.sotto) + '">' + sotto[k] + '</button>';
@@ -640,6 +691,16 @@
   /** Dove inserire una riga nuova di una sezione: subito dopo l'ultima riga di quella sezione */
   function dopoUltima(righe, indici) { return indici.length ? indici[indici.length - 1] + 1 : righe.length; }
 
+  /* Testa di una sezione (Figma: titolo Bricolage 24, conteggio, a destra un controllo facoltativo) */
+  function testaSezione(titolo, conta, destra, contaSotto) {
+    return '<div class="admin-sezione__testa' + (contaSotto ? ' admin-sezione__testa--colonna' : '') + '"><div class="admin-sezione__titoli"><h2 class="admin-sezione__titolo">' + esc(titolo) + '</h2>' +
+      (conta ? '<span class="admin-sezione__conta">' + esc(conta) + '</span>' : '') + '</div>' + (destra || '') + '</div>';
+  }
+  function rigaAggiungi(attr, testo, senzaIcona) {
+    return '<button class="admin-aggiungi" type="button" ' + attr + '>' + (senzaIcona ? '' : icona('plus', 'icona--s')) + esc(testo) + '</button>';
+  }
+
+  /* Figma Admin/Riga */
   function rigaElenco(i, nome, sotto, prezzo, visibile, conInterruttore) {
     return '<div class="admin-riga' + (visibile === false ? ' is-spenta' : '') + '">' +
       '<button class="admin-riga__apri" type="button" data-apri="' + i + '">' +
@@ -654,11 +715,11 @@
   /* ---------- Alla carta ---------- */
   function campiCarta(righe) {
     return [
-      { k: 'sezione', etichetta: 'Sezione', suggerimenti: valoriUnici(righe, 'sezione'), aiuto: 'Scegline una o scrivi un nome nuovo per creare una sezione.', max: 60 },
-      { k: 'gruppo', etichetta: 'Gruppo', facoltativo: true, suggerimenti: valoriUnici(righe, 'gruppo'), aiuto: 'Solo per dividere una sezione (es. Vini bianchi, Vini rossi).', max: 60 },
+      { k: 'sezione', etichetta: 'Sezione', suggerimenti: valoriUnici(righe, 'sezione'), max: 60, affianca: true },
+      { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '12,00 €', affianca: true },
       { k: 'piatto', etichetta: 'Piatto', max: 120, esempio: 'Tortellini di Valeggio burro e salvia' },
-      { k: 'dettaglio', etichetta: 'Dettaglio', facoltativo: true, max: 160, aiuto: 'Una riga sotto il nome (ingredienti, cantina…).' },
-      { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '12,00 €' },
+      { k: 'dettaglio', etichetta: 'Dettaglio', facoltativo: true, max: 160, esempio: 'es. ingredienti, cantina…' },
+      { k: 'gruppo', etichetta: 'Gruppo', facoltativo: true, suggerimenti: valoriUnici(righe, 'gruppo'), aiuto: 'Solo per dividere una sezione (es. Vini bianchi, Vini rossi).', max: 60 },
       { k: 'allergeni', etichetta: 'Allergeni', tipo: 'allergeni' },
       { k: 'visibile', etichetta: 'Visibile sul sito', tipo: 'si' }
     ];
@@ -675,9 +736,9 @@
     var righe = scheda('menu').righe;
     var html = '';
     perSezione(righe, 'sezione').forEach(function (s) {
-      var visibili = s.righe.filter(function (i) { return righe[i].piatto && righe[i].visibile; }).length;
-      html += '<section class="admin-sezione"><div class="admin-sezione__testa"><h2 class="admin-sezione__titolo">' + esc(s.titolo) +
-        '<span class="accento">' + visibili + ' sul sito</span></h2></div>';
+      var piatti = s.righe.filter(function (i) { return righe[i].piatto; });
+      var visibili = piatti.filter(function (i) { return righe[i].visibile; }).length;
+      html += '<section class="admin-sezione">' + testaSezione(s.titolo, visibili + ' di ' + piatti.length + ' sul sito');
       var gruppo = null;
       s.righe.forEach(function (i) {
         var r = righe[i];
@@ -686,10 +747,10 @@
         gruppo = r.gruppo;
         html += rigaElenco(i, r.piatto, [r.dettaglio, r.allergeni].filter(Boolean).join(' · '), r.prezzo, r.visibile, true);
       });
-      html += '<button class="btn btn--testo admin-aggiungi" type="button" data-aggiungi="' + esc(s.titolo) + '">' + icona('plus', 'icona--s') + 'Aggiungi in ' + esc(s.titolo) + '</button></section>';
+      html += rigaAggiungi('data-aggiungi="' + esc(s.titolo) + '"', 'Aggiungi in ' + s.titolo) + '</section>';
     });
     if (!righe.length) html += '<p class="admin-vuoto">Il menù è vuoto: aggiungi il primo piatto.</p>';
-    html += '<div class="admin-card__azioni"><button class="btn btn--secondario" type="button" data-nuova-sezione>' + icona('plus') + 'Nuova sezione</button>' +
+    html += '<div class="admin-azioni"><button class="btn btn--secondario" type="button" data-nuova-sezione>Nuova sezione</button>' +
       '<button class="btn btn--testo" type="button" data-nuova-nota>Aggiungi una nota di sezione</button></div>';
     corpo.innerHTML = html;
 
@@ -739,19 +800,18 @@
   function menuPranzo(corpo) {
     var sch = scheda('pranzo');
     var righe = sch.righe;
-    var html = '<form class="admin-card" data-prezzo novalidate><div class="admin-sottotitolo"><h2>Prezzo del menù</h2>' +
-      '<p class="testo-s">Dal lunedì al venerdì, bevande escluse. I piatti non hanno prezzo.</p></div>' +
-      '<div class="riga-campi" style="align-items:flex-end">' + campo({ k: 'prezzo', etichetta: 'Prezzo', esempio: '15,00 €', max: 30 }, sch.prezzo) +
-      '<button class="btn btn--primario" type="submit">Salva prezzo</button></div></form>';
+    var html = '<form class="admin-card admin-prezzo" data-prezzo novalidate><div class="admin-sezione__titoli admin-sezione__titoli--colonna"><h2 class="admin-sezione__titolo">Prezzo del menù</h2>' +
+      '<span class="admin-sezione__conta">Dal lunedì al venerdì, bevande escluse.</span></div>' +
+      '<div class="admin-prezzo__riga">' + campo({ k: 'prezzo', etichetta: 'Prezzo', esempio: '15,00 €', max: 30 }, sch.prezzo) +
+      '<button class="btn btn--secondario" type="submit">Salva</button></div></form>';
     perSezione(righe, 'sezione').forEach(function (s) {
       var oggiCi = s.righe.filter(function (i) { return righe[i].visibile; }).length;
-      html += '<section class="admin-sezione"><div class="admin-sezione__testa"><h2 class="admin-sezione__titolo">' + esc(s.titolo) +
-        '<span class="accento">' + oggiCi + ' di ' + s.righe.length + ' sul sito</span></h2></div>';
+      html += '<section class="admin-sezione">' + testaSezione(s.titolo, oggiCi + ' di ' + s.righe.length + ' sul sito oggi', '', true);
       s.righe.forEach(function (i) { html += rigaElenco(i, righe[i].piatto, righe[i].allergeni, '', righe[i].visibile, true); });
-      html += '<button class="btn btn--testo admin-aggiungi" type="button" data-aggiungi="' + esc(s.titolo) + '">' + icona('plus', 'icona--s') + 'Aggiungi in ' + esc(s.titolo) + '</button></section>';
+      html += rigaAggiungi('data-aggiungi="' + esc(s.titolo) + '"', 'Aggiungi in ' + s.titolo) + '</section>';
     });
     html += '<p class="admin-nota">Spegnete i piatti che oggi non ci sono invece di cancellarli: domani basta riaccenderli.</p>';
-    html += '<div class="admin-card__azioni"><button class="btn btn--secondario" type="button" data-nuova-sezione>' + icona('plus') + 'Nuova sezione</button></div>';
+    html += '<div class="admin-azioni"><button class="btn btn--secondario" type="button" data-nuova-sezione>Nuova sezione</button></div>';
     corpo.innerHTML = html;
 
     var f = $('[data-prezzo]', corpo);
@@ -760,7 +820,7 @@
       var val = $('input', f).value.trim();
       var b = $('[type="submit"]', f);
       b.disabled = true; b.classList.add('is-caricamento');
-      salva({ pranzo: righe }, { pranzo: { prezzo: val } }).then(function () { disegna(); });
+      salva({ pranzo: righe }, { pranzo: { prezzo: val } }, { messaggio: 'Prezzo salvato: sul sito tra pochi secondi.' }).then(function () { disegna(); });
     });
     var sezioni = perSezione(righe, 'sezione');
     $$('[data-apri]', corpo).forEach(function (b) {
@@ -808,20 +868,17 @@
     if (!feste.length) html += '<p class="admin-vuoto">Nessun menù delle feste: createne uno.</p>';
     feste.forEach(function (f, fi) {
       var suoi = perSezione(piatti, 'portata', function (p) { return stessaFesta(p.menu, f.menu); });
-      html += '<section class="admin-sezione' + '' + '"><div class="admin-sezione__testa">' +
-        '<div><h2 class="admin-sezione__titolo">' + esc(f.menu) + '</h2><p class="admin-riga__sotto">' +
-        esc([f.giorno ? maiuscola(giornoData(f.giorno)) : '', f.prezzo, f.nota].filter(Boolean).join(' · ')) + '</p></div>' +
-        interruttore(f.visibile, f.visibile ? 'Sul sito' : 'Spento', 'data-visibile="' + fi + '" aria-label="Menù di ' + esc(f.menu) + ' visibile sul sito"') + '</div>';
+      var interr = '<label class="admin-interruttore-verticale' + (f.visibile ? ' is-acceso' : '') + '"><input type="checkbox" role="switch"' + (f.visibile ? ' checked' : '') + ' data-visibile="' + fi + '" aria-label="Menù di ' + esc(f.menu) + ' visibile sul sito"><span class="interruttore__binario" aria-hidden="true"></span><span>' + (f.visibile ? 'Sul sito' : 'Spento') + '</span></label>';
+      html += '<section class="admin-sezione">' + testaSezione(f.menu, [f.giorno ? maiuscola(giornoData(f.giorno)) : '', f.prezzo, f.nota].filter(Boolean).join(' · '), interr, true);
       suoi.forEach(function (s) {
         html += '<p class="admin-gruppo">' + esc(s.titolo) + '</p>';
         s.righe.forEach(function (i) { html += rigaElenco(i, piatti[i].piatto, piatti[i].allergeni, '', true, false).replace('data-apri=', 'data-apri-piatto='); });
       });
-      if (!suoi.length) html += '<p class="admin-riga admin-riga__sotto">Ancora nessun piatto.</p>';
-      html += '<div class="admin-card__azioni" style="padding:6px 24px 16px">' +
-        '<button class="btn btn--testo" type="button" data-aggiungi-piatto="' + fi + '">' + icona('plus', 'icona--s') + 'Aggiungi un piatto</button>' +
-        '<button class="btn btn--testo" type="button" data-modifica-festa="' + fi + '">Modifica nome, giorno e prezzo</button></div></section>';
+      if (!suoi.length) html += '<p class="admin-riga admin-riga--vuota">Ancora nessun piatto.</p>';
+      html += rigaAggiungi('data-aggiungi-piatto="' + fi + '"', 'Aggiungi un piatto') +
+        rigaAggiungi('data-modifica-festa="' + fi + '"', 'Modifica nome, giorno e prezzo', true) + '</section>';
     });
-    html += '<div class="admin-card__azioni"><button class="btn btn--secondario" type="button" data-nuova-festa>' + icona('plus') + 'Nuovo menù delle feste</button></div>';
+    html += '<div class="admin-azioni"><button class="btn btn--secondario" type="button" data-nuova-festa>Nuovo menù delle feste</button></div>';
     corpo.innerHTML = html;
 
     collegaInterruttori(corpo, 'feste');
@@ -880,8 +937,8 @@
     righe.forEach(function (r, i) {
       html += rigaElenco(i, r.titolo, r.descrizione, r.prezzo || prezzoDi(r.piatto), i < 3, false);
     });
-    if (!righe.length) html += '<p class="admin-riga admin-riga__sotto">Nessuna specialità.</p>';
-    html += righe.length < 3 ? '<button class="btn btn--testo admin-aggiungi" type="button" data-aggiungi>' + icona('plus', 'icona--s') + 'Aggiungi una specialità</button></section>'
+    if (!righe.length) html += '<p class="admin-riga admin-riga--vuota">Nessuna specialità.</p>';
+    html += righe.length < 3 ? rigaAggiungi('data-aggiungi', 'Aggiungi una specialità') + '</section>'
       : '</section><p class="admin-nota">' + (righe.length > 3 ? 'Sul sito si vedono solo le prime 3.' : 'Sono già 3: per aggiungerne una, eliminane o modificane un’altra.') + '</p>';
     corpo.innerHTML = html;
     $$('[data-apri]', corpo).forEach(function (b) {
@@ -906,31 +963,31 @@
     var passate = chiusure.map(function (c, i) { return i; }).filter(function (i) { return future.indexOf(i) === -1; });
 
     var html = testa('Orari', 'e chiusure', 'La settimana normale e i giorni di chiusura straordinaria (ferie, festività).');
-    html += '<section class="admin-vista" style="gap:16px"><div class="admin-sottotitolo"><h2>La settimana</h2>' +
-      '<p class="testo-s">«Ultima prenotazione» è l’ultimo orario prenotabile online: si prenota ogni mezz’ora da «Dalle».</p></div>' +
+    html += '<div class="admin-colonne admin-colonne--orari"><section class="admin-blocco"><div class="admin-sottotitolo"><h2>La settimana</h2>' +
+      '<p class="testo-s">«Ultima» è l’ultimo orario prenotabile online: si prenota ogni mezz’ora da «Dalle».</p></div>' +
       '<div class="admin-orari">' + bozza.map(function (g, i) {
         return '<div class="admin-orario' + (g.aperto ? '' : ' is-chiuso') + '" data-giorno="' + i + '">' +
-          '<span class="admin-orario__giorno">' + esc(g.giorno) + '</span>' +
-          interruttore(g.aperto, g.aperto ? 'Aperto' : 'Chiuso', 'data-campo-orario="aperto" aria-label="' + esc(g.giorno) + ' aperto"') +
+          '<div class="admin-orario__testa"><span class="admin-orario__giorno" id="g' + i + '">' + esc(g.giorno) + '</span>' +
+          '<label class="interruttore interruttore--prima"><span class="admin-orario__stato">' + (g.aperto ? 'Aperto' : 'Chiuso') + '</span><input type="checkbox" role="switch"' + (g.aperto ? ' checked' : '') + ' data-campo-orario="aperto" aria-labelledby="g' + i + '"><span class="interruttore__binario" aria-hidden="true"></span></label></div>' +
           '<div class="admin-orario__ore">' +
             ['dalle', 'alle', 'ultima'].map(function (k) {
-              var et = { dalle: 'Dalle', alle: 'Alle', ultima: 'Ultima prenotazione' }[k];
-              return '<label class="campo"><span class="campo__etichetta">' + et + '</span><select class="campo__input" data-campo-orario="' + k + '">' + opzioniOra(g[k]) + '</select></label>';
+              var et = { dalle: 'Dalle', alle: 'Alle', ultima: 'Ultima' }[k];
+              return '<label class="campo"><span class="campo__etichetta">' + et + '</span><select class="campo__input" data-campo-orario="' + k + '" aria-label="' + esc(g.giorno) + ', ' + et.toLowerCase() + '">' + opzioniOra(g[k]) + '</select></label>';
             }).join('') +
           '</div><p class="admin-orario__chiuso">Chiuso tutto il giorno</p></div>';
       }).join('') + '</div>' +
       '<div class="admin-salva" data-barra-salva' + (S.orariBozza ? '' : ' hidden') + '><span class="label">Orari modificati</span><div class="admin-salva__azioni">' +
-        '<button class="btn btn--testo" type="button" data-annulla-orari>Annulla</button>' +
+        '<button class="admin-salva__annulla" type="button" data-annulla-orari>Annulla</button>' +
         '<button class="btn btn--su-scuro" type="button" data-salva-orari>Salva orari</button></div></div></section>';
 
-    html += '<section class="admin-vista" style="gap:16px"><div class="admin-sottotitolo"><h2>Chiusure straordinarie</h2>' +
+    html += '<section class="admin-blocco admin-blocco--chiusure"><div class="admin-sottotitolo"><h2>Chiusure straordinarie</h2>' +
       '<p class="testo-s">Il sito mostra un avviso da 30 giorni prima e non accetta prenotazioni in quei giorni.</p></div>' +
       '<section class="admin-sezione">' +
-      (future.length ? future.sort(function (a, b) { return String(chiusure[a].dal).localeCompare(String(chiusure[b].dal)); }).map(function (i) { return rigaChiusura(chiusure[i], i, o); }).join('') : '<p class="admin-riga admin-riga__sotto">Nessuna chiusura in programma.</p>') +
-      '<button class="btn btn--testo admin-aggiungi" type="button" data-nuova-chiusura>' + icona('plus', 'icona--s') + 'Aggiungi una chiusura</button></section>' +
-      (passate.length ? '<details class="admin-nota"><summary style="cursor:pointer;min-height:44px;display:flex;align-items:center">Chiusure passate (' + passate.length + ')</summary><section class="admin-sezione" style="margin-top:8px">' +
+      (future.length ? future.sort(function (a, b) { return String(chiusure[a].dal).localeCompare(String(chiusure[b].dal)); }).map(function (i) { return rigaChiusura(chiusure[i], i, o); }).join('') : '<p class="admin-riga admin-riga--vuota">Nessuna chiusura in programma.</p>') +
+      rigaAggiungi('data-nuova-chiusura', 'Aggiungi una chiusura') + '</section>' +
+      (passate.length ? '<details class="admin-passate"><summary>Chiusure passate (' + passate.length + ')</summary><section class="admin-sezione">' +
         passate.sort(function (a, b) { return String(chiusure[b].dal).localeCompare(String(chiusure[a].dal)); }).map(function (i) { return rigaChiusura(chiusure[i], i, o); }).join('') + '</section></details>' : '') +
-      '</section>';
+      '</section></div>';
     v.innerHTML = html;
 
     var barra = $('[data-barra-salva]', v);
@@ -943,7 +1000,7 @@
           if (k === 'aperto') {
             bozza[i].aperto = inp.checked;
             riga.classList.toggle('is-chiuso', !inp.checked);
-            inp.parentNode.querySelector('span:last-child').textContent = inp.checked ? 'Aperto' : 'Chiuso';
+            riga.querySelector('.admin-orario__stato').textContent = inp.checked ? 'Aperto' : 'Chiuso';
             if (inp.checked && !bozza[i].dalle) { bozza[i].dalle = '12:00'; bozza[i].alle = '14:00'; bozza[i].ultima = '13:30'; segnaModifica(); disegna(); return; }
           } else bozza[i][k] = inp.value;
           segnaModifica();
@@ -960,7 +1017,7 @@
       });
       if (errore) return toast(errore, true);
       var b = this; b.disabled = true; b.classList.add('is-caricamento');
-      salva({ orari: bozza }).then(function (ok) { if (ok) S.orariBozza = null; disegna(); });
+      salva({ orari: bozza }, null, { messaggio: 'Orari salvati: sul sito tra pochi secondi.' }).then(function (ok) { if (ok) S.orariBozza = null; disegna(); });
     });
 
     var campiChiusura = [
@@ -1005,7 +1062,7 @@
     chiama('carica').then(function (r) {
       if (!r.ok || S.occupato || !$('#pannello').hidden || S.orariBozza) return;
       var prima = S.dati.prenotazioni.length;
-      S.dati = r; aggiornaConta();
+      S.dati = r; ultimoAggiornamento = new Date(); aggiornaConta();
       if (S.vista === 'prenotazioni' || S.vista === 'richieste') disegna();
       if (r.prenotazioni.length > prima) toast('È arrivata una nuova prenotazione.');
     }).catch(function () { /* riprova al prossimo giro */ });

@@ -29,7 +29,7 @@
       <a href="#menu" data-vista="menu"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#utensils"/></svg><span>Menù</span></a>
       <a href="#orari" data-vista="orari"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#clock"/></svg><span>Orari</span></a>
     </nav>
-    <button class="btn btn--testo admin-esci" type="button" id="esci" hidden>Esci</button>
+    <button class="admin-esci" type="button" id="esci" hidden>Esci</button>
   </div>
 </header>
 
@@ -37,16 +37,18 @@
   <!-- Accesso -->
   <section class="admin-accesso" id="accesso" hidden>
     <p class="occhiello">Area ristorante</p>
-    <h1 class="titolo-flusso">Bentornati <span class="accento">da Mara</span></h1>
-    <p class="testo-m">Da qui gestite prenotazioni, richieste, menù e orari del sito.</p>
+    <h1 class="admin-accesso__titolo">Bentornati <span class="accento">da Mara</span></h1>
+    <p class="testo-m">Prenotazioni, richieste, menù e orari del sito, tutto da qui.</p>
     <form class="admin-accesso__form" id="form-accesso" novalidate>
       <div class="campo" id="campo-password">
         <label class="campo__etichetta" for="password">Password</label>
         <input class="campo__input" type="password" id="password" autocomplete="current-password" required>
+        <p class="campo__aiuto">Restate dentro 30 giorni su questo dispositivo.</p>
         <p class="campo__errore" id="errore-password"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#alert"/></svg><span></span></p>
       </div>
       <button class="btn btn--primario btn--blocco" type="submit" id="entra">Entra</button>
     </form>
+    <p class="testo-s">Password dimenticata? Si cambia in un minuto dallo script: chiedete a chi gestisce il sito.</p>
   </section>
 
   <!-- Caricamento / errore generale -->
