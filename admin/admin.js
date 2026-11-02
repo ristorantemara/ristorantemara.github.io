@@ -264,10 +264,11 @@
     };
     var diOggi = arrivo.filter(function (p) { return p.data === o; }).sort(function (a, b) { return a.ora.localeCompare(b.ora); });
 
+    // Figma A02/A04: su telefono solo il titolo; AD01: sottotitolo su computer
     var html = testa('Prenotazioni', '', attesa.length
       ? (attesa.length === 1 ? 'C’è 1 richiesta da confermare.' : 'Ci sono ' + attesa.length + ' richieste da confermare.')
-      : 'Nessuna richiesta da confermare.');
-    html += '<div class="admin-colonne">';
+      : 'Nessuna richiesta da confermare.').replace('class="testo-m"', 'class="testo-m solo-computer"');
+    html += '<div class="admin-colonne' + (S.filtroPren !== 'attesa' ? ' is-senza-oggi' : '') + '">';
 
     // Oggi (scuro): coperti e tavoli confermati, elenco dei tavoli su computer
     html += '<aside class="admin-oggi su-scuro" aria-label="Oggi">' +
@@ -484,6 +485,10 @@
   /* ---------- Campi del pannello ---------- */
   var nCampo = 0;
   function campo(c, valore) {
+    if (c.rivela && !valore) {
+      return '<button class="btn btn--testo admin-rivela" type="button" data-rivela>' + icona('plus', 'icona--s') + esc(c.rivela) + '</button>' +
+        '<div class="admin-rivelato" hidden>' + campo(Object.assign({}, c, { rivela: '' }), valore) + '</div>';
+    }
     var id = 'c' + (++nCampo);
     var etichetta = '<label class="campo__etichetta" for="' + id + '">' + esc(c.etichetta) + (c.facoltativo ? ' <span class="opz">(facoltativo)</span>' : '') + '</label>';
     var aiuto = c.aiuto ? '<p class="campo__aiuto">' + esc(c.aiuto) + '</p>' : '';
@@ -538,12 +543,19 @@
       '<div class="admin-chip-scelta">' + elenco.map(function (a) {
         return '<button type="button" class="chip admin-chip" data-allergene="' + esc(a) + '" aria-pressed="' + (scelti.indexOf(a) !== -1) + '">' + esc(a) + icona('x', 'icona--xs') + '</button>';
       }).join('') + '</div>' +
-      '<label class="campo__etichetta" for="' + id + '">Precisazioni <span class="opz">(facoltativo)</span></label>' +
+      (altro ? '' : '<button class="btn btn--testo admin-rivela" type="button" data-rivela>' + icona('plus', 'icona--s') + 'Aggiungi una precisazione (es. Latte ai formaggi)</button>') +
+      '<div class="admin-rivelato"' + (altro ? '' : ' hidden') + '><label class="campo__etichetta" for="' + id + '">Precisazioni <span class="opz">(facoltativo)</span></label>' +
       '<input class="campo__input" id="' + id + '" type="text" value="' + esc(altro) + '" placeholder="Es. Latte (ai formaggi), Chiedi al personale" autocomplete="off">' +
-      '<p class="campo__aiuto">Un allergene con una nota si scrive qui, così: Latte (ai formaggi).</p></fieldset>';
+      '<p class="campo__aiuto">Un allergene con una nota si scrive così: Latte (ai formaggi).</p></div></fieldset>';
   }
 
   function collegaCampi(form) {
+    $$('[data-rivela]', form).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var box = b.nextElementSibling; box.hidden = false; b.remove();
+        var inp = $('input, select, textarea', box); if (inp) inp.focus();
+      });
+    });
     $$('[data-allergene]', form).forEach(function (b) {
       b.addEventListener('click', function () { b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); });
     });
@@ -713,16 +725,19 @@
   }
 
   /* ---------- Alla carta ---------- */
-  function campiCarta(righe) {
-    return [
-      { k: 'sezione', etichetta: 'Sezione', suggerimenti: valoriUnici(righe, 'sezione'), max: 60, affianca: true },
-      { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '12,00 €', affianca: true },
-      { k: 'piatto', etichetta: 'Piatto', max: 120, esempio: 'Tortellini di Valeggio burro e salvia' },
-      { k: 'dettaglio', etichetta: 'Dettaglio', facoltativo: true, max: 160, esempio: 'es. ingredienti, cantina…' },
-      { k: 'gruppo', etichetta: 'Gruppo', facoltativo: true, suggerimenti: valoriUnici(righe, 'gruppo'), aiuto: 'Solo per dividere una sezione (es. Vini bianchi, Vini rossi).', max: 60 },
+  /* Figma A07 (telefono): Sezione, Piatto, Dettaglio, Prezzo · AD02 (computer): Sezione e Prezzo affiancati.
+     «Gruppo» serve solo ai vini: si mostra quando la sezione ne usa, altrimenti si apre da un link. */
+  function campiCarta(righe, sezione) {
+    var telefono = window.matchMedia('(max-width: 767px)').matches;
+    var conGruppi = righe.some(function (r) { return r.sezione === sezione && r.gruppo; });
+    var sez = { k: 'sezione', etichetta: 'Sezione', suggerimenti: valoriUnici(righe, 'sezione'), max: 60, affianca: !telefono };
+    var prezzo = { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '12,00 €', affianca: !telefono };
+    var piatto = { k: 'piatto', etichetta: 'Piatto', max: 120, esempio: 'Tortellini di Valeggio burro e salvia' };
+    var dettaglio = { k: 'dettaglio', etichetta: 'Dettaglio', facoltativo: true, max: 160, esempio: 'es. ingredienti, cantina…' };
+    var gruppo = { k: 'gruppo', etichetta: 'Gruppo', facoltativo: true, suggerimenti: valoriUnici(righe, 'gruppo'), aiuto: 'Solo per dividere una sezione (es. Vini bianchi, Vini rossi).', max: 60, rivela: conGruppi ? '' : 'Dividi la sezione in gruppi (es. Vini bianchi)' };
+    return (telefono ? [sez, piatto, dettaglio, prezzo] : [sez, prezzo, piatto, dettaglio]).concat([gruppo,
       { k: 'allergeni', etichetta: 'Allergeni', tipo: 'allergeni' },
-      { k: 'visibile', etichetta: 'Visibile sul sito', tipo: 'si' }
-    ];
+      { k: 'visibile', etichetta: 'Visibile sul sito', tipo: 'si' }]);
   }
   function campiNota(righe) {
     return [
@@ -759,7 +774,7 @@
       b.addEventListener('click', function () {
         var i = Number(b.getAttribute('data-apri'));
         var nota = !righe[i].piatto;
-        modificaRiga({ k: 'menu', titolo: nota ? 'Nota di sezione' : 'Modifica piatto', campi: nota ? campiNota(righe) : campiCarta(righe), indice: i,
+        modificaRiga({ k: 'menu', titolo: nota ? 'Nota di sezione' : 'Modifica piatto', campi: nota ? campiNota(righe) : campiCarta(righe, righe[i].sezione), indice: i,
           gruppo: function (r) { return r.sezione; } });
       });
     });
@@ -768,7 +783,7 @@
         var nome = b.getAttribute('data-aggiungi');
         var s = sezioni.filter(function (x) { return x.titolo === nome; })[0];
         var ultimo = s.righe.length ? righe[s.righe[s.righe.length - 1]] : {};
-        modificaRiga({ k: 'menu', titolo: 'Nuovo piatto', campi: campiCarta(righe), base: { sezione: nome, gruppo: ultimo.gruppo || '', visibile: true }, posizione: dopoUltima(righe, s.righe) });
+        modificaRiga({ k: 'menu', titolo: 'Nuovo piatto', campi: campiCarta(righe, nome), base: { sezione: nome, gruppo: ultimo.gruppo || '', visibile: true }, posizione: dopoUltima(righe, s.righe) });
       });
     });
     $('[data-nuova-sezione]', corpo).addEventListener('click', function () {
