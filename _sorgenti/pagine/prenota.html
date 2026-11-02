@@ -139,7 +139,7 @@ script: js/prenota.js
         <div data-r-riga="note"><dt>Richieste</dt><dd data-r="note"></dd></div>
       </dl>
       <p class="testo-s modifica">Qualcosa non va? <button type="button" class="link-modifica" data-indietro="1">Modifica</button></p>
-      <p class="riepilogo__nota solo-mobile"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg><span>È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.</span></p>
+      <p class="riepilogo__nota solo-mobile"><svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg><span>Dopo l’invio è solo una richiesta: il tavolo è confermato quando ricevi la nostra mail. Se quel giorno siamo al completo, te lo scriviamo.</span></p>
       <div class="form-errore" data-invio-errore hidden role="alert"></div>
       <div class="flusso__azioni">
         <button class="btn btn--secondario" type="button" data-indietro="2">Indietro<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrowLeft"/></svg></button>
@@ -157,16 +157,24 @@ script: js/prenota.js
     </aside>
   </form>
 
-  <!-- Richiesta inviata -->
+  <!-- Richiesta inviata: è ancora una richiesta, il tavolo si conferma con la mail del ristorante -->
   <section class="flusso__inviata" data-inviata hidden aria-labelledby="t-inviata">
-    <span class="esito__icona" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#check"/></svg></span>
-    <h1 class="display-xl" id="t-inviata" tabindex="-1">Grazie<span data-r="nome-proprio"></span>!</h1>
-    <p class="esito__sotto">La tua richiesta è arrivata in cucina.</p>
-    <p class="testo-l"><span data-r="frase-riepilogo"></span> Ti abbiamo scritto a <span data-r="email"></span>: la conferma del tavolo arriverà lì (controlla anche lo spam). Per modifiche chiamaci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
+    <span class="esito__icona esito__icona--attesa" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#clock"/></svg></span>
+    <h1 class="display-xl" id="t-inviata" tabindex="-1">Richiesta inviata</h1>
+    <p class="esito__sotto">Il tavolo non è ancora confermato.</p>
+    <p class="testo-l"><span data-r="frase-inviata"></span> <strong>la prenotazione è valida solo quando ricevi la nostra mail di conferma.</strong></p>
+    <div class="stato-richiesta">
+      <p class="occhiello">Cosa succede adesso</p>
+      <ol class="stato-richiesta__passi">
+        <li class="stato-richiesta__passo is-fatto"><span class="stato-richiesta__tondo" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#check"/></svg></span><div><p class="label"><span class="visually-hidden">Fatto: </span>Richiesta inviata</p><p class="testo-s">L’abbiamo ricevuta adesso.</p></div></li>
+        <li class="stato-richiesta__passo is-ora" aria-current="step"><span class="stato-richiesta__tondo" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#clock"/></svg></span><div><p class="label"><span class="visually-hidden">In corso: </span>Controlliamo la disponibilità</p><p class="testo-s">Verifichiamo che quel giorno ci sia posto.</p></div></li>
+        <li class="stato-richiesta__passo"><span class="stato-richiesta__tondo" aria-hidden="true"><svg class="icona"><use href="assets/icons.svg#mail"/></svg></span><div><p class="label"><span class="visually-hidden">Poi: </span>Ricevi la mail di conferma</p><p class="testo-s">Da quel momento il tavolo è tuo. Se siamo al completo, te lo scriviamo.</p></div></li>
+      </ol>
+    </div>
+    <p class="testo-s flusso__inviata-nota">Non trovi la mail? Guarda anche nella cartella spam. Per modifiche o urgenze chiamaci allo <a href="tel:+390454857283">045 485 7283</a>.</p>
     <div class="azioni flusso__inviata-azioni">
-      <button class="btn btn--primario" type="button" data-calendario-ics>Aggiungi al calendario<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></button>
-      <a class="btn btn--secondario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Indicazioni stradali<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#pin"/></svg></a>
-      <a class="btn btn--testo" href="index.html">Torna alla home<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+      <a class="btn btn--secondario" href="index.html">Torna alla home<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+      <a class="btn btn--testo" href="tel:+390454857283">Chiama 045 485 7283<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></a>
     </div>
   </section>
   <div class="tenda flusso__tenda" aria-hidden="true"></div>

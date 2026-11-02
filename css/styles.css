@@ -785,6 +785,25 @@ select.campo__input {
 .esito .contenitore { min-height: calc(100vh - 142px); /* Figma: riempie lo schermo sotto l'header, tenda del footer in fondo */ display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; text-align: center; padding-top: 64px; padding-bottom: 64px; }
 .esito__icona { width: 88px; height: 88px; border-radius: 50%; background: var(--salvia); color: #fff; display: grid; place-items: center; }
 .esito__icona .icona { width: 40px; height: 40px; }
+.esito__icona--attesa { background: var(--zucca); color: var(--inchiostro); } /* in attesa di conferma */
+
+/* Cosa succede dopo l'invio della prenotazione (Figma: 2.0/Stato richiesta) */
+.stato-richiesta {
+  width: 100%; max-width: 880px; display: flex; flex-direction: column; gap: 18px; padding: 24px 28px;
+  background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; text-align: left;
+}
+.stato-richiesta .occhiello { color: var(--terra); }
+.stato-richiesta__passi { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 0; padding: 0; list-style: none; }
+.stato-richiesta__passo { display: flex; flex-direction: column; gap: 12px; }
+.stato-richiesta__passo .label { margin-bottom: 4px; color: var(--inchiostro); }
+.stato-richiesta__tondo {
+  width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center;
+  background: var(--farina); border: 1.5px solid var(--bordo); color: var(--terra);
+}
+.stato-richiesta__tondo .icona { width: 20px; height: 20px; }
+.is-fatto .stato-richiesta__tondo { background: var(--salvia); border-color: var(--salvia); color: var(--su-pomodoro); }
+.is-ora .stato-richiesta__tondo { background: var(--zucca); border-color: var(--zucca); color: var(--inchiostro); }
+.flusso__inviata-nota a { color: var(--inchiostro); font-weight: 600; white-space: nowrap; }
 .esito__sotto { font: 500 44px/1.1 var(--display); letter-spacing: -0.025em; color: var(--pomodoro); }
 .esito .testo-l { max-width: 720px; }
 
@@ -1058,6 +1077,11 @@ body.is-inviata .flusso__tenda { display: block; }
   .flusso__inviata-azioni { flex-direction: column; align-items: stretch; width: 100%; }
   .flusso__inviata-azioni .btn { width: 100%; }
   .flusso__inviata-azioni .btn--testo { justify-content: center; }
+  .esito__icona { width: 80px; height: 80px; }
+  .esito__icona .icona { width: 36px; height: 36px; }
+  .stato-richiesta { padding: 18px; gap: 12px; }
+  .stato-richiesta__passi { grid-template-columns: 1fr; gap: 16px; }
+  .stato-richiesta__passo { flex-direction: row; gap: 14px; }
 }
 @media (max-width: 1023px) {
   /* evita che i campi finiscano sotto la barra fissa quando ricevono il focus */

@@ -39,6 +39,7 @@ window.MARA_T = {
 "Costata, tagliata con rucola e grana, costolette d’agnello.": "Rinderkotelett, Tagliata mit Rucola und Grana, Lammkoteletts.",
 "Crostacei": "Krebstiere",
 "Dolci": "Desserts",
+"Dopo l’invio è solo una richiesta: il tavolo è confermato quando ricevi la nostra mail. Se quel giorno siamo al completo, te lo scriviamo.": "Nach dem Absenden ist es nur eine Anfrage: Ihr Tisch ist bestätigt, sobald Sie unsere E-Mail erhalten. Sind wir an dem Tag ausgebucht, sagen wir Ihnen Bescheid.",
 "Escludi allergeni": "Allergene ausschließen",
 "Evento privato": "Private Veranstaltung",
 "Fatto. Ti abbiamo mandato una mail di conferma.": "Erledigt. Wir haben Ihnen eine Bestätigung per E-Mail gesendet.",
@@ -55,6 +56,7 @@ window.MARA_T = {
 "Glutine · Pesce (con acciughe)": "Gluten · Fisch (mit Sardellen)",
 "Glutine · Uova · Latte (ai formaggi) · Sedano (al ragù)": "Gluten · Eier · Milch (mit Käse) · Sellerie (mit Ragù)",
 "Grazie di averci avvisato: il tavolo torna libero per altri.": "Vielen Dank für Ihre Nachricht: Der Tisch ist wieder frei für andere Gäste.",
+"Grazie{n}. Abbiamo ricevuto la tua richiesta per {g}, ore {o}, {p}. Ora controlliamo la disponibilità e ti scriviamo a {e}:": "Vielen Dank{n}. Wir haben Ihre Anfrage für {g} um {o} Uhr, {p}, erhalten. Wir prüfen jetzt, ob ein Tisch frei ist, und schreiben Ihnen an {e}:",
 "I tuoi dati": "Ihre Daten",
 "Il tortellino di Valeggio, sottile come un fazzoletto: al burro e salvia o in brodo.": "Das Tortellino aus Valeggio, hauchdünn wie ein Taschentuch: mit Butter und Salbei oder in Brühe.",
 "Invio in corso…": "Wird gesendet …",
@@ -203,6 +205,5 @@ window.MARA_T = {
 "{P} siamo chiusi{m}.": "Wir haben {p} geschlossen{m}.",
 "{g} alle {o}": "{g} um {o}",
 "{g}, ore {o}, {p}.": "{g} um {o} Uhr, {p}.",
-"{s} della carta è senza {x}": "{s} ist ohne {x}",
-"È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.": "Dies ist eine Anfrage: Wir bestätigen Ihren Tisch per E-Mail. Sind wir an dem Tag ausgebucht, schlagen wir Ihnen eine Alternative vor."
+"{s} della carta è senza {x}": "{s} ist ohne {x}"
 };

@@ -120,13 +120,13 @@
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../assets/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/instrument-sans-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/styles.css?v=8b931587">
-  <script src="../js/lingua-en.js?v=46f2ff76" defer></script>
+  <link rel="stylesheet" href="../css/styles.css?v=293a5bcc">
+  <script src="../js/lingua-en.js?v=a712143b" defer></script>
   <script src="../js/lingua.js?v=896fc485" defer></script>
   <script src="../js/config.js?v=594778d8" defer></script>
   <script src="../js/dati.js?v=4ea39c1e" defer></script>
   <script src="../js/site.js?v=191797bc" defer></script>
-  <script src="../js/prenota.js?v=35573406" defer></script>
+  <script src="../js/prenota.js?v=8b6717be" defer></script>
 </head>
 <body class="pagina-flusso">
 <a class="salta" href="#contenuto">Skip to content</a>
@@ -264,7 +264,7 @@
         <div data-r-riga="note"><dt>Requests</dt><dd data-r="note"></dd></div>
       </dl>
       <p class="testo-s modifica">Something wrong? <button type="button" class="link-modifica" data-indietro="1">Edit</button></p>
-      <p class="riepilogo__nota solo-mobile"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#info"/></svg><span>This is a request: we’ll confirm your table by email. If we’re fully booked that day, we’ll suggest an alternative.</span></p>
+      <p class="riepilogo__nota solo-mobile"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#info"/></svg><span>Once sent, this is only a request: your table is confirmed when you receive our email. If we’re fully booked that day, we’ll let you know.</span></p>
       <div class="form-errore" data-invio-errore hidden role="alert"></div>
       <div class="flusso__azioni">
         <button class="btn btn--secondario" type="button" data-indietro="2">Back<svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#arrowLeft"/></svg></button>
@@ -282,16 +282,24 @@
     </aside>
   </form>
 
-  <!-- Richiesta inviata -->
+  <!-- Richiesta inviata: è ancora una richiesta, il tavolo si conferma con la mail del ristorante -->
   <section class="flusso__inviata" data-inviata hidden aria-labelledby="t-inviata">
-    <span class="esito__icona" aria-hidden="true"><svg class="icona"><use href="../assets/icons.svg#check"/></svg></span>
-    <h1 class="display-xl" id="t-inviata" tabindex="-1">Thank you<span data-r="nome-proprio"></span>!</h1>
-    <p class="esito__sotto">Your request has reached the kitchen.</p>
-    <p class="testo-l"><span data-r="frase-riepilogo"></span> We’ve emailed <span data-r="email"></span>: your table confirmation will arrive there (check your spam folder too). To make changes, call us on <a href="tel:+390454857283">+39 045 485 7283</a>.</p>
+    <span class="esito__icona esito__icona--attesa" aria-hidden="true"><svg class="icona"><use href="../assets/icons.svg#clock"/></svg></span>
+    <h1 class="display-xl" id="t-inviata" tabindex="-1">Request sent</h1>
+    <p class="esito__sotto">Your table is not confirmed yet.</p>
+    <p class="testo-l"><span data-r="frase-inviata"></span> <strong>your booking is only valid once you receive our confirmation email.</strong></p>
+    <div class="stato-richiesta">
+      <p class="occhiello">What happens next</p>
+      <ol class="stato-richiesta__passi">
+        <li class="stato-richiesta__passo is-fatto"><span class="stato-richiesta__tondo" aria-hidden="true"><svg class="icona"><use href="../assets/icons.svg#check"/></svg></span><div><p class="label"><span class="visually-hidden">Done: </span>Request sent</p><p class="testo-s">We’ve just received it.</p></div></li>
+        <li class="stato-richiesta__passo is-ora" aria-current="step"><span class="stato-richiesta__tondo" aria-hidden="true"><svg class="icona"><use href="../assets/icons.svg#clock"/></svg></span><div><p class="label"><span class="visually-hidden">In progress: </span>We check availability</p><p class="testo-s">We make sure there’s a table free that day.</p></div></li>
+        <li class="stato-richiesta__passo"><span class="stato-richiesta__tondo" aria-hidden="true"><svg class="icona"><use href="../assets/icons.svg#mail"/></svg></span><div><p class="label"><span class="visually-hidden">Next: </span>You receive the confirmation email</p><p class="testo-s">From then on the table is yours. If we’re fully booked, we’ll let you know.</p></div></li>
+      </ol>
+    </div>
+    <p class="testo-s flusso__inviata-nota">Can’t find the email? Check your spam folder too. For changes or anything urgent, call us on <a href="tel:+390454857283">+39 045 485 7283</a>.</p>
     <div class="azioni flusso__inviata-azioni">
-      <button class="btn btn--primario" type="button" data-calendario-ics>Add to calendar<svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#calendar"/></svg></button>
-      <a class="btn btn--secondario" href="https://goo.gl/maps/pDuJnsKCG562" target="_blank" rel="noopener">Directions<svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#pin"/></svg></a>
-      <a class="btn btn--testo" href="index.html">Back to the home page<svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#arrow"/></svg></a>
+      <a class="btn btn--secondario" href="index.html">Back to the home page<svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#arrow"/></svg></a>
+      <a class="btn btn--testo" href="tel:+390454857283">Call +39 045 485 7283<svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#phone"/></svg></a>
     </div>
   </section>
   <div class="tenda flusso__tenda" aria-hidden="true"></div>

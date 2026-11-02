@@ -47,6 +47,20 @@ FRAMMENTI = [
 ]
 
 TESTI = {
+    # ------------------------------------------------------------ richiesta di prenotazione inviata (in attesa di conferma)
+    "Richiesta inviata": ("Request sent", "Anfrage gesendet"),
+    "Il tavolo non è ancora confermato.": ("Your table is not confirmed yet.", "Ihr Tisch ist noch nicht bestätigt."),
+    "la prenotazione è valida solo quando ricevi la nostra mail di conferma.": ("your booking is only valid once you receive our confirmation email.", "Ihre Reservierung gilt erst, wenn Sie unsere Bestätigungs-E-Mail erhalten."),
+    "Cosa succede adesso": ("What happens next", "Wie es jetzt weitergeht"),
+    "Fatto:": ("Done:", "Erledigt:"),
+    "In corso:": ("In progress:", "In Bearbeitung:"),
+    "Poi:": ("Next:", "Danach:"),
+    "L’abbiamo ricevuta adesso.": ("We’ve just received it.", "Wir haben sie gerade erhalten."),
+    "Controlliamo la disponibilità": ("We check availability", "Wir prüfen die Verfügbarkeit"),
+    "Verifichiamo che quel giorno ci sia posto.": ("We make sure there’s a table free that day.", "Wir prüfen, ob an dem Tag ein Tisch frei ist."),
+    "Ricevi la mail di conferma": ("You receive the confirmation email", "Sie erhalten die Bestätigungs-E-Mail"),
+    "Da quel momento il tavolo è tuo. Se siamo al completo, te lo scriviamo.": ("From then on the table is yours. If we’re fully booked, we’ll let you know.", "Ab dann ist der Tisch für Sie reserviert. Sind wir ausgebucht, sagen wir Ihnen Bescheid."),
+    "Non trovi la mail? Guarda anche nella cartella spam. Per modifiche o urgenze chiamaci allo": ("Can’t find the email? Check your spam folder too. For changes or anything urgent, call us on", "Keine E-Mail erhalten? Sehen Sie bitte auch im Spam-Ordner nach. Für Änderungen oder dringende Fälle rufen Sie uns an:"),
     # ------------------------------------------------------------ menù pausa pranzo
     "Menù pausa pranzo · Ristorante Mara, Valeggio sul Mincio": ("Lunch-break menu · Ristorante Mara, Valeggio sul Mincio", "Mittagsmenü · Ristorante Mara, Valeggio sul Mincio"),
     "Il menù pausa pranzo del Ristorante Mara a Valeggio sul Mincio: primo, secondo e contorno a scelta a prezzo fisso dal lunedì al venerdì, bevande escluse. Piatti della tradizione che cambiano spesso.":
@@ -528,8 +542,8 @@ TESTI = {
         (": your table confirmation will arrive there (check your spam folder too). To make changes, call us on", " geschrieben: Die Tischbestätigung kommt dorthin (schauen Sie auch im Spam-Ordner nach). Für Änderungen rufen Sie uns an:"),
     "Aggiungi al calendario": ("Add to calendar", "Zum Kalender hinzufügen"),
     "Torna alla home": ("Back to the home page", "Zur Startseite"),
-    "È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.":
-        ("This is a request: we’ll confirm your table by email. If we’re fully booked that day, we’ll suggest an alternative.", "Dies ist eine Anfrage: Wir bestätigen Ihren Tisch per E-Mail. Sind wir an dem Tag ausgebucht, schlagen wir Ihnen eine Alternative vor."),
+    "Dopo l’invio è solo una richiesta: il tavolo è confermato quando ricevi la nostra mail. Se quel giorno siamo al completo, te lo scriviamo.":
+        ("Once sent, this is only a request: your table is confirmed when you receive our email. If we’re fully booked that day, we’ll let you know.", "Nach dem Absenden ist es nur eine Anfrage: Ihr Tisch ist bestätigt, sobald Sie unsere E-Mail erhalten. Sind wir an dem Tag ausgebucht, sagen wir Ihnen Bescheid."),
 
     # ------------------------------------------------------------ disdetta (link nella mail di conferma)
     "Disdici prenotazione · Ristorante Mara": ("Cancel booking · Ristorante Mara", "Reservierung stornieren · Ristorante Mara"),
@@ -666,7 +680,8 @@ JS = {
     "Scegli il giorno: prenoti fino a due mesi prima.": ("Choose the day: you can book up to two months ahead.", "Wählen Sie den Tag: Sie können bis zu zwei Monate im Voraus reservieren."),
     "Nei giorni barrati siamo chiusi: {e}.": ("We are closed on the crossed-out days: {e}.", "An den durchgestrichenen Tagen haben wir geschlossen: {e}."),
     "La conferma arriva via email. Il telefono ci serve solo in caso di imprevisti.": ("Confirmation arrives by email. We only need your phone number in case something unexpected comes up.", "Die Bestätigung kommt per E-Mail. Ihre Telefonnummer brauchen wir nur für unvorhergesehene Fälle."),
-    "È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.": ("This is a request: we’ll confirm your table by email. If we’re fully booked that day, we’ll suggest an alternative.", "Dies ist eine Anfrage: Wir bestätigen Ihren Tisch per E-Mail. Sind wir an dem Tag ausgebucht, schlagen wir Ihnen eine Alternative vor."),
+    "Dopo l’invio è solo una richiesta: il tavolo è confermato quando ricevi la nostra mail. Se quel giorno siamo al completo, te lo scriviamo.": ("Once sent, this is only a request: your table is confirmed when you receive our email. If we’re fully booked that day, we’ll let you know.", "Nach dem Absenden ist es nur eine Anfrage: Ihr Tisch ist bestätigt, sobald Sie unsere E-Mail erhalten. Sind wir an dem Tag ausgebucht, sagen wir Ihnen Bescheid."),
+    "Grazie{n}. Abbiamo ricevuto la tua richiesta per {g}, ore {o}, {p}. Ora controlliamo la disponibilità e ti scriviamo a {e}:": ("Thank you{n}. We have received your request for {g} at {o}, {p}. We’ll now check availability and write to you at {e}:", "Vielen Dank{n}. Wir haben Ihre Anfrage für {g} um {o} Uhr, {p}, erhalten. Wir prüfen jetzt, ob ein Tisch frei ist, und schreiben Ihnen an {e}:"),
     "Prenota un tavolo": ("Book a table", "Tisch reservieren"),
     "I tuoi dati": ("Your details", "Ihre Daten"),
     "Conferma": ("Confirm", "Bestätigen"),

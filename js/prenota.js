@@ -298,7 +298,7 @@
   var NOTE = {
     1: '',
     2: t('La conferma arriva via email. Il telefono ci serve solo in caso di imprevisti.'),
-    3: t('È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.')
+    3: t('Dopo l’invio è solo una richiesta: il tavolo è confermato quando ricevi la nostra mail. Se quel giorno siamo al completo, te lo scriviamo.')
   };
 
   var TITOLI_MOBILE = { 1: t('Prenota un tavolo'), 2: t('I tuoi dati'), 3: t('Conferma') };
@@ -410,8 +410,12 @@
 
   function mostraInviata() {
     var nome = valore('nome').split(/\s+/)[0];
-    scrivi('nome-proprio', nome ? ', ' + nome : '');
-    scrivi('frase-riepilogo', t('{g}, ore {o}, {p}.', { g: giornoLungo(stato.data), o: stato.ora, p: L.persone(stato.persone) }));
+    var d = daISO(stato.data);
+    scrivi('frase-inviata', t('Grazie{n}. Abbiamo ricevuto la tua richiesta per {g}, ore {o}, {p}. Ora controlliamo la disponibilità e ti scriviamo a {e}:', {
+      n: nome ? ', ' + nome : '',
+      g: L.giornoData(d.getUTCDay(), L.data(d.getUTCDate(), d.getUTCMonth(), '')),
+      o: stato.ora, p: L.persone(stato.persone), e: valore('email')
+    }));
     form.hidden = true;
     document.querySelector('[data-inviata]').hidden = false;
     document.querySelector('[data-passi]').hidden = true;
@@ -426,28 +430,6 @@
     document.getElementById('t-inviata').focus({ preventScroll: true });
   }
 
-  /* Aggiungi al calendario (.ics) */
-  document.querySelector('[data-calendario-ics]').addEventListener('click', function () {
-    var inizio = stato.data.replace(/-/g, '') + 'T' + stato.ora.replace(':', '') + '00';
-    var minuti = Number(stato.ora.slice(0, 2)) * 60 + Number(stato.ora.slice(3)) + 90;
-    var fine = stato.data.replace(/-/g, '') + 'T' + String(Math.floor(minuti / 60)).padStart(2, '0') + String(minuti % 60).padStart(2, '0') + '00';
-    var ics = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Ristorante Mara//Prenotazioni//IT',
-      'BEGIN:VEVENT',
-      'UID:' + Date.now() + '@ristorantemara',
-      'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
-      'DTSTART;TZID=Europe/Rome:' + inizio,
-      'DTEND;TZID=Europe/Rome:' + fine,
-      'SUMMARY:' + t('Pranzo al Ristorante Mara ({n} pers.)', { n: stato.persone }),
-      'LOCATION:Ristorante Mara\\, Via Mantovana 1180\\, 37067 Valeggio sul Mincio (VR)',
-      'DESCRIPTION:' + t('Richiesta di prenotazione: attendi la mail di conferma. Tel. 045 485 7283').replace(/,/g, '\\,'),
-      'END:VEVENT', 'END:VCALENDAR'
-    ].join('\r\n');
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
-    a.download = 'pranzo-ristorante-mara.ics';
-    document.body.appendChild(a); a.click(); a.remove();
-  });
 
   /* ---------- Avvio ---------- */
   history.replaceState({ passo: 1 }, '', location.pathname);

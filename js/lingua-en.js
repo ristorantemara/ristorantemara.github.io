@@ -39,6 +39,7 @@ window.MARA_T = {
 "Costata, tagliata con rucola e grana, costolette d’agnello.": "Rib steak, sliced beef with rocket and Grana, lamb chops.",
 "Crostacei": "Crustaceans",
 "Dolci": "Desserts",
+"Dopo l’invio è solo una richiesta: il tavolo è confermato quando ricevi la nostra mail. Se quel giorno siamo al completo, te lo scriviamo.": "Once sent, this is only a request: your table is confirmed when you receive our email. If we’re fully booked that day, we’ll let you know.",
 "Escludi allergeni": "Exclude allergens",
 "Evento privato": "Private event",
 "Fatto. Ti abbiamo mandato una mail di conferma.": "Done. We’ve sent you a confirmation email.",
@@ -55,6 +56,7 @@ window.MARA_T = {
 "Glutine · Pesce (con acciughe)": "Gluten · Fish (with anchovies)",
 "Glutine · Uova · Latte (ai formaggi) · Sedano (al ragù)": "Gluten · Eggs · Milk (with cheese) · Celery (with meat sauce)",
 "Grazie di averci avvisato: il tavolo torna libero per altri.": "Thank you for letting us know: the table is free again for someone else.",
+"Grazie{n}. Abbiamo ricevuto la tua richiesta per {g}, ore {o}, {p}. Ora controlliamo la disponibilità e ti scriviamo a {e}:": "Thank you{n}. We have received your request for {g} at {o}, {p}. We’ll now check availability and write to you at {e}:",
 "I tuoi dati": "Your details",
 "Il tortellino di Valeggio, sottile come un fazzoletto: al burro e salvia o in brodo.": "Valeggio’s tortellino, as thin as a handkerchief: with butter and sage or in broth.",
 "Invio in corso…": "Sending…",
@@ -203,6 +205,5 @@ window.MARA_T = {
 "{P} siamo chiusi{m}.": "We are closed {p}{m}.",
 "{g} alle {o}": "{g} at {o}",
 "{g}, ore {o}, {p}.": "{g} at {o}, {p}.",
-"{s} della carta è senza {x}": "{s} is free from {x}",
-"È una richiesta: ti confermiamo il tavolo via email. Se quel giorno siamo al completo, ti proponiamo un’alternativa.": "This is a request: we’ll confirm your table by email. If we’re fully booked that day, we’ll suggest an alternative."
+"{s} della carta è senza {x}": "{s} is free from {x}"
 };
