@@ -627,6 +627,13 @@ body.menu-aperto { overflow: hidden; }
 .menu-tipi__rimando a { color: var(--pomodoro); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .menu-tipi__rimando a:hover { color: var(--brace); }
 
+/* Menù delle feste (Figma D02c, M04c): una riga per portata, titolo a sinistra e piatti a destra */
+.feste-portate { display: flex; flex-direction: column; }
+.feste-portata { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 48px; padding: 8px 0; border-top: 1px solid var(--bordo); }
+.feste-portata__titolo { padding-top: 16px; color: var(--pomodoro); }
+.feste-portata__piatti .piatto { padding: 16px 0; }
+.feste-vuoto .azioni { justify-content: flex-start; }
+
 /* Menù pausa pranzo */
 .intro-pranzo__riga { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; width: 100%; }
 .intro-pranzo__testo { display: flex; flex-direction: column; gap: 20px; }
@@ -670,6 +677,10 @@ body.menu-aperto { overflow: hidden; }
   .pranzo-colonne { gap: 48px; }
   .pranzo-corpo { padding-top: 24px; gap: 8px; padding-bottom: 40px; }
   .pranzo-corpo .menu-cta { display: none; }
+  .feste-portata { grid-template-columns: 1fr; gap: 0; padding: 24px 0; border-top: 0; }
+  .feste-portata__titolo { padding-top: 0; padding-bottom: 6px; color: var(--inchiostro); font-size: 30px; line-height: 1.08; }
+  .feste-portata__piatti .piatto { padding: 18px 0; }
+  .feste-vuoto .azioni { flex-direction: column; align-items: stretch; }
 }
 
 /* --------------------------------------------------------------------------

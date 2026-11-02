@@ -10,6 +10,7 @@ Sito statico pubblicato con GitHub Pages su **https://ristorantemara.github.io**
 | `index.html` | Home |
 | `menu.html` | Menù alla carta (sabato e domenica) con filtro allergeni |
 | `pausa-pranzo.html` | Menù pausa pranzo a prezzo fisso (dal lunedì al venerdì) |
+| `menu-feste.html` | Menù delle feste (Natale…): compare nel selettore solo quando è acceso nel Foglio |
 | `gruppi.html` · `gruppi-grazie.html` | Gruppi e gite, preventivo e conferma di invio |
 | `cerimonie.html` · `cerimonie-grazie.html` | Cerimonie, richiesta e conferma di invio |
 | `storia.html` | La nostra storia |
@@ -53,6 +54,8 @@ Il ristorante aggiorna il sito dal Foglio delle prenotazioni (anche dall'app Fog
 - **Chiusure** — Dal, Al, Motivo: avviso in cima al sito da 30 giorni prima, giorni barrati nel calendario, prenotazioni rifiutate.
 - **Orari** — per ogni giorno Aperto, Dalle, Alle, Ultima prenotazione: stato "Aperti ora", tabelle orari, footer, orari prenotabili.
 - **Menù** — Sezione, Gruppo, Piatto, Dettaglio, Prezzo, Allergeni, Visibile.
+- **Pausa pranzo** — Sezione, Piatto, Allergeni, Visibile e il prezzo del menù.
+- **Feste** e **Menù delle feste** — i menù delle ricorrenze: si accendono e si spengono con «Visibile».
 - **In evidenza** — le specialità della home (max 3): il prezzo arriva dal piatto del menù collegato.
 
 Il sito legge i dati con `GET …/exec?dati=sito` (`js/dati.js`, salvati nel browser e aggiornati ogni pochi minuti).

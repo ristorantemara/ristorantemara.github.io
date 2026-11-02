@@ -58,7 +58,9 @@ window.MARA_T = {
 "Grazie di averci avvisato: il tavolo torna libero per altri.": "Vielen Dank für Ihre Nachricht: Der Tisch ist wieder frei für andere Gäste.",
 "Grazie{n}. Abbiamo ricevuto la tua richiesta per {g}, ore {o}, {p}. Ora controlliamo la disponibilità e ti scriviamo a {e}:": "Vielen Dank{n}. Wir haben Ihre Anfrage für {g} um {o} Uhr, {p}, erhalten. Wir prüfen jetzt, ob ein Tisch frei ist, und schreiben Ihnen an {e}:",
 "I tuoi dati": "Ihre Daten",
+"Il menù di {n}": "Das Menü zu {n}",
 "Il tortellino di Valeggio, sottile come un fazzoletto: al burro e salvia o in brodo.": "Das Tortellino aus Valeggio, hauchdünn wie ein Taschentuch: mit Butter und Salbei oder in Brühe.",
+"In questo momento non ci sono menù delle feste. Trovi i nostri menù di tutti i giorni qui sotto.": "Im Moment gibt es keine Festtagsmenüs. Unsere Menüs für jeden Tag finden Sie unten.",
 "Invio in corso…": "Wird gesendet …",
 "La conferma arriva via email. Il telefono ci serve solo in caso di imprevisti.": "Die Bestätigung kommt per E-Mail. Ihre Telefonnummer brauchen wir nur für unvorhergesehene Fälle.",
 "La nostra pasta è all’uovo e di grano. Avvisaci quando prenoti: la cucina può proporti un’alternativa.": "Unsere Pasta wird mit Ei und Weizen hergestellt. Sagen Sie es uns bei der Reservierung: Die Küche kann Ihnen eine Alternative vorschlagen.",
@@ -95,6 +97,7 @@ window.MARA_T = {
 "Passo {n} di 3": "Schritt {n} von 3",
 "Pasta all’uovo tirata a mano e ragù bianco cotto piano.": "Handgerollte Eiernudeln mit langsam gegartem weißem Ragù.",
 "Per qualsiasi cosa chiamaci al {tel}.": "Für alles Weitere rufen Sie uns an: {tel}.",
+"Per {n} i posti sono limitati: prenota online o chiamaci.": "Für {n} sind die Plätze begrenzt: Reservieren Sie online oder rufen Sie uns an.",
 "Persone": "Personen",
 "Pesce": "Fisch",
 "Piatti freddi": "Kalte Gerichte",
@@ -103,6 +106,7 @@ window.MARA_T = {
 "Prenotazione <span class=\"accento\">disdetta</span>": "Reservierung <span class=\"accento\">storniert</span>",
 "Prenotazione <span class=\"accento\">non confermata</span>": "Reservierung <span class=\"accento\">nicht bestätigt</span>",
 "Prenotazione <span class=\"accento\">passata</span>": "Reservierung <span class=\"accento\">vergangen</span>",
+"Prezzo del menù di {n}": "Preis des Menüs zu {n}",
 "Primi": "Erste Gänge",
 "Qualcosa è andato storto, riprova tra poco.": "Etwas ist schiefgelaufen, bitte versuchen Sie es gleich noch einmal.",
 "Qualcosa è andato storto, riprova.": "Etwas ist schiefgelaufen, bitte versuchen Sie es erneut.",
@@ -204,6 +208,7 @@ window.MARA_T = {
 "siamo chiusi fino a {d}": "wir haben bis {d} geschlossen",
 "{P} siamo chiusi{m}.": "Wir haben {p} geschlossen{m}.",
 "{g} alle {o}": "{g} um {o}",
+"{g}, a pranzo. Un menù pensato per la festa, con i piatti della nostra tradizione: prenota per tempo, i posti sono limitati.": "{g}, mittags. Ein Menü eigens für den Feiertag, mit unseren traditionellen Gerichten: Reservieren Sie rechtzeitig, die Plätze sind begrenzt.",
 "{g}, ore {o}, {p}.": "{g} um {o} Uhr, {p}.",
 "{s} della carta è senza {x}": "{s} ist ohne {x}"
 };

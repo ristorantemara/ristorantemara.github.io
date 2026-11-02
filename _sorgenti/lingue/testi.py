@@ -24,6 +24,9 @@ UGUALI = {
 NON_TRADURRE = set()
 
 FRAMMENTI = [
+    ('<h1 class="display-xl titolo-menu">Il menù <span class="accento">delle feste</span></h1>',
+     '<h1 class="display-xl titolo-menu">The <span class="accento">holiday</span> menus</h1>',
+     '<h1 class="display-xl titolo-menu">Die <span class="accento">Festtagsmenüs</span></h1>'),
     ('<p class="testo-s menu-tipi__rimando">Dal lunedì al venerdì c’è il <a href="pausa-pranzo.html">menù pausa pranzo a <span data-pranzo-prezzo>15 €</span></a>.</p>',
      '<p class="testo-s menu-tipi__rimando">Monday to Friday we serve the <a href="pausa-pranzo.html"><span data-pranzo-prezzo>15 €</span> lunch-break menu</a>.</p>',
      '<p class="testo-s menu-tipi__rimando">Montag bis Freitag gibt es das <a href="pausa-pranzo.html">Mittagsmenü für <span data-pranzo-prezzo>15 €</span></a>.</p>'),
@@ -47,6 +50,19 @@ FRAMMENTI = [
 ]
 
 TESTI = {
+    # ------------------------------------------------------------ menù delle feste
+    "Menù delle feste · Ristorante Mara, Valeggio sul Mincio": ("Holiday menus · Ristorante Mara, Valeggio sul Mincio", "Festtagsmenüs · Ristorante Mara, Valeggio sul Mincio"),
+    "I menù delle feste del Ristorante Mara a Valeggio sul Mincio: pranzi a prezzo fisso per Natale e le altre ricorrenze, con i piatti della tradizione.":
+        ("Holiday menus at Ristorante Mara in Valeggio sul Mincio: fixed-price lunches for Christmas and other celebrations, with traditional dishes.",
+         "Festtagsmenüs im Ristorante Mara in Valeggio sul Mincio: Mittagessen zum Festpreis für Weihnachten und andere Feiertage, mit traditionellen Gerichten."),
+    "delle feste": ("holiday", "Festtags"),
+    "Un attimo, carichiamo il menù…": ("Just a moment, loading the menu…", "Einen Moment, das Menü wird geladen…"),
+    "Prenota il tuo posto": ("Book your seat", "Reservieren Sie Ihren Platz"),
+    "Il menù alla carta": ("The à la carte menu", "Die Speisekarte"),
+    "Il menù pausa pranzo": ("The lunch-break menu", "Das Mittagsmenü"),
+    "Sotto ogni piatto trovi gli allergeni (Reg. UE 1169/2011). Per qualsiasi dubbio chiedici prima di ordinare.":
+        ("Allergens are listed under each dish (EU Reg. 1169/2011). If in doubt, please ask us before ordering.",
+         "Die Allergene stehen unter jedem Gericht (EU-Verordnung 1169/2011). Fragen Sie uns im Zweifel bitte vor der Bestellung."),
     # ------------------------------------------------------------ richiesta di prenotazione inviata (in attesa di conferma)
     "Richiesta inviata": ("Request sent", "Anfrage gesendet"),
     "Il tavolo non è ancora confermato.": ("Your table is not confirmed yet.", "Ihr Tisch ist noch nicht bestätigt."),
@@ -625,6 +641,14 @@ PIATTI = {
 # Testi scritti dagli script (js/*.js) — {nome} è un valore inserito dallo script.
 # Finiscono in js/lingua-en.js e js/lingua-de.js insieme ai testi del menù e a PIATTI.
 JS = {
+    # menù delle feste (feste.js)
+    "Il menù di {n}": ("The {n} menu", "Das Menü zu {n}"),
+    "Prezzo del menù di {n}": ("Price of the {n} menu", "Preis des Menüs zu {n}"),
+    "{g}, a pranzo. Un menù pensato per la festa, con i piatti della nostra tradizione: prenota per tempo, i posti sono limitati.":
+        ("{g}, at lunchtime. A menu created for the occasion, with our traditional dishes: book early, places are limited.",
+         "{g}, mittags. Ein Menü eigens für den Feiertag, mit unseren traditionellen Gerichten: Reservieren Sie rechtzeitig, die Plätze sind begrenzt."),
+    "Per {n} i posti sono limitati: prenota online o chiamaci.": ("Places for {n} are limited: book online or call us.", "Für {n} sind die Plätze begrenzt: Reservieren Sie online oder rufen Sie uns an."),
+    "In questo momento non ci sono menù delle feste. Trovi i nostri menù di tutti i giorni qui sotto.": ("There are no holiday menus at the moment. You’ll find our everyday menus below.", "Im Moment gibt es keine Festtagsmenüs. Unsere Menüs für jeden Tag finden Sie unten."),
     # orari e stato di apertura (site.js, dati.js)
     "Chiuso": ("Closed", "Geschlossen"),
     "domani": ("tomorrow", "morgen"),

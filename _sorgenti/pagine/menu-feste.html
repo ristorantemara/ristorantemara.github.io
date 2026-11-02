@@ -1,0 +1,62 @@
+---
+titolo: Menù delle feste · Ristorante Mara, Valeggio sul Mincio
+descrizione: I menù delle feste del Ristorante Mara a Valeggio sul Mincio: pranzi a prezzo fisso per Natale e le altre ricorrenze, con i piatti della tradizione.
+attivo: menu
+script: js/feste.js
+robots: noindex
+---
+<main id="contenuto">
+  <section class="intro-pagina intro-menu intro-pranzo">
+    <div class="contenitore">
+      <nav class="menu-tipi" aria-label="Tipo di menù">
+        <a href="menu.html">Alla carta<span class="menu-tipi__giorni">Sab e dom</span></a>
+        <a href="pausa-pranzo.html">Pausa pranzo<span class="menu-tipi__giorni">Lun–ven</span></a>
+      </nav>
+      <div class="intro-pranzo__riga" data-festa-intro hidden>
+        <div class="intro-pranzo__testo">
+          <h1 class="display-xl titolo-menu" data-festa-titolo></h1>
+          <p class="testo-l" data-festa-descrizione></p>
+        </div>
+        <div class="prezzo-fisso" role="group" data-festa-prezzo-box>
+          <p class="prezzo-fisso__cifra" data-festa-prezzo></p>
+          <p class="prezzo-fisso__cosa" data-festa-giorno></p>
+          <p class="prezzo-fisso__nota" data-festa-nota></p>
+        </div>
+      </div>
+      <!-- Mentre arrivano i dati dal Foglio, e quando nessun menù delle feste è acceso -->
+      <div class="intro-pranzo__testo" data-festa-attesa>
+        <h1 class="display-xl titolo-menu">Il menù <span class="accento">delle feste</span></h1>
+        <p class="testo-l" data-festa-attesa-testo>Un attimo, carichiamo il menù…</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="tenda" aria-hidden="true"></div>
+
+  <div class="contenitore pranzo-corpo">
+    <div class="feste-portate" data-festa-portate hidden></div>
+
+    <div class="avviso" data-festa-avviso hidden>
+      <svg class="icona" aria-hidden="true"><use href="assets/icons.svg#info"/></svg>
+      <div><p class="label">Allergie o intolleranze?</p><p class="testo-s">Sotto ogni piatto trovi gli allergeni (Reg. UE 1169/2011). Per qualsiasi dubbio chiedici prima di ordinare.</p></div>
+    </div>
+
+    <aside class="menu-cta su-scuro" data-festa-cta hidden>
+      <div>
+        <h2 class="h2">Prenota il tuo posto</h2>
+        <p class="testo-m" data-festa-cta-testo></p>
+      </div>
+      <div class="menu-cta__azioni">
+        <a class="btn btn--su-scuro" href="prenota.html">Prenota un tavolo<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#calendar"/></svg></a>
+        <a class="btn btn--testo menu-cta__carta" href="tel:+390454857283">Chiama 045 485 7283<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#phone"/></svg></a>
+      </div>
+    </aside>
+
+    <div class="feste-vuoto" data-festa-vuoto hidden>
+      <div class="azioni">
+        <a class="btn btn--secondario" href="menu.html">Il menù alla carta<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+        <a class="btn btn--secondario" href="pausa-pranzo.html">Il menù pausa pranzo<svg class="icona" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+      </div>
+    </div>
+  </div>
+</main>
