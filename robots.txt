@@ -1,6 +1,7 @@
 # Tutti i motori di ricerca e gli assistenti AI possono leggere il sito
 User-agent: *
 Allow: /
+Disallow: /admin/
 Disallow: /gestisci.html
 Disallow: /disdici.html
 Disallow: /en/disdici.html

@@ -17,6 +17,7 @@ Sito statico pubblicato con GitHub Pages su **https://ristorantemara.github.io**
 | `dove-siamo.html` | Dove siamo e contatti |
 | `prenota.html` | Prenotazione in 3 passi (Quando → I tuoi dati → Conferma → Richiesta inviata) |
 | `gestisci.html` | Area ristorante: conferma o rifiuta una prenotazione (si apre dalla mail) |
+| `admin/` | Area ristorante: prenotazioni, richieste, menù, feste, in evidenza, orari e chiusure (protetta da password) |
 | `disdici.html` | Area cliente: disdetta della prenotazione (si apre dal pulsante nella mail di conferma) |
 | `privacy.html` | Privacy e cookie (testo provvisorio) |
 | `404.html` | Pagina non trovata |
@@ -46,6 +47,19 @@ prenotazioni e richieste è in `js/config.js`.
    il ristorante riceve una mail di disdetta. Il link del cliente ha una chiave sua: non permette di confermare.
    Le mail al cliente non invitano a rispondere: per modifiche c'è il telefono.
 4. I form Gruppi e Cerimonie arrivano allo stesso script (foglio "Richieste") e al ristorante via mail.
+
+## Area ristorante (`/admin/`)
+
+Pagina per il ristorante, adatta al telefono, che fa le stesse cose del Foglio senza aprirlo:
+conferma o rifiuta le prenotazioni (stesse mail dei pulsanti nella mail), legge le richieste di gruppi e cerimonie,
+modifica menù alla carta, pausa pranzo (anche il prezzo), menù delle feste (accesi/spenti), in evidenza, orari e chiusure.
+
+- Funziona su qualsiasi dominio: non ha indirizzi scritti dentro, parla con lo script di `js/config.js`.
+- Il Foglio resta l'archivio: la pagina scrive le stesse schede e colonne; se qualcuno ha appena modificato
+  la stessa scheda dal Foglio o da un altro telefono, il salvataggio si ferma e ricarica i dati aggiornati.
+- Nello script: file `Admin.gs` + una riga in `doPost` (`tipo: 'admin'`). Password nella proprietà dello script
+  `ADMIN_PASSWORD`; l'accesso resta attivo 30 giorni sul dispositivo; `esciDaTutti()` lo chiude ovunque.
+- Non è indicizzata (`noindex` e `robots.txt`).
 
 ## Orari, chiusure e menù dal Foglio Google
 

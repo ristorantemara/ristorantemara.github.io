@@ -1,0 +1,241 @@
+/* ==========================================================================
+   Area ristorante (/admin) — costruita sul design system 2.0 del sito
+   (colori di cucina, Bricolage Grotesque + Instrument Sans, campi, bottoni,
+   chip, pillole e foglio dal basso di css/styles.css)
+   ========================================================================== */
+
+body.admin { background: var(--panna); min-height: 100vh; }
+
+/* ---------- Barra in alto ---------- */
+.admin-barra { position: sticky; top: 0; z-index: 40; background: var(--panna); border-bottom: 1px solid var(--bordo); }
+.admin-barra__interno {
+  max-width: 1120px; margin: 0 auto; padding: 14px var(--gutter);
+  display: flex; align-items: center; gap: 24px;
+}
+.admin-barra .logo__sotto { white-space: nowrap; }
+.admin-esci { margin-left: auto; color: var(--inchiostro); }
+
+/* Navigazione: pillole in alto su computer, barra in basso su telefono */
+.admin-nav {
+  display: inline-flex; gap: 4px; padding: 4px; margin-left: auto;
+  background: var(--farina); border: 1px solid var(--bordo); border-radius: 999px;
+}
+.admin-nav a {
+  position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 18px;
+  border-radius: 999px; font: 600 14px/1.25 var(--testo); color: var(--inchiostro); white-space: nowrap;
+}
+.admin-nav a:hover { color: var(--pomodoro); }
+.admin-nav a[aria-current="page"] { background: var(--pomodoro); color: var(--su-pomodoro); }
+.admin-nav .icona { width: 18px; height: 18px; }
+.admin-nav__conta {
+  min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; display: inline-grid; place-items: center;
+  background: var(--zucca); color: var(--inchiostro); font: 700 12px/1 var(--testo);
+}
+.admin-nav + .admin-esci { margin-left: 0; }
+
+/* ---------- Corpo ---------- */
+.admin-corpo { max-width: 1120px; margin: 0 auto; padding: 48px var(--gutter) 96px; }
+.admin-vista { display: flex; flex-direction: column; gap: 32px; }
+
+.admin-testa { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.admin-testa__testo { display: flex; flex-direction: column; gap: 8px; }
+.admin-testa h1 { font: 500 clamp(34px, 4.2vw, 52px)/1.08 var(--display); letter-spacing: -0.025em; outline: none; }
+.admin-sottotitolo { display: flex; flex-direction: column; gap: 4px; }
+.admin-sottotitolo h2 { font: 500 clamp(24px, 2.1vw, 30px)/1.25 var(--display); letter-spacing: -0.01em; }
+
+/* Accesso */
+.admin-accesso { max-width: 480px; margin: 40px auto 0; display: flex; flex-direction: column; gap: 16px; }
+.admin-accesso__form { display: flex; flex-direction: column; gap: 20px; margin-top: 16px; padding: 32px; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
+
+/* Stato di caricamento */
+.admin-stato { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 80px 0; color: var(--terra); }
+.admin-stato[hidden] { display: none; }
+.admin-rotella { width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid var(--bordo); border-top-color: var(--pomodoro); animation: admin-gira .8s linear infinite; }
+@keyframes admin-gira { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .admin-rotella { animation-duration: 2.4s; } }
+
+/* Filtri a pillole (riusano .menu-tipi del sito) */
+.admin-filtri { display: flex; gap: 8px; flex-wrap: wrap; }
+.admin-filtri .menu-tipi button {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 20px; border: 0; background: none;
+  border-radius: 999px; font: 600 14px/1.25 var(--testo); white-space: nowrap; color: var(--inchiostro); cursor: pointer;
+}
+.admin-filtri .menu-tipi button:hover { color: var(--pomodoro); }
+.admin-filtri .menu-tipi button[aria-pressed="true"] { background: var(--pomodoro); color: var(--su-pomodoro); }
+.admin-filtri .menu-tipi button[aria-pressed="true"] .menu-tipi__giorni { background: rgba(255,255,255,.2); color: var(--su-pomodoro); }
+
+/* ---------- Schede (card) ---------- */
+.admin-elenco { display: flex; flex-direction: column; gap: 12px; }
+.admin-giorno { display: flex; flex-direction: column; gap: 12px; }
+.admin-giorno + .admin-giorno { margin-top: 20px; }
+.admin-giorno__titolo { font: 600 12px/1.2 var(--testo); letter-spacing: 2.2px; text-transform: uppercase; color: var(--pomodoro); }
+
+.admin-card {
+  display: flex; flex-direction: column; gap: 14px; padding: 22px 24px;
+  background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px;
+}
+.admin-card.is-attesa { border-left: 4px solid var(--zucca); }
+.admin-card.is-spenta { opacity: .62; }
+.admin-card__testa { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.admin-card__titolo { font: 500 22px/1.25 var(--display); letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.admin-card__meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--terra); }
+.admin-card__meta span { display: inline-flex; align-items: center; gap: 6px; }
+.admin-card__meta .icona { width: 16px; height: 16px; color: var(--inchiostro); }
+.admin-card__note { padding: 12px 14px; border-radius: 6px; background: var(--panna); font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.admin-card__contatti { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin-card__azioni { display: flex; gap: 10px; flex-wrap: wrap; }
+.admin-card__azioni .btn { min-height: 48px; padding: 12px 22px; }
+.admin-card dl { display: grid; grid-template-columns: minmax(110px, max-content) 1fr; gap: 8px 20px; font-size: 15px; }
+.admin-card dt { color: var(--terra); }
+.admin-card dd { overflow-wrap: anywhere; }
+
+/* Etichette di stato */
+.admin-stato-pill {
+  flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px;
+  font: 600 13px/1.2 var(--testo); background: var(--sfoglia); color: var(--inchiostro); white-space: nowrap;
+}
+.admin-stato-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.admin-stato-pill--attesa { background: #fbe7c6; }
+.admin-stato-pill--attesa::before { background: var(--zucca); }
+.admin-stato-pill--ok { background: #dfe8d9; color: var(--successo); }
+.admin-stato-pill--no { background: #f6dcd6; color: var(--errore); }
+
+/* Link contatto (telefono, mail) come chip */
+.admin-contatto { text-decoration: none; }
+.admin-contatto .icona { display: block; width: 16px; height: 16px; }
+
+/* ---------- Righe del menù ---------- */
+.admin-sezione { display: flex; flex-direction: column; gap: 0; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
+.admin-sezione__testa { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 24px; border-bottom: 1px solid var(--bordo); }
+.admin-sezione__titolo { font: 500 24px/1.2 var(--display); letter-spacing: -0.01em; }
+.admin-sezione__titolo .accento { font-family: var(--testo); font-size: 14px; font-weight: 600; margin-left: 8px; color: var(--terra); }
+.admin-gruppo { padding: 14px 24px 0; font: 600 12px/1.2 var(--testo); letter-spacing: 2.2px; text-transform: uppercase; color: var(--pomodoro); }
+
+.admin-riga {
+  display: flex; align-items: center; gap: 16px; padding: 14px 24px; border-bottom: 1px solid var(--bordo);
+}
+.admin-riga:last-child { border-bottom: 0; }
+.admin-riga__apri {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 16px; padding: 4px 0; text-align: left;
+  border: 0; background: none; cursor: pointer; border-radius: 6px;
+}
+.admin-riga__apri:hover .admin-riga__nome { color: var(--pomodoro); }
+.admin-riga__testo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.admin-riga__nome { font: 500 18px/1.3 var(--display); overflow-wrap: anywhere; }
+.admin-riga__sotto { font-size: 14px; line-height: 1.45; color: var(--terra); overflow-wrap: anywhere; }
+.admin-riga__prezzo { font: 500 16px/1.2 var(--testo); white-space: nowrap; }
+.admin-riga.is-spenta .admin-riga__testo, .admin-riga.is-spenta .admin-riga__prezzo { opacity: .5; }
+.admin-riga.is-spenta .admin-riga__nome { text-decoration: line-through; text-decoration-thickness: 1px; }
+.admin-aggiungi { align-self: flex-start; margin: 6px 24px 10px; }
+
+/* Interruttore Visibile / Aperto */
+.interruttore { position: relative; flex: none; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; min-height: 44px; font-size: 14px; color: var(--terra); }
+.interruttore input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.interruttore__binario {
+  position: relative; width: 46px; height: 28px; border-radius: 999px; background: var(--bordo);
+  transition: background-color .15s ease; flex: none;
+}
+.interruttore__binario::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 2px rgba(35,26,20,.3); transition: transform .15s ease;
+}
+.interruttore input:checked + .interruttore__binario { background: var(--successo); }
+.interruttore input:checked + .interruttore__binario::after { transform: translateX(18px); }
+.interruttore input:focus-visible + .interruttore__binario { outline: 3px solid var(--inchiostro); outline-offset: 2px; }
+.interruttore input:disabled + .interruttore__binario { opacity: .5; }
+
+/* ---------- Orari ---------- */
+.admin-orari { display: flex; flex-direction: column; background: var(--farina); border: 1px solid var(--bordo); border-radius: 6px; }
+.admin-orario { display: grid; grid-template-columns: 140px auto 1fr; align-items: center; gap: 16px 24px; padding: 14px 24px; border-bottom: 1px solid var(--bordo); }
+.admin-orario:last-child { border-bottom: 0; }
+.admin-orario__giorno { font: 600 16px/1.3 var(--testo); }
+.admin-orario__ore { display: flex; gap: 12px; flex-wrap: wrap; }
+.admin-orario__ore .campo { width: auto; gap: 4px; }
+.admin-orario__ore .campo__etichetta { font-size: 12px; font-weight: 600; color: var(--terra); }
+.admin-orario__ore .campo__input { width: 120px; min-height: 44px; padding: 9px 12px; }
+.admin-orario__ore .campo__input:focus { padding: 8px 11px; }
+.admin-orario__ore select.campo__input { padding-right: 34px; background-position: right 8px center; }
+.admin-orario__ore select.campo__input:focus { padding-right: 33px; }
+.admin-orario.is-chiuso .admin-orario__ore { display: none; }
+.admin-orario__chiuso { display: none; color: var(--terra); font-size: 15px; }
+.admin-orario.is-chiuso .admin-orario__chiuso { display: block; }
+
+/* Barra di salvataggio che compare quando ci sono modifiche */
+.admin-salva {
+  position: sticky; bottom: 16px; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px 12px 12px 22px; border-radius: 999px; background: var(--inchiostro); color: var(--su-scuro);
+  box-shadow: 0 8px 24px rgba(35,26,20,.25);
+}
+.admin-salva[hidden] { display: none; }
+.admin-salva .btn--testo { color: var(--su-scuro-tenue); }
+.admin-salva .btn--testo:hover { color: var(--su-scuro); }
+.admin-salva__azioni { display: flex; gap: 8px; align-items: center; }
+
+/* ---------- Pannello di modifica ---------- */
+.admin-pannello__form { display: flex; flex-direction: column; gap: 20px; }
+.admin-pannello__azioni { display: flex; gap: 10px; flex-wrap: wrap; padding-top: 4px; }
+.admin-pannello__azioni .btn--primario { flex: 1; }
+.admin-pannello__secondarie { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--bordo); padding-top: 12px; }
+.admin-pannello__sposta { display: flex; gap: 4px; }
+.admin-elimina { color: var(--errore); }
+.admin-elimina:hover { color: var(--brace); }
+.admin-chip-scelta { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin-campo-riga { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+@media (min-width: 768px) {
+  .admin-pannello {
+    left: 50%; right: auto; top: 50%; bottom: auto; width: min(560px, calc(100vw - 48px)); max-height: calc(100vh - 64px);
+    transform: translate(-50%, -50%); border-radius: 20px; padding: 28px 32px 32px;
+  }
+  .admin-pannello .foglio__maniglia { display: none; }
+}
+
+/* ---------- Messaggio breve ---------- */
+.admin-toast {
+  position: fixed; left: 50%; bottom: 28px; z-index: 90; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 14px 20px;
+  border-radius: 999px; background: var(--inchiostro); color: var(--su-scuro); font: 600 14px/1.35 var(--testo);
+  box-shadow: 0 8px 24px rgba(35,26,20,.25);
+}
+.admin-toast.is-errore { background: var(--errore); color: #fff; }
+.admin-toast .icona { width: 18px; height: 18px; }
+
+.admin-vuoto { padding: 40px 24px; text-align: center; color: var(--terra); background: var(--farina); border: 1px dashed var(--bordo); border-radius: 6px; }
+.admin-nota { font-size: 14px; color: var(--terra); }
+
+/* ---------- Telefono ---------- */
+@media (max-width: 767px) {
+  .admin-barra__interno { padding: 10px 16px; min-height: 64px; }
+  .admin-nav {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; margin: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+    border: 0; border-top: 1px solid var(--bordo); border-radius: 0; background: var(--farina);
+  }
+  .admin-nav[hidden] { display: none; }
+  .admin-nav a { flex-direction: column; gap: 4px; min-height: 56px; padding: 6px 4px; border-radius: 14px; font-size: 12px; }
+  .admin-nav a[aria-current="page"] { background: var(--sfoglia); color: var(--pomodoro); }
+  .admin-nav .icona { width: 22px; height: 22px; }
+  .admin-nav__conta { position: absolute; top: 2px; left: calc(50% + 6px); min-width: 20px; height: 20px; font-size: 11px; }
+  .admin-esci, .admin-nav + .admin-esci { margin-left: auto; }
+  .admin-corpo { padding: 24px 16px calc(112px + env(safe-area-inset-bottom)); }
+  .admin-vista { gap: 24px; }
+  .admin-accesso { margin-top: 8px; }
+  .admin-accesso__form { padding: 20px; }
+  .admin-filtri { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px; scrollbar-width: none; }
+  .admin-filtri::-webkit-scrollbar { display: none; }
+  .admin-filtri .menu-tipi { flex: 1 0 auto; }
+  .admin-filtri .menu-tipi button { flex: 1 0 auto; justify-content: center; padding: 10px 10px; }
+  .admin-card { padding: 18px; }
+  .admin-card__azioni .btn { flex: 1; }
+  .admin-card dl { grid-template-columns: 1fr; gap: 2px; }
+  .admin-card dd { margin-bottom: 8px; }
+  .admin-sezione__testa, .admin-riga { padding-left: 16px; padding-right: 16px; }
+  .admin-gruppo { padding-left: 16px; padding-right: 16px; }
+  .admin-aggiungi { margin-left: 16px; }
+  .admin-orario { grid-template-columns: 1fr auto; padding: 14px 16px; }
+  .admin-orario__ore, .admin-orario__chiuso { grid-column: 1 / -1; }
+  .admin-orario__ore .campo { flex: 1; }
+  .admin-orario__ore .campo__input { width: 100%; }
+  .admin-salva { bottom: calc(84px + env(safe-area-inset-bottom)); }
+  .admin-toast { bottom: calc(92px + env(safe-area-inset-bottom)); border-radius: 14px; }
+}
