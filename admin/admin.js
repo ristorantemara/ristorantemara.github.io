@@ -562,9 +562,11 @@
      Pannello di modifica
      ========================================================================== */
   var ultimoFocus = null;
-  function apriPannello(titolo, prepara) {
+  function apriPannello(titolo, prepara, occhiello) {
     ultimoFocus = document.activeElement;
     $('#pannello-titolo').textContent = titolo;
+    $('#pannello-occhiello').textContent = occhiello || '';   // Figma A14: «In Antipasti» sopra «Nuovo piatto»
+    $('#pannello-occhiello').hidden = !occhiello;
     var form = $('#pannello-form');
     form.onsubmit = null;
     form.innerHTML = '';
@@ -610,7 +612,7 @@
         interruttore(valore === true, c.testoSi || '', 'id="' + id + '" aria-labelledby="' + id + '-e"') + '</div>';
     }
     if (c.tipo === 'allergeni') return campoAllergeni(c, valore, id);
-    var attr = 'class="campo__input" id="' + id + '" name="' + c.k + '"' + (c.facoltativo ? '' : ' required') + (c.max ? ' maxlength="' + c.max + '"' : '');
+    var attr = 'class="campo__input" id="' + id + '" name="' + c.k + '"' + (c.facoltativo ? '' : ' required') + (c.max ? ' maxlength="' + c.max + '"' : '') + (c.prezzo ? ' data-prezzo-campo' : '');
     var input;
     if (c.tipo === 'testo-lungo') input = '<textarea ' + attr + ' rows="3">' + esc(valore) + '</textarea>';
     else if (c.tipo === 'scelta') {
@@ -661,7 +663,22 @@
       '<p class="campo__aiuto">Un allergene con una nota si scrive così: Latte (ai formaggi).</p></div></fieldset>';
   }
 
+  /* Prezzi: «10» → «10,00 €», «7,5» o «7.5» → «7,50 €». Testi come «da 9,00 €» o «4,50 €/hg» restano come sono. */
+  function formattaPrezzo(v) {
+    var t = String(v || '').trim();
+    var m = t.match(/^(?:€\s*)?(\d{1,6})(?:[.,](\d{1,2}))?\s*(?:€|eur|euro)?$/i);
+    if (!m) return t;
+    var intero = String(Number(m[1])).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return intero + ',' + ((m[2] || '') + '00').slice(0, 2) + ' €';
+  }
+  function collegaPrezzi(radice) {
+    $$('[data-prezzo-campo]', radice).forEach(function (inp) {
+      inp.addEventListener('blur', function () { inp.value = formattaPrezzo(inp.value); });
+    });
+  }
+
   function collegaCampi(form) {
+    collegaPrezzi(form);
     $$('[data-rivela]', form).forEach(function (b) {
       b.addEventListener('click', function () {
         var box = b.nextElementSibling; box.hidden = false; b.remove();
@@ -687,6 +704,7 @@
         return;
       }
       var el = $('input, select, textarea', box);
+      if (c.prezzo) el.value = formattaPrezzo(el.value);
       var val = el.value.trim();
       var err = '';
       if (!val && !c.facoltativo) err = c.obbligatorio || 'Questo campo serve.';
@@ -710,6 +728,10 @@
     var righe = scheda(o.k).righe;
     var nuova = o.indice == null;
     var riga = nuova ? Object.assign({}, o.base) : righe[o.indice];
+    var campi = o.campi;
+    // Figma A14: aggiungendo da «Aggiungi in …» la sezione è già decisa: niente campo Sezione
+    if (nuova && o.sezioneFissa) campi = campi.filter(function (c) { return c.k !== o.sezioneFissa; }).map(function (c) { return c.k === 'prezzo' ? Object.assign({}, c, { affianca: false }) : c; });
+    o = Object.assign({}, o, { campi: campi });
     apriPannello(o.titolo, function (form) {
       var vicini = !nuova && o.gruppo ? righe.map(function (r, i) { return i; }).filter(function (i) { return o.gruppo(righe[i]) === o.gruppo(riga); }) : [];
       var pos = vicini.indexOf(o.indice);
@@ -759,7 +781,7 @@
         var copiaRighe = righe.slice(); copiaRighe.splice(o.indice, 1);
         invia(copiaRighe, el, { messaggio: 'Eliminato.', annullabile: true });
       });
-    });
+    }, o.occhiello);
   }
 
   /* Interruttore Visibile direttamente nell'elenco: salva subito */
@@ -843,7 +865,7 @@
     var telefono = window.matchMedia('(max-width: 767px)').matches;
     var conGruppi = righe.some(function (r) { return r.sezione === sezione && r.gruppo; });
     var sez = { k: 'sezione', etichetta: 'Sezione', suggerimenti: valoriUnici(righe, 'sezione'), max: 60, affianca: !telefono };
-    var prezzo = { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '12,00 €', affianca: !telefono };
+    var prezzo = { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '12,00 €', affianca: !telefono, prezzo: true, aiuto: 'Scrivi solo il numero: 10 diventa 10,00 €.' };
     var piatto = { k: 'piatto', etichetta: 'Piatto', max: 120, esempio: 'Tortellini di Valeggio burro e salvia' };
     var dettaglio = { k: 'dettaglio', etichetta: 'Dettaglio', facoltativo: true, max: 160, esempio: 'es. ingredienti, cantina…' };
     var gruppo = { k: 'gruppo', etichetta: 'Gruppo', facoltativo: true, suggerimenti: valoriUnici(righe, 'gruppo'), aiuto: 'Solo per dividere una sezione (es. Vini bianchi, Vini rossi).', max: 60, rivela: conGruppi ? '' : 'Dividi la sezione in gruppi (es. Vini bianchi)' };
@@ -895,7 +917,7 @@
         var nome = b.getAttribute('data-aggiungi');
         var s = sezioni.filter(function (x) { return x.titolo === nome; })[0];
         var ultimo = s.righe.length ? righe[s.righe[s.righe.length - 1]] : {};
-        modificaRiga({ k: 'menu', titolo: 'Nuovo piatto', campi: campiCarta(righe, nome), base: { sezione: nome, gruppo: ultimo.gruppo || '', visibile: true }, posizione: dopoUltima(righe, s.righe) });
+        modificaRiga({ k: 'menu', titolo: 'Nuovo piatto', occhiello: 'In ' + nome, sezioneFissa: 'sezione', campi: campiCarta(righe, nome), base: { sezione: nome, gruppo: ultimo.gruppo || '', visibile: true }, posizione: dopoUltima(righe, s.righe) });
       });
     });
     $('[data-nuova-sezione]', corpo).addEventListener('click', function () {
@@ -929,7 +951,7 @@
     var righe = sch.righe;
     var html = '<form class="admin-card admin-prezzo" data-prezzo novalidate><div class="admin-sezione__titoli admin-sezione__titoli--colonna"><h2 class="admin-sezione__titolo">Prezzo del menù</h2>' +
       '<span class="admin-sezione__conta">Dal lunedì al venerdì, bevande escluse.</span></div>' +
-      '<div class="admin-prezzo__riga">' + campo({ k: 'prezzo', etichetta: 'Prezzo', esempio: '15,00 €', max: 30 }, sch.prezzo) +
+      '<div class="admin-prezzo__riga">' + campo({ k: 'prezzo', etichetta: 'Prezzo', esempio: '15,00 €', max: 30, prezzo: true }, sch.prezzo) +
       '<button class="btn btn--secondario" type="submit">Salva</button></div></form>';
     perSezione(righe, 'sezione').forEach(function (s) {
       var oggiCi = s.righe.filter(function (i) { return righe[i].visibile; }).length;
@@ -942,9 +964,10 @@
     corpo.innerHTML = html;
 
     var f = $('[data-prezzo]', corpo);
+    collegaPrezzi(f);
     f.addEventListener('submit', function (ev) {
       ev.preventDefault();
-      var val = $('input', f).value.trim();
+      var val = formattaPrezzo($('input', f).value); $('input', f).value = val;
       var b = $('[type="submit"]', f);
       b.disabled = true; b.classList.add('is-caricamento');
       salva({ pranzo: righe }, { pranzo: { prezzo: val } }, { messaggio: 'Prezzo salvato: sul sito tra pochi secondi.' }).then(function () { disegna(); });
@@ -959,7 +982,7 @@
       b.addEventListener('click', function () {
         var nome = b.getAttribute('data-aggiungi');
         var s = sezioni.filter(function (x) { return x.titolo === nome; })[0];
-        modificaRiga({ k: 'pranzo', titolo: 'Nuovo piatto', campi: campiPranzo(righe), base: { sezione: nome, visibile: true }, posizione: dopoUltima(righe, s.righe) });
+        modificaRiga({ k: 'pranzo', titolo: 'Nuovo piatto', occhiello: 'In ' + nome, sezioneFissa: 'sezione', campi: campiPranzo(righe), base: { sezione: nome, visibile: true }, posizione: dopoUltima(righe, s.righe) });
       });
     });
     $('[data-nuova-sezione]', corpo).addEventListener('click', function () {
@@ -973,7 +996,7 @@
     return [
       { k: 'menu', etichetta: 'Nome della festa', max: 60, esempio: 'Natale', aiuto: 'Compare nel selettore dei menù e nel titolo: «Il menù di Natale».' },
       { k: 'giorno', etichetta: 'Giorno', tipo: 'data', facoltativo: true },
-      { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '55,00 €' },
+      { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '55,00 €', prezzo: true, aiuto: 'Scrivi solo il numero: 50 diventa 50,00 €.' },
       { k: 'nota', etichetta: 'Note sul prezzo', facoltativo: true, max: 120, esempio: 'Bevande escluse · bambini 25,00 €' },
       { k: 'descrizione', etichetta: 'Descrizione', tipo: 'testo-lungo', facoltativo: true, max: 400 },
       { k: 'visibile', etichetta: 'Visibile sul sito', tipo: 'si' }
@@ -1031,13 +1054,13 @@
         var f = feste[Number(b.getAttribute('data-aggiungi-piatto'))];
         var suoi = piatti.map(function (p, i) { return i; }).filter(function (i) { return stessaFesta(piatti[i].menu, f.menu); });
         var ultimo = suoi.length ? piatti[suoi[suoi.length - 1]] : {};
-        modificaRiga({ k: 'menuFeste', titolo: 'Nuovo piatto · ' + f.menu, campi: campiPiattoFesta(piatti), base: { menu: f.menu, portata: ultimo.portata || '' }, posizione: dopoUltima(piatti, suoi) });
+        modificaRiga({ k: 'menuFeste', titolo: 'Nuovo piatto', occhiello: 'Menù di ' + f.menu, campi: campiPiattoFesta(piatti), base: { menu: f.menu, portata: ultimo.portata || '' }, posizione: dopoUltima(piatti, suoi) });
       });
     });
     $$('[data-apri-piatto]', corpo).forEach(function (b) {
       b.addEventListener('click', function () {
         var i = Number(b.getAttribute('data-apri-piatto'));
-        modificaRiga({ k: 'menuFeste', titolo: 'Modifica piatto · ' + piatti[i].menu, campi: campiPiattoFesta(piatti), indice: i,
+        modificaRiga({ k: 'menuFeste', titolo: 'Modifica piatto', occhiello: 'Menù di ' + piatti[i].menu, campi: campiPiattoFesta(piatti), indice: i,
           gruppo: function (r) { return String(r.menu).toLowerCase() + '|' + r.portata; } });
       });
     });
@@ -1053,7 +1076,7 @@
     var campi = [
       { k: 'titolo', etichetta: 'Titolo', max: 80, aiuto: 'Ogni specialità tiene la sua foto finché il titolo resta uguale.' },
       { k: 'piatto', etichetta: 'Piatto del menù (per il prezzo)', tipo: 'scelta', opzioni: piatti, facoltativo: true, vuoto: 'Nessuno', aiuto: 'Il prezzo si prende dal menù e si aggiorna da solo. Se il piatto è nascosto, sparisce anche dalla home.' },
-      { k: 'prezzo', etichetta: 'Prezzo (se diverso)', facoltativo: true, max: 30, esempio: 'da 9,00 €' },
+      { k: 'prezzo', etichetta: 'Prezzo (se diverso)', facoltativo: true, max: 30, esempio: 'da 9,00 €', prezzo: true },
       { k: 'descrizione', etichetta: 'Descrizione', tipo: 'testo-lungo', facoltativo: true, max: 240 }
     ];
     var prezzoDi = function (nome) {

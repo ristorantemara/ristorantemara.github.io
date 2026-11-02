@@ -242,6 +242,7 @@ body.admin { background: var(--panna); min-height: 100vh; }
 /* ---------- Foglio dal basso / finestra (A03, A07, A12, AD02) ---------- */
 .admin-pannello { gap: 20px; padding: 12px 20px calc(24px + env(safe-area-inset-bottom)); }
 .admin-pannello .foglio__titolo { font: 500 24px/1.25 var(--display); }
+.admin-pannello__titoli { display: flex; flex-direction: column; gap: 4px; min-width: 0; } /* Figma A14: occhiello «In Antipasti» sopra il titolo */
 .admin-pannello__form { display: flex; flex-direction: column; gap: 20px; }
 .admin-pannello__form .riga-campi { gap: 16px; }
 .admin-pannello__azioni { display: flex; gap: 10px; }
@@ -256,7 +257,7 @@ body.admin { background: var(--panna); min-height: 100vh; }
 .admin-chip-scelta { display: flex; flex-wrap: wrap; gap: 8px; }
 .admin-chip .icona { display: none; }
 .admin-chip[aria-pressed="true"] .icona { display: block; }
-.admin-rivela { align-self: flex-start; gap: 6px; min-height: 40px; padding: 4px 0; }
+.admin-rivela { align-self: flex-start; gap: 6px; min-height: 40px; padding: 4px 0; white-space: normal; text-align: left; justify-content: flex-start; }
 .admin-rivela .icona { width: 15px; height: 15px; }
 .admin-rivelato { display: flex; flex-direction: column; gap: 8px; }
 .admin-rivelato[hidden] { display: none; }
