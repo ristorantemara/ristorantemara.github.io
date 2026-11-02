@@ -37,6 +37,7 @@ body.admin { background: var(--panna); min-height: 100vh; }
 /* ---------- Corpo ---------- */
 .admin-corpo { max-width: 1440px; margin: 0 auto; padding: 48px 160px 96px; }
 .admin-vista { display: flex; flex-direction: column; gap: 32px; }
+.admin-vista [data-corpo] { display: flex; flex-direction: column; gap: 32px; } /* Figma AD02: 32px tra le sezioni (telefono 24) */
 
 .admin-testa { display: flex; flex-direction: column; gap: 8px; }
 .admin-testa h1 { font: 500 52px/1.08 var(--display); letter-spacing: -0.025em; outline: none; }
@@ -49,7 +50,9 @@ body.admin { background: var(--panna); min-height: 100vh; }
 .admin-colonne > .admin-oggi { grid-column: 2; grid-row: 1; position: sticky; top: 108px; }
 .admin-colonne > .admin-principale { grid-column: 1; grid-row: 1; }
 .admin-colonne--orari { grid-template-columns: minmax(0, 1fr) 440px; }
-.admin-principale, .admin-blocco { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.admin-principale { display: flex; flex-direction: column; gap: 20px; min-width: 0; } /* Figma AD01: 20 */
+.admin-blocco { display: flex; flex-direction: column; gap: 16px; min-width: 0; } /* Figma AD03: 16 */
+.admin-blocco .admin-sottotitolo { gap: 16px; }
 
 /* Accesso (A01) */
 .admin-accesso { max-width: 480px; margin: 24px auto 0; display: flex; flex-direction: column; gap: 16px; }
@@ -66,7 +69,7 @@ body.admin { background: var(--panna); min-height: 100vh; }
 /* ---------- Filtri a pillole (Admin/Segmento) ---------- */
 .admin-filtri { display: flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 .admin-filtri::-webkit-scrollbar { display: none; }
-.admin-filtri .menu-tipi { flex: none; }
+.admin-filtri .menu-tipi { flex: none; width: auto; border-radius: 999px; } /* Figma Admin/Segmento: contenitore a pillola che abbraccia le voci */
 .admin-filtri .menu-tipi button {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 10px 12px; border: 0; background: none;
   border-radius: 999px; font: 600 14px/1.25 var(--testo); white-space: nowrap; color: var(--inchiostro); cursor: pointer;
@@ -92,7 +95,6 @@ body.admin { background: var(--panna); min-height: 100vh; }
 .admin-elenco { display: flex; flex-direction: column; gap: 12px; }
 .admin-elenco--griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; align-items: start; }
 .admin-giorno { display: flex; flex-direction: column; gap: 12px; }
-.admin-giorno + .admin-giorno { margin-top: 12px; }
 
 .admin-card {
   display: flex; flex-direction: column; gap: 14px; padding: 20px;
@@ -299,6 +301,12 @@ body.admin { background: var(--panna); min-height: 100vh; }
 
   .admin-corpo { padding: 24px 16px calc(100px + env(safe-area-inset-bottom)); }
   .admin-vista { gap: 24px; }
+  .admin-vista [data-corpo], .admin-principale, .admin-blocco { gap: 24px; } /* Figma A02–A12: 24px tra i blocchi */
+  .admin-blocco .admin-sottotitolo { gap: 4px; }
+  /* Figma A02/A04/A06: con 3 o più voci il selettore occupa tutta la larghezza e le voci si dividono lo spazio;
+     con 2 voci (A05) abbraccia il contenuto */
+  .admin-filtri .menu-tipi:has(button:nth-child(3)) { width: 100%; display: flex; }
+  .admin-filtri .menu-tipi:has(button:nth-child(3)) button { flex: 1 1 auto; padding-left: 8px; padding-right: 8px; }
   .admin-testa h1 { font-size: 36px; }
   .solo-computer { display: none; }
   .admin-colonne.is-senza-oggi > .admin-oggi { display: none; } /* Figma A04: «In arrivo» e «Archivio» senza il riquadro Oggi */
