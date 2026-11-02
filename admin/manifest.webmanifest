@@ -4,12 +4,12 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f4ede1",
+  "background_color": "#231a14",
   "theme_color": "#f4ede1",
   "lang": "it",
   "icons": [
-    { "src": "../assets/icona-app-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "../assets/icona-app-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "../assets/icona-app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "icona-app-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icona-app-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icona-app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
