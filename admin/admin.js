@@ -865,7 +865,7 @@
     var telefono = window.matchMedia('(max-width: 767px)').matches;
     var conGruppi = righe.some(function (r) { return r.sezione === sezione && r.gruppo; });
     var sez = { k: 'sezione', etichetta: 'Sezione', suggerimenti: valoriUnici(righe, 'sezione'), max: 60, affianca: !telefono };
-    var prezzo = { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '12,00 €', affianca: !telefono, prezzo: true, aiuto: 'Scrivi solo il numero: 10 diventa 10,00 €.' };
+    var prezzo = { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '12,00 €', affianca: !telefono, prezzo: true };
     var piatto = { k: 'piatto', etichetta: 'Piatto', max: 120, esempio: 'Tortellini di Valeggio burro e salvia' };
     var dettaglio = { k: 'dettaglio', etichetta: 'Dettaglio', facoltativo: true, max: 160, esempio: 'es. ingredienti, cantina…' };
     var gruppo = { k: 'gruppo', etichetta: 'Gruppo', facoltativo: true, suggerimenti: valoriUnici(righe, 'gruppo'), aiuto: 'Solo per dividere una sezione (es. Vini bianchi, Vini rossi).', max: 60, rivela: conGruppi ? '' : 'Dividi la sezione in gruppi (es. Vini bianchi)' };
@@ -996,7 +996,7 @@
     return [
       { k: 'menu', etichetta: 'Nome della festa', max: 60, esempio: 'Natale', aiuto: 'Compare nel selettore dei menù e nel titolo: «Il menù di Natale».' },
       { k: 'giorno', etichetta: 'Giorno', tipo: 'data', facoltativo: true },
-      { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '55,00 €', prezzo: true, aiuto: 'Scrivi solo il numero: 50 diventa 50,00 €.' },
+      { k: 'prezzo', etichetta: 'Prezzo', facoltativo: true, max: 30, esempio: '55,00 €', prezzo: true },
       { k: 'nota', etichetta: 'Note sul prezzo', facoltativo: true, max: 120, esempio: 'Bevande escluse · bambini 25,00 €' },
       { k: 'descrizione', etichetta: 'Descrizione', tipo: 'testo-lungo', facoltativo: true, max: 400 },
       { k: 'visibile', etichetta: 'Visibile sul sito', tipo: 'si' }
