@@ -1,0 +1,16 @@
+{
+  "name": "Ristorante Mara",
+  "short_name": "Mara",
+  "description": "Ristorante Mara a Valeggio sul Mincio: menù, orari e prenotazioni.",
+  "start_url": "../",
+  "scope": "../",
+  "display": "minimal-ui",
+  "background_color": "#f4ede1",
+  "theme_color": "#f4ede1",
+  "lang": "it",
+  "icons": [
+    { "src": "icona-app-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icona-app-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icona-app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
