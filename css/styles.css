@@ -706,7 +706,7 @@ body.menu-aperto { overflow: hidden; }
 /* Passi numerati i. ii. iii. */
 .passi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
 .passo { border-top: 1px solid var(--bordo); padding-top: 24px; display: flex; flex-direction: column; gap: 14px; }
-.passo__numero { font: 500 84px/1 var(--display); letter-spacing: -0.025em; color: var(--pomodoro); }
+.passo__numero { font: 500 84px/1 var(--display); letter-spacing: -0.025em; color: var(--pomodoro); text-transform: lowercase; } /* Figma: i. ii. iii. */
 .sezione-passi .contenitore { display: flex; flex-direction: column; gap: 56px; }
 .sezione-passi .testata { gap: 56px; } /* Figma: occhiello e titolo distanziati come il resto della sezione */
 

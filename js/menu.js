@@ -231,16 +231,21 @@
       var attiva = null;
       sezioni().forEach(function (s) { if (!attiva && visibili[s.id]) attiva = s.id; });
       if (!attiva) return;
+      segna(attiva);
+    }, { rootMargin: '-35% 0px -55% 0px' });
+    sezioni().forEach(function (s) { osservatore.observe(s); });
+    // Figma (D02, M04): all'apertura la prima sezione è già evidenziata
+    if (!document.querySelector('[data-indice].is-attiva') && sezioni()[0]) segna(sezioni()[0].id, true);
+  }
+  function segna(attiva, senzaScroll) {
       document.querySelectorAll('[data-indice]').forEach(function (a) {
         var on = a.dataset.indice === attiva;
         a.classList.toggle('is-attiva', on);
         if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
-        if (on && a.classList.contains('pillola') && a.parentElement.scrollWidth > a.parentElement.clientWidth) {
+        if (on && !senzaScroll && a.classList.contains('pillola') && a.parentElement.scrollWidth > a.parentElement.clientWidth) {
           a.parentElement.scrollTo({ left: a.offsetLeft - 20, behavior: 'smooth' });
         }
       });
-    }, { rootMargin: '-35% 0px -55% 0px' });
-    sezioni().forEach(function (s) { osservatore.observe(s); });
   }
 
   osserva();

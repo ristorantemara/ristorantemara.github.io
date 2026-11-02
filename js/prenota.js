@@ -2,6 +2,9 @@
 (function () {
   'use strict';
 
+  /* «Ferie di Natale» → «ferie di Natale»: solo la prima lettera, i nomi propri restano maiuscoli */
+  function minuscolaIniziale(x) { x = String(x || ''); return /^[A-ZÀ-Ý][a-zà-ÿ]/.test(x) ? x.charAt(0).toLowerCase() + x.slice(1) : x; }
+
   var form = document.querySelector('[data-prenota]');
   if (!form) return;
 
@@ -288,7 +291,7 @@
     var r = O.riassunto(dati);
     if (r.giorniChiusi.length) parti.push(L.diGiorni(r.giorniChiusi));
     dati.chiusure.forEach(function (c) {
-      if (c.al >= oggi && c.dal <= ultimo) parti.push(O.periodo(c, oggi) + (c.motivo ? ' (' + t(c.motivo).toLowerCase() + ')' : ''));
+      if (c.al >= oggi && c.dal <= ultimo) parti.push(O.periodo(c, oggi) + (c.motivo ? ' (' + minuscolaIniziale(t(c.motivo)) + ')' : ''));
     });
     if (!parti.length) return t('Scegli il giorno: prenoti fino a due mesi prima.');
     return t('Nei giorni barrati siamo chiusi: {e}.', { e: L.elenco(parti) });
@@ -444,7 +447,7 @@
     var vicine = dati.chiusure.filter(function (c) { return c.al >= oggi && c.dal <= piuGiorni(oggi, 21); });
     var notaStriscia = form.querySelector('[data-nota-striscia]');
     notaStriscia.textContent = vicine.map(function (c) {
-      return t('{P} siamo chiusi{m}.', { P: O.maiuscola(O.periodo(c, oggi)), p: O.periodo(c, oggi), m: c.motivo ? ' (' + t(c.motivo).toLowerCase() + ')' : '' });
+      return t('{P} siamo chiusi{m}.', { P: O.maiuscola(O.periodo(c, oggi)), p: O.periodo(c, oggi), m: c.motivo ? ' (' + minuscolaIniziale(t(c.motivo)) + ')' : '' });
     }).join(' ');
     notaStriscia.hidden = !vicine.length;
     if (stato.passo === 1) document.querySelector('[data-nota-passo]').textContent = notaRiepilogo();
