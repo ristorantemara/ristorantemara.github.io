@@ -6,7 +6,7 @@
   <title>Area ristorante · Ristorante Mara</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#f4ede1">
-  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/favicon.svg?v=8f762b78" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icona-app-180.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="apple-mobile-web-app-title" content="Mara admin">
@@ -14,10 +14,11 @@
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="preload" href="../assets/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/instrument-sans-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/styles.css">
-  <link rel="stylesheet" href="admin.css">
-  <script src="../js/config.js" defer></script>
-  <script src="admin.js" defer></script>
+  <meta name="mara-icone" content="../assets/icons.svg?v=fd2870a8">
+  <link rel="stylesheet" href="../css/styles.css?v=e1e1f59a">
+  <link rel="stylesheet" href="admin.css?v=29187d72">
+  <script src="../js/config.js?v=594778d8" defer></script>
+  <script src="admin.js?v=78b6b732" defer></script>
 </head>
 <body class="admin">
 <a class="salta" href="#contenuto">Vai al contenuto</a>
@@ -29,10 +30,10 @@
       <span><span class="logo__nome">Mara</span><span class="logo__sotto">Area ristorante</span></span>
     </a>
     <nav class="admin-nav" id="nav" aria-label="Sezioni" hidden>
-      <a href="#prenotazioni" data-vista="prenotazioni"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#calendar"/></svg><span>Prenotazioni</span><b class="admin-nav__conta" data-conta hidden></b></a>
-      <a href="#richieste" data-vista="richieste"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#mail"/></svg><span>Richieste</span></a>
-      <a href="#menu" data-vista="menu"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#utensils"/></svg><span>Menù</span></a>
-      <a href="#orari" data-vista="orari"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#clock"/></svg><span>Orari</span></a>
+      <a href="#prenotazioni" data-vista="prenotazioni"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg?v=fd2870a8#calendar"/></svg><span>Prenotazioni</span><b class="admin-nav__conta" data-conta hidden></b></a>
+      <a href="#richieste" data-vista="richieste"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg?v=fd2870a8#mail"/></svg><span>Richieste</span></a>
+      <a href="#menu" data-vista="menu"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg?v=fd2870a8#utensils"/></svg><span>Menù</span></a>
+      <a href="#orari" data-vista="orari"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg?v=fd2870a8#clock"/></svg><span>Orari</span></a>
     </nav>
     <button class="admin-esci" type="button" id="esci" hidden>Esci</button>
   </div>
@@ -49,7 +50,7 @@
         <label class="campo__etichetta" for="password">Password</label>
         <input class="campo__input" type="password" id="password" autocomplete="current-password" required>
         <p class="campo__aiuto">Restate dentro 30 giorni su questo dispositivo.</p>
-        <p class="campo__errore" id="errore-password"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#alert"/></svg><span></span></p>
+        <p class="campo__errore" id="errore-password"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg?v=fd2870a8#alert"/></svg><span></span></p>
       </div>
       <button class="btn btn--primario btn--blocco" type="submit" id="entra">Entra</button>
     </form>
@@ -71,7 +72,7 @@
   <span class="foglio__maniglia" aria-hidden="true"></span>
   <div class="foglio__testa">
     <div class="admin-pannello__titoli"><p class="occhiello" id="pannello-occhiello" hidden></p><h2 class="foglio__titolo" id="pannello-titolo"></h2></div>
-    <button class="foglio__chiudi" type="button" data-chiudi aria-label="Chiudi"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg#x"/></svg></button>
+    <button class="foglio__chiudi" type="button" data-chiudi aria-label="Chiudi"><svg class="icona" aria-hidden="true"><use href="../assets/icons.svg?v=fd2870a8#x"/></svg></button>
   </div>
   <form id="pannello-form" class="admin-pannello__form" novalidate></form>
 </div>

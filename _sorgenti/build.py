@@ -511,6 +511,30 @@ def main():
     indicizzabili.sort(key=lambda n: (n != "index.html", n))
     scrivi_mappa_sito(indicizzabili)
     print("scritti sitemap.xml, robots.txt, llms.txt")
+    versiona_admin()
+
+
+def versiona_admin():
+    """Area ristorante (/admin/, non generata dai sorgenti): ?v=<impronta> a CSS, JS e icone,
+    così dopo ogni aggiornamento il telefono (anche dall'app sulla home) scarica i file nuovi."""
+    import hashlib
+    pagina = SITO / "admin" / "index.html"
+    if not pagina.exists():
+        return
+    html = pagina.read_text(encoding="utf-8")
+
+    def impronta(m):
+        attr, percorso = m.group(1), m.group(2)
+        file = (pagina.parent / percorso).resolve()
+        if not file.exists():
+            return m.group(0)
+        return f'{attr}="{percorso}?v={hashlib.sha1(file.read_bytes()).hexdigest()[:8]}"'
+    html = re.sub(r'(href|src|content)="((?:\.\./)?[\w/.-]+\.(?:css|js|svg))(?:\?v=\w+)?"', impronta, html)
+    icone = re.search(r'content="(\.\./assets/icons\.svg\?v=\w+)"', html)
+    if icone:  # anche le icone scritte nella pagina (<use href="…icons.svg#…">)
+        html = re.sub(r'\.\./assets/icons\.svg(?:\?v=\w+)?#', icone.group(1) + '#', html)
+    pagina.write_text(html, encoding="utf-8")
+    print("versionata admin/index.html")
 
 
 if __name__ == "__main__":

@@ -5,7 +5,8 @@
   'use strict';
 
   var CHIAVE = 'mara-admin';
-  var ICONE = '../assets/icons.svg#';
+  // file delle icone con la versione (?v=…), così dopo un aggiornamento il telefono non usa quello vecchio
+  var ICONE = ((document.querySelector('meta[name="mara-icone"]') || {}).content || '../assets/icons.svg') + '#';
   var GIORNI = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
   var MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
   var LINGUE = { en: 'Inglese', de: 'Tedesco' };
