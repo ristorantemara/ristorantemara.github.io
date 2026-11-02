@@ -579,7 +579,7 @@ body.menu-aperto { overflow: hidden; }
   padding: 12px 20px calc(28px + env(safe-area-inset-bottom));
   background: var(--panna); border-radius: 20px 20px 0 0;
 }
-.foglio__maniglia { width: 40px; height: 4px; border-radius: 2px; background: var(--bordo); align-self: flex-start; }
+.foglio__maniglia { width: 40px; height: 4px; border-radius: 2px; background: var(--bordo); align-self: center; flex: none; }
 .foglio__testa { display: flex; align-items: center; justify-content: space-between; }
 .foglio__titolo { font: 500 24px/1.25 var(--display); letter-spacing: -0.01em; }
 .foglio__chiudi { width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: none; cursor: pointer; border-radius: 50%; }
