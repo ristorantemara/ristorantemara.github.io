@@ -155,6 +155,7 @@
       .then(function (r) {
         if (!r.ok) throw new Error(r.errore);
         S.dati = r; ultimoAggiornamento = new Date();
+        if (N.stato === 'controllo') controllaNotifiche().then(function () { if (S.vista === 'prenotazioni' && $('#pannello').hidden) disegna(); });
         $('#stato').hidden = true;
         $('#nav').hidden = false;
         $('#esci').hidden = false;
@@ -268,6 +269,7 @@
     var html = testa('Prenotazioni', '', attesa.length
       ? (attesa.length === 1 ? 'C’è 1 richiesta da confermare.' : 'Ci sono ' + attesa.length + ' richieste da confermare.')
       : 'Nessuna richiesta da confermare.').replace('class="testo-m"', 'class="testo-m solo-computer"');
+    html += riquadroNotifiche();
     html += '<div class="admin-colonne' + (S.filtroPren !== 'attesa' ? ' is-senza-oggi' : '') + '">';
 
     // Oggi (scuro): coperti e tavoli confermati, elenco dei tavoli su computer
@@ -313,6 +315,116 @@
       });
     });
     collegaAggiorna(v);
+    collegaNotifiche(v);
+  }
+
+  /* ==========================================================================
+     Notifiche sul telefono (Figma Admin/Notifiche, A13)
+     Lo script manda una spinta vuota, sw.js chiede il testo e mostra la notifica.
+     ========================================================================== */
+  var N = { stato: 'controllo', occupato: false };
+  function eIos() { return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+  function daHome() { return navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches); }
+  function supportate() { return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window && window.isSecureContext; }
+  function urlSw() { return 'sw.js?s=' + encodeURIComponent(window.MARA_SERVIZIO || ''); }
+  function chiaveInByte(b64) {
+    var s = (b64 + '==='.slice((b64.length + 3) % 4)).replace(/-/g, '+').replace(/_/g, '/');
+    var raw = atob(s), out = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+    return out;
+  }
+  function nomeDispositivo() {
+    var ua = navigator.userAgent;
+    return (/iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : /Android/.test(ua) ? 'Android' : /Mac/.test(ua) ? 'Mac' : /Windows/.test(ua) ? 'Windows' : 'Browser');
+  }
+
+  function controllaNotifiche() {
+    if (!supportate()) { N.stato = eIos() && !daHome() ? 'home' : 'no'; return Promise.resolve(); }
+    if (Notification.permission === 'denied') { N.stato = 'bloccate'; return Promise.resolve(); }
+    return navigator.serviceWorker.getRegistration('./')
+      .then(function (reg) { return reg ? reg.pushManager.getSubscription() : null; })
+      .then(function (sub) {
+        N.stato = sub ? 'attive' : 'spente';
+        if (sub) { // riallinea lo script (es. dopo aver svuotato i dispositivi) e aggiorna il service worker
+          navigator.serviceWorker.register(urlSw(), { scope: './' }).catch(function () {});
+          chiama('stato-notifiche', { endpoint: sub.endpoint }).then(function (r) {
+            if (r.ok && !r.iscritto) chiama('iscrivi', { endpoint: sub.endpoint, dispositivo: nomeDispositivo() });
+          }).catch(function () {});
+        }
+      })
+      .catch(function () { N.stato = 'spente'; });
+  }
+
+  function riquadroNotifiche() {
+    var st = N.stato;
+    if (st === 'no' || st === 'controllo') return '';
+    if (st === 'attive') {
+      return '<div class="admin-notifiche admin-notifiche--attive" role="status">' +
+        '<span class="admin-notifiche__icona">' + icona('bell') + '</span>' +
+        '<p class="label">Notifiche attive su questo ' + (eIos() || /Android/.test(navigator.userAgent) ? 'telefono' : 'dispositivo') + '</p>' +
+        '<button class="admin-notifiche__disattiva" type="button" data-notifiche="spegni">Disattiva</button></div>';
+    }
+    var testo = {
+      spente: 'Una notifica appena arriva una prenotazione, una richiesta o una disdetta, anche con l’app chiusa.',
+      home: 'Su iPhone le notifiche arrivano solo dall’app sulla home: in Safari tocca Condividi → Aggiungi alla schermata Home, poi apri «Mara admin» da lì e attivale.',
+      bloccate: 'Le notifiche sono bloccate per questa app: riattivale dalle impostazioni del telefono (Notifiche → Mara admin) e torna qui.'
+    }[st];
+    return '<div class="admin-notifiche">' +
+      '<span class="admin-notifiche__icona">' + icona('bell') + '</span>' +
+      '<div class="admin-notifiche__testo"><p class="label">Avvisi sul telefono</p><p class="testo-s">' + esc(testo) + '</p>' +
+      (st === 'spente' ? '<button class="btn btn--primario" type="button" data-notifiche="accendi">Attiva le notifiche</button>' : '') +
+      '</div></div>';
+  }
+
+  function collegaNotifiche(v) {
+    var acc = $('[data-notifiche="accendi"]', v), sp = $('[data-notifiche="spegni"]', v);
+    if (acc) acc.addEventListener('click', function () { attivaNotifiche(acc); });
+    if (sp) sp.addEventListener('click', function () { disattivaNotifiche(sp); });
+  }
+
+  function attivaNotifiche(btn) {
+    if (N.occupato) return;
+    N.occupato = true; btn.disabled = true; btn.classList.add('is-caricamento'); btn.textContent = 'Attivo…';
+    var reg;
+    Notification.requestPermission()
+      .then(function (permesso) {
+        if (permesso !== 'granted') { var e = new Error(permesso === 'denied' ? 'Notifiche bloccate: riattivale dalle impostazioni del telefono.' : 'Per ricevere gli avvisi tocca «Consenti».'); e.permesso = permesso; throw e; }
+        return navigator.serviceWorker.register(urlSw(), { scope: './' });
+      })
+      .then(function () { return navigator.serviceWorker.ready; })
+      .then(function (r) { reg = r; return reg.pushManager.getSubscription(); })
+      .then(function (vecchia) { return vecchia ? vecchia.unsubscribe() : null; })
+      .then(function () { return chiama('chiave-notifiche'); })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.errore);
+        return reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: chiaveInByte(r.chiave) });
+      })
+      .then(function (sub) { return chiama('iscrivi', { endpoint: sub.endpoint, dispositivo: nomeDispositivo() }); })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.errore);
+        N.stato = 'attive';
+        toast(r.inviate ? 'Notifiche attive: ti ho mandato una notifica di prova.' : 'Notifiche attive.');
+      })
+      .catch(function (e) {
+        if (e.permesso === 'denied') N.stato = 'bloccate';
+        if (!e.accesso) toast(e.permesso ? e.message : 'Non sono riuscito ad attivare le notifiche: ' + testoErrore(e), true);
+      })
+      .then(function () { N.occupato = false; if (S.vista === 'prenotazioni') disegna(); });
+  }
+
+  function disattivaNotifiche(btn) {
+    if (N.occupato) return;
+    N.occupato = true; btn.disabled = true;
+    navigator.serviceWorker.getRegistration('./')
+      .then(function (reg) { return reg ? reg.pushManager.getSubscription() : null; })
+      .then(function (sub) {
+        if (!sub) return null;
+        var endpoint = sub.endpoint;
+        return sub.unsubscribe().then(function () { return chiama('disiscrivi', { endpoint: endpoint }); });
+      })
+      .then(function () { N.stato = 'spente'; toast('Notifiche disattivate su questo dispositivo.'); })
+      .catch(function (e) { if (!e.accesso) toast(testoErrore(e), true); })
+      .then(function () { N.occupato = false; if (S.vista === 'prenotazioni') disegna(); });
   }
 
   /* Figma Admin/Prenotazione */

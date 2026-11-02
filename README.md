@@ -60,6 +60,9 @@ modifica menù alla carta, pausa pranzo (anche il prezzo), menù delle feste (ac
 - Nello script: file `Admin.gs` + una riga in `doPost` (`tipo: 'admin'`). Password nella proprietà dello script
   `ADMIN_PASSWORD`; l'accesso resta attivo 30 giorni sul dispositivo; `esciDaTutti()` lo chiude ovunque.
 - Non è indicizzata (`noindex` e `robots.txt`).
+- **Notifiche sul telefono** (Web Push, gratis): in Prenotazioni «Attiva le notifiche». Su iPhone solo dall'app aggiunta
+  alla home. Lo script (`Notifiche.gs`) firma con una chiave VAPID sua (si crea da sola) e manda una spinta vuota;
+  `admin/sw.js` chiede allo script il testo e mostra la notifica. Arrivano per nuove prenotazioni, richieste e disdette.
 
 ## Orari, chiusure e menù dal Foglio Google
 
