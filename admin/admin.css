@@ -244,6 +244,20 @@ body.admin { background: var(--panna); min-height: 100vh; }
 .admin-pannello .foglio__titolo { font: 500 24px/1.25 var(--display); }
 .admin-pannello__titoli { display: flex; flex-direction: column; gap: 4px; min-width: 0; } /* Figma A14: occhiello «In Antipasti» sopra il titolo */
 .admin-pannello__form { display: flex; flex-direction: column; gap: 20px; }
+/* Testa e azioni ferme, scorre solo il corpo (impaginaPannello in admin.js) */
+.admin-pannello { overflow: hidden; max-height: 90vh; max-height: 90dvh; }
+.admin-pannello > .foglio__maniglia, .admin-pannello > .foglio__testa { flex: none; }
+.admin-pannello__form { flex: 1 1 auto; min-height: 0; gap: 0; }
+.admin-pannello__corpo {
+  --rientro: 20px;
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  display: flex; flex-direction: column; gap: 20px;
+  margin: 0 calc(var(--rientro) * -1); padding: 4px var(--rientro) 16px; /* a tutta larghezza: i bordi di focus non vengono tagliati */
+  border-top: 1px solid transparent; border-bottom: 1px solid transparent; transition: border-color .15s;
+}
+.admin-pannello.is-scorso .admin-pannello__corpo { border-top-color: var(--bordo); }
+.admin-pannello.is-altro-sotto .admin-pannello__corpo { border-bottom-color: var(--bordo); }
+.admin-pannello__piede { flex: none; display: flex; flex-direction: column; gap: 12px; padding-top: 16px; }
 .admin-pannello__form .riga-campi { gap: 16px; }
 .admin-pannello__azioni { display: flex; gap: 10px; }
 .admin-pannello__azioni .btn--primario, .admin-pannello__azioni .btn--rifiuta { flex: 1; }
@@ -269,6 +283,7 @@ body.admin { background: var(--panna); min-height: 100vh; }
     transform: translate(-50%, -50%); border-radius: 20px; padding: 28px 32px 32px;
   }
   .admin-pannello .foglio__maniglia { display: none; }
+  .admin-pannello__corpo { --rientro: 32px; }
 }
 
 /* ---------- Avviso breve (Admin/Avviso breve) ---------- */

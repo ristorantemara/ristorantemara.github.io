@@ -572,11 +572,35 @@
     form.onsubmit = null;
     form.innerHTML = '';
     prepara(form);
+    impaginaPannello(form);
     $('#pannello-sfondo').hidden = false;
     $('#pannello').hidden = false;
     document.body.style.overflow = 'hidden';
     var primo = $('input:not([type="hidden"]), select, textarea, button[type="submit"]', form);
     setTimeout(function () { if (primo && window.matchMedia('(min-width: 768px)').matches) primo.focus(); else $('#pannello .foglio__chiudi').focus(); }, 30);
+  }
+  /* Testa e azioni restano ferme: scorre solo il corpo con i campi.
+     I nodi vengono spostati (non ricreati), quindi i gestori già collegati restano validi. */
+  function impaginaPannello(form) {
+    var corpo = document.createElement('div');
+    corpo.className = 'admin-pannello__corpo';
+    var piede = document.createElement('div');
+    piede.className = 'admin-pannello__piede';
+    Array.prototype.slice.call(form.children).forEach(function (el) {
+      (el.matches('.admin-pannello__azioni, .admin-pannello__secondarie') ? piede : corpo).appendChild(el);
+    });
+    form.appendChild(corpo);
+    if (piede.children.length) form.appendChild(piede);
+    // linea sotto la testa / sopra le azioni solo quando c'è altro contenuto da scorrere
+    function ombre() {
+      var pannello = $('#pannello');
+      pannello.classList.toggle('is-scorso', corpo.scrollTop > 0);
+      pannello.classList.toggle('is-altro-sotto', corpo.scrollTop + corpo.clientHeight < corpo.scrollHeight - 1);
+    }
+    corpo.addEventListener('scroll', ombre, { passive: true });
+    corpo.addEventListener('input', ombre);
+    corpo.addEventListener('click', function () { setTimeout(ombre, 0); }); // es. «mostra altro» che apre campi
+    requestAnimationFrame(ombre);
   }
   function chiudiPannello() {
     if ($('#pannello').hidden) return;
